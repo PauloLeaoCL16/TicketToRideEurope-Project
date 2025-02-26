@@ -1,1 +1,74 @@
+im bored so I made a player class. You can change card keys to Type if you want, you can use this if you want or you can make one yourself
+```java
+import java.util.ArrayList;
+import java.util.HashMap;
 
+public class Player {
+    private int points;
+    HashMap<ArrayList<String>, Integer> ticket; //(Ex: {[Berlin, Amsterdam]=8}
+    HashMap<String, Integer> card;
+    private int station;
+    public Player() {
+        station = 3;
+        points = 0;
+        ticket = new HashMap<ArrayList<String>, Integer>();
+        card = new HashMap<String, Integer>();
+        card.put("red", 0);
+        card.put("white", 0);
+        card.put("yellow", 0);
+        card.put("black", 0);
+        card.put("green", 0);
+        card.put("orange", 0);
+        card.put("pink", 0);
+        card.put("blue", 0);
+        card.put("wild", 0);
+    }
+
+    public void newTicket(String location1, String location2, int point) {
+        ArrayList<String> loc = new ArrayList<String>();
+        loc.add(location1);
+        loc.add(location2);
+        ticket.put(loc, point);
+    }
+
+    public void removeTicket(String location1, String location2) {
+        ArrayList<String> loc = new ArrayList<String>();
+        loc.add(location1);
+        loc.add(location2);
+        if (ticket.containsKey(loc)) {
+            ticket.remove(loc);
+            return;
+        }
+        loc.remove(0);
+        loc.add(location1);
+        if (ticket.containsKey(loc)) {
+            ticket.remove(loc);
+            return;
+        }
+    }
+
+    public HashMap<ArrayList<String>, Integer> getTicket() {
+        return ticket;
+    }
+
+    public int getStation() {
+        return station;
+    }
+
+    public void setPoint(int pt) {
+        points = pt;
+    }
+
+    public int getPoint() {
+        return points;
+    }
+
+    public void addCard(String color) {
+        card.put(color, card.get(color) + 1);
+    }
+
+    public HashMap<String, Integer> getCard() {
+        return card;
+    }
+}
+```
