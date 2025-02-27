@@ -2,24 +2,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Deck {
-    private ArrayList<String> deck;
+    private ArrayList<ColorCard> deck;
     public Deck() {
-        deck = new ArrayList<String>();
+        deck = new ArrayList<ColorCard>();
         add();
     }
 
     private void add() {
         for (int i = 0; i < 10; i++) {
-            deck.add("red");
+            deck.add(new ColorCard("red"));
         }
         for (int i = 0; i < 10; i++) {
-            deck.add("blue");
+            deck.add(new ColorCard("blue"));
         }
         for (int i = 0; i < 10; i++) {
-            deck.add("green");
+            deck.add(new ColorCard("green"));
         }
         for (int i = 0; i < 5; i++) {
-            deck.add("wild");
+            deck.add(new ColorCard("wild"));
         }
         shuffle();
     }
@@ -28,12 +28,12 @@ public class Deck {
         Collections.shuffle(deck);
     }
 
-    public String draw() {
-        String item = deck.remove(deck.size() - 1);
+    public void draw(Player p) {
+        ColorCard item = deck.remove(deck.size() - 1);
         if (deck.size() == 0) {
             add();
         }
-        return item;
+        p.addCard(item);
     }
 
     public ArrayList<String> getDeck() {
