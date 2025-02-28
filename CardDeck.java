@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Deck {
+public class CardDeck {
     private ArrayList<ColorCard> deck;
-    public Deck() {
+    public CardDeck() {
         deck = new ArrayList<ColorCard>();
         add();
     }
