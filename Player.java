@@ -1,5 +1,3 @@
-im bored so I made a player class. You can change card keys to Type if you want, you can use this if you want or you can make one yourself
-```java
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -71,4 +69,3 @@ public class Player {
         return card;
     }
 }
-```
