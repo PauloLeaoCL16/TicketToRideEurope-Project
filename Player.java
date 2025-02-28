@@ -3,50 +3,27 @@ import java.util.HashMap;
 
 public class Player {
     private int points;
-    HashMap<ArrayList<String>, Integer> ticket; //(Ex: {[Berlin, Amsterdam]=8}
-    HashMap<String, Integer> card;
+    private ArrayList<Ticket> tickets; //(Ex: {[Berlin, Amsterdam]=8}
+    private ArrayList<ColorCard> card;
     private int station;
+    private int trainsLeft;
     public Player() {
         station = 3;
         points = 0;
-        ticket = new HashMap<ArrayList<String>, Integer>();
-        card = new HashMap<String, Integer>();
-        card.put("red", 0);
-        card.put("white", 0);
-        card.put("yellow", 0);
-        card.put("black", 0);
-        card.put("green", 0);
-        card.put("orange", 0);
-        card.put("pink", 0);
-        card.put("blue", 0);
-        card.put("wild", 0);
+        tickets = new ArrayList<Ticket>();
+        card = new ArrayList<ColorCard>();
     }
 
-    public void newTicket(String location1, String location2, int point) {
-        ArrayList<String> loc = new ArrayList<String>();
-        loc.add(location1);
-        loc.add(location2);
-        ticket.put(loc, point);
+    public void addTicket(Ticket ticket) {
+        tickets.add(ticket);
     }
 
-    public void removeTicket(String location1, String location2) {
-        ArrayList<String> loc = new ArrayList<String>();
-        loc.add(location1);
-        loc.add(location2);
-        if (ticket.containsKey(loc)) {
-            ticket.remove(loc);
-            return;
-        }
-        loc.remove(0);
-        loc.add(location1);
-        if (ticket.containsKey(loc)) {
-            ticket.remove(loc);
-            return;
-        }
+    public void removeTicket(Ticket ticket) {
+        tickets.remove(ticket);
     }
 
-    public HashMap<ArrayList<String>, Integer> getTicket() {
-        return ticket;
+    public ArrayList<Ticket> getTicket() {
+        return tickets;
     }
 
     public int getStation() {
@@ -61,11 +38,23 @@ public class Player {
         return points;
     }
 
-    public void addCard(String color) {
-        card.put(color, card.get(color) + 1);
+    public void addCard(ColorCard card) {
+        this.card.add(card);
     }
 
-    public HashMap<String, Integer> getCard() {
+    public ArrayList<ColorCard> getCard() {
         return card;
+    }
+
+    public void removeTrain(int numberToRemove) {
+        if (trainsLeft - numberToRemove < 0) {
+            System.out.print("Not enough train");
+            return;
+        }
+        trainsLeft -= numberToRemove;
+    }
+
+    public int getTrainsLeft() {
+        return trainsLeft;
     }
 }
