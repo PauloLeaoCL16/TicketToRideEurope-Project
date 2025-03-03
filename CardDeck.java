@@ -9,16 +9,31 @@ public class CardDeck {
     }
 
     private void add() {
-        for (int i = 0; i < 10; i++) {
-            deck.add(new ColorCard("red"));
+        for (int i = 0; i < 12; i++) {
+            deck.add(new ColorCard("pink"));
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 12; i++) {
+            deck.add(new ColorCard("white"));
+        }
+        for (int i = 0; i < 12; i++) {
             deck.add(new ColorCard("blue"));
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 12; i++) {
+            deck.add(new ColorCard("yellow"));
+        }
+        for (int i = 0; i < 12; i++) {
+            deck.add(new ColorCard("orange"));
+        }
+        for (int i = 0; i < 12; i++) {
+            deck.add(new ColorCard("black"));
+        }
+        for (int i = 0; i < 12; i++) {
+            deck.add(new ColorCard("red"));
+        }
+        for (int i = 0; i < 12; i++) {
             deck.add(new ColorCard("green"));
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 14; i++) {
             deck.add(new ColorCard("wild"));
         }
         shuffle();
