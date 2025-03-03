@@ -10,6 +10,7 @@ public class Player {
     public Player() {
         station = 3;
         points = 0;
+        trainsLeft = 45;
         tickets = new ArrayList<Ticket>();
         card = new ArrayList<ColorCard>();
     }
