@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class Player {
     private int points;
@@ -48,7 +47,7 @@ public class Player {
     }
 
     public void removeTrain(int numberToRemove) {
-        if (trainsLeft - numberToRemove < 0) {
+        if (trainsLeft - numberToRemove <= 2) {
             System.out.print("Not enough train");
             return;
         }
