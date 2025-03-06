@@ -2,11 +2,11 @@ import java.util.*;
 
 public class RailRoad
 {
-	int cost;
-	String color;
-	int wildNum;
-	boolean mountains;
-	boolean bought;
+	private int cost;
+	private String color;
+	private int wildNum;
+	private boolean mountains;
+	private boolean bought;
 	
 	public RailRoad(int cost, String color, int wild, boolean mountains, boolean bought)
 	{
@@ -54,7 +54,7 @@ public class RailRoad
 			return 7;
 		else if(cost == 6)
 			return 15;
-		else
+		else // cost == 8
 			return 21;
 	}
 }
