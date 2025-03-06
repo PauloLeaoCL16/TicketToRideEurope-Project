@@ -1,9 +1,10 @@
-import java.util.BufferedImage;
+import java.awt.image.*;
 
 public class ColorCard {
     private String color;
     private int costToDraw;
-    BufferedImage image;
+    private BufferedImage image;
+    
     public ColorCard(String color) {
         this.color = color;
         if (color.equals("wild")) {
@@ -11,6 +12,17 @@ public class ColorCard {
         } else {
             costToDraw = 1;
         }
+    }
+    
+    public ColorCard(String color, BufferedImage img)
+    {
+    	this.color = color;
+        if (color.equals("wild")) {
+            costToDraw = 2;
+        } else {
+            costToDraw = 1;
+        }
+        image = img;
     }
 
     public String getColor() {
