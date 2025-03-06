@@ -3,10 +3,10 @@ import java.awt.image.*;
 
 public class Ticket 
 {
-	String toCity;
-	String fromCity;
-	int points;
-	BufferedImage image;
+	private String toCity;
+	private String fromCity;
+	private int points;
+	private BufferedImage image;
 	
 	public Ticket(String toCity, String fromCity, int points, BufferedImage image)
 	{
