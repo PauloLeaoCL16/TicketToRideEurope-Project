@@ -51,7 +51,7 @@ public class CardDeck {
         p.addCard(item);
     }
 
-    public ArrayList<String> getDeck() {
+    public ArrayList<ColorCard> getDeck() {
         return deck;
     }
 }
