@@ -51,6 +51,20 @@ public class CardDeck {
         p.addCard(item);
     }
 
+    public int tunnelDraw(ColorCard color) {
+        int total = 0;
+        for (int i = 0; i < 3; i++) {
+            ColorCard item = deck.remove(deck.size() - 1);
+            if (deck.size() == 0) {
+                add();
+            }
+            if (color == item) {
+                total++;
+            }
+        }
+        return total;
+    }
+
     public ArrayList<ColorCard> getDeck() {
         return deck;
     }
