@@ -58,7 +58,7 @@ public class CardDeck {
             if (deck.size() == 0) {
                 add();
             }
-            if (color == item) {
+            if (color.getColor().equals(item.getColor())) {
                 total++;
             }
         }
