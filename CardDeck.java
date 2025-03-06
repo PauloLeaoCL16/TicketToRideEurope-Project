@@ -2,7 +2,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class CardDeck {
+	
     private ArrayList<ColorCard> deck;
+    
     public CardDeck() {
         deck = new ArrayList<ColorCard>();
         add();
@@ -51,21 +53,8 @@ public class CardDeck {
         p.addCard(item);
     }
 
-    public int tunnelDraw(ColorCard color) {
-        int total = 0;
-        for (int i = 0; i < 3; i++) {
-            ColorCard item = deck.remove(deck.size() - 1);
-            if (deck.size() == 0) {
-                add();
-            }
-            if (color.getColor().equals(item.getColor())) {
-                total++;
-            }
-        }
-        return total;
-    }
-
-    public ArrayList<ColorCard> getDeck() {
-        return deck;
+    public ArrayList<ColorCard> getDeck() 
+    {
+    	return deck;
     }
 }
