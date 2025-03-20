@@ -15,7 +15,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
     private boolean isPlayButtonHovered = false;
     private boolean isRulesScrollHovered = false;
-    private ArrayList<ColorCard> faceUpCard;
+    private ColorCard[] faceUpCard;
     private CardDeck cardDeck;
 
     public GameBoard() {
@@ -38,13 +38,13 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             e.printStackTrace();
         }
         cardDeck = new CardDeck();
-        faceUpCard = new ArrayList<ColorCard>();
-        faceUpCard.add(cardDeck.drawCard());
-        faceUpCard.add(cardDeck.drawCard());
-        faceUpCard.add(cardDeck.drawCard());
-        faceUpCard.add(cardDeck.drawCard());
-        faceUpCard.add(cardDeck.drawCard());
-
+        faceUpCard = new ColorCard[5];
+        faceUpCard[0] = cardDeck.drawCard();
+        faceUpCard[1] = cardDeck.drawCard();
+        faceUpCard[2] = cardDeck.drawCard();
+        faceUpCard[3] = cardDeck.drawCard();
+        faceUpCard[4] = cardDeck.drawCard();
+        
         addMouseListener(this);
         addMouseMotionListener(this);
         setFocusable(true);
@@ -64,11 +64,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         //rotate template cardholder and scale it smaller a bit
         g2d.scale(0.8, 0.8);
         g2d.rotate(Math.toRadians(-90), 1520, 240);
-        g2d.drawImage(faceUpCard.get(0).getImage(), 1390, 640, null);
-        g2d.drawImage(faceUpCard.get(1).getImage(), 1290, 640, null);
-        g2d.drawImage(faceUpCard.get(2).getImage(), 1190, 640, null);
-        g2d.drawImage(faceUpCard.get(3).getImage(), 1090, 640, null);
-        g2d.drawImage(faceUpCard.get(4).getImage(), 990, 640, null);
+        g2d.drawImage(faceUpCard[0].getImage(), 1390, 640, null);
+        g2d.drawImage(faceUpCard[1].getImage(), 1290, 640, null);
+        g2d.drawImage(faceUpCard[2].getImage(), 1190, 640, null);
+        g2d.drawImage(faceUpCard[3].getImage(), 1090, 640, null);
+        g2d.drawImage(faceUpCard[4].getImage(), 990, 640, null);
         //reset those transformations
         g2d.setTransform(new AffineTransform());
         
@@ -114,6 +114,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 
     @Override
     public void mouseClicked(MouseEvent e) {
+    	System.out.println(e.getX() + " " + e.getY());
     }
 
     @Override
@@ -139,3 +140,4 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     @Override
     public void run() {}
 }
+
