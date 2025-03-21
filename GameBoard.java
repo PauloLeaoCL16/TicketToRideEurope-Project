@@ -63,12 +63,12 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         
         //rotate template cardholder and scale it smaller a bit
         g2d.scale(0.8, 0.8);
-        g2d.rotate(Math.toRadians(-90), 1520, 240);
-        g2d.drawImage(faceUpCard[0].getImage(), 1390, 640, null);
-        g2d.drawImage(faceUpCard[1].getImage(), 1290, 640, null);
-        g2d.drawImage(faceUpCard[2].getImage(), 1190, 640, null);
-        g2d.drawImage(faceUpCard[3].getImage(), 1090, 640, null);
-        g2d.drawImage(faceUpCard[4].getImage(), 990, 640, null);
+        // g2d.rotate(Math.toRadians(-90), 1520, 240);
+        g2d.drawImage(faceUpCard[0].getImage(), getWidth(), 690, 150, 100, null);
+        g2d.drawImage(faceUpCard[1].getImage(), getWidth(), 590, 150, 100, null);
+        g2d.drawImage(faceUpCard[2].getImage(), getWidth(), 490, 150, 100, null);
+        g2d.drawImage(faceUpCard[3].getImage(), getWidth(), 390, 150, 100, null);
+        g2d.drawImage(faceUpCard[4].getImage(), getWidth(), 290, 150, 100, null);
         //reset those transformations
         g2d.setTransform(new AffineTransform());
         
