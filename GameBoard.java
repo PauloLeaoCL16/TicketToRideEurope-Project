@@ -2,6 +2,7 @@ package ttreImages;
 
 import java.awt.*;
 import javax.swing.*;
+
 import java.awt.image.*;
 import javax.imageio.ImageIO;
 import java.io.*;
@@ -17,7 +18,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
     private CardDeck cardDeck;
-    private ArrayList<Player> players;
+    private Player p1, p2, p3, p4;
+
     public GameBoard() {
         try {
             table = ImageIO.read(MainMenu.class.getResource("/ttreImages/gameBackground.png"));
@@ -44,12 +46,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         faceUpCard[2] = cardDeck.drawCard();
         faceUpCard[3] = cardDeck.drawCard();
         faceUpCard[4] = cardDeck.drawCard();
+        p1 = new Player();
+        p2 = new Player();
+        p3 = new Player();
+        p4 = new Player();
         
-        players = new ArrayList<Player>();
-        players.add(new Player("red"));
-        players.add(new Player("blue"));
-        players.add(new Player("green"));
-        players.add(new Player("yellow"));
         
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -68,12 +69,13 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawImage(ticket, 1795, 3, null);
         
         //rotate template cardholder and scale it smaller a bit
-//        g2d.scale(0.8, 0.8);
-//        g2d.rotate(Math.toRadians(-90), 1520, 240);
-        for (int i = 0; i < 5; i++) {
-        	g2d.drawImage(faceUpCard[i].getImage(), getWidth() - 360, 220 + i*80, 120, 80, null);
-        }
-        
+        g2d.scale(0.8, 0.8);
+        // g2d.rotate(Math.toRadians(-90), 1520, 240);
+        g2d.drawImage(faceUpCard[0].getImage(), getWidth(), 690, 150, 100, null);
+        g2d.drawImage(faceUpCard[1].getImage(), getWidth(), 590, 150, 100, null);
+        g2d.drawImage(faceUpCard[2].getImage(), getWidth(), 490, 150, 100, null);
+        g2d.drawImage(faceUpCard[3].getImage(), getWidth(), 390, 150, 100, null);
+        g2d.drawImage(faceUpCard[4].getImage(), getWidth(), 290, 150, 100, null);
         //reset those transformations
         g2d.setTransform(new AffineTransform());
         
@@ -81,8 +83,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.setFont(new Font("Serif", Font.BOLD, 50)); g2d.setColor(Color.WHITE); 
         
         //red player station and trains
-        g2d.drawString("0", 1758, 285);
-        g2d.drawString("0", 1828, 325); 
+        g2d.drawString(p1.getTrainsLeft()+"", 1758, 285);
+        g2d.drawString(p1.get+"", 1828, 325); 
         //green player station and trains
         g2d.drawString("0", 1758, 385);
         g2d.drawString("0", 1828, 420);
@@ -96,16 +98,16 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         //number of trains stuff
         g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
         g2d.drawString("0", 1580, 790);
-        g2d.drawString("1", 1645, 790);
-        g2d.drawString("2", 1712, 790);
-        g2d.drawString("3", 1777, 790);
-        g2d.drawString("4", 1845, 790);
+        g2d.drawString("0", 1645, 790);
+        g2d.drawString("0", 1712, 790);
+        g2d.drawString("0", 1777, 790);
+        g2d.drawString("0", 1845, 790);
         //2nd row
-        g2d.drawString("5", 1580, 930);
-        g2d.drawString("6", 1645, 930);
-        g2d.drawString("7", 1712, 930);
-        g2d.drawString("8", 1777, 930);
-        g2d.drawString("9", 1845, 930);
+        g2d.drawString("0", 1580, 930);
+        g2d.drawString("0", 1645, 930);
+        g2d.drawString("0", 1712, 930);
+        g2d.drawString("0", 1777, 930);
+        g2d.drawString("0", 1845, 930);
         
         //current player stuff
         
@@ -119,16 +121,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 
     @Override
     public void mouseClicked(MouseEvent e) {
-    	int x = e.getX();
-    	int y = e.getY();
-    	System.out.println(x + " " + y);
-    	for (int i = 0; i < 5; i++) {
-    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80) {
-    			players.get(i).addCard(faceUpCard[i]);
-    			faceUpCard[i] = cardDeck.drawCard();
-    		}
-        }
-    	repaint();
+    	System.out.println(e.getX() + " " + e.getY());
     }
 
     @Override
@@ -154,4 +147,3 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     @Override
     public void run() {}
 }
-
