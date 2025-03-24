@@ -54,6 +54,16 @@ public class Player {
         return card;
     }
     
+    public int getCardColor(String color) {
+    	int total = 0;
+    	for (int i = 0; i< card.size(); i++) {
+    		if (card.get(i).getColor().equals(color)) {
+    			total += 1;
+    		}
+    	}
+    	return total;
+    }
+    
     public void removeCards(String color, int num)
     {
     	for(ColorCard cardRemove : card)
