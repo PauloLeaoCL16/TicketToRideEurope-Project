@@ -9,21 +9,29 @@ public class Player {
     private ArrayList<Station> usedStationList;
     private ArrayList<Station> unusedStationList;
     private int trainsLeft;
+    private String plrColor;
     
-    public Player() {
+    public Player(String plrColor) {
         points = 0;
         trainsLeft = 45;
         tickets = new ArrayList<Ticket>();
         card = new ArrayList<ColorCard>();
+        unusedStationList = new ArrayList<Station>();
         unusedStationList.add(new Station());
         unusedStationList.add(new Station());
         unusedStationList.add(new Station());
+        railRoadsBought = new ArrayList<City>();
+        this.plrColor = plrColor;
     }
     
     public void useStation()
     {
     	if(unusedStationList.size()>=1)
     		usedStationList.add(unusedStationList.remove(unusedStationList.size()-1));
+    }
+    
+    public String getColor() {
+    	return plrColor;
     }
 
     public void addTicket(Ticket ticket) {
