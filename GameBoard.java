@@ -17,7 +17,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
     private CardDeck cardDeck;
-
+    private ArrayList<Player> players;
     public GameBoard() {
         try {
             table = ImageIO.read(MainMenu.class.getResource("/ttreImages/gameBackground.png"));
@@ -44,6 +44,12 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         faceUpCard[2] = cardDeck.drawCard();
         faceUpCard[3] = cardDeck.drawCard();
         faceUpCard[4] = cardDeck.drawCard();
+        
+        players = new ArrayList<Player>();
+        players.add(new Player("red"));
+        players.add(new Player("blue"));
+        players.add(new Player("green"));
+        players.add(new Player("yellow"));
         
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -90,16 +96,16 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         //number of trains stuff
         g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
         g2d.drawString("0", 1580, 790);
-        g2d.drawString("0", 1645, 790);
-        g2d.drawString("0", 1712, 790);
-        g2d.drawString("0", 1777, 790);
-        g2d.drawString("0", 1845, 790);
+        g2d.drawString("1", 1645, 790);
+        g2d.drawString("2", 1712, 790);
+        g2d.drawString("3", 1777, 790);
+        g2d.drawString("4", 1845, 790);
         //2nd row
-        g2d.drawString("0", 1580, 930);
-        g2d.drawString("0", 1645, 930);
-        g2d.drawString("0", 1712, 930);
-        g2d.drawString("0", 1777, 930);
-        g2d.drawString("0", 1845, 930);
+        g2d.drawString("5", 1580, 930);
+        g2d.drawString("6", 1645, 930);
+        g2d.drawString("7", 1712, 930);
+        g2d.drawString("8", 1777, 930);
+        g2d.drawString("9", 1845, 930);
         
         //current player stuff
         
@@ -117,7 +123,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	int y = e.getY();
     	System.out.println(x + " " + y);
     	for (int i = 0; i < 5; i++) {
-        	
+    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80) {
+    			players.get(i).addCard(faceUpCard[i]);
+    			faceUpCard[i] = cardDeck.drawCard();
+    		}
         }
     	repaint();
     }
