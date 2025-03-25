@@ -96,18 +96,18 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawString("0", 1822, 620);
         
         //number of trains stuff
-        g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
-        g2d.drawString("0", 1580, 790);
-        g2d.drawString("0", 1645, 790);
-        g2d.drawString("0", 1712, 790);
-        g2d.drawString("0", 1777, 790);
-        g2d.drawString("0", 1845, 790);
+        g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE);
+        g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("wild")), 1580, 790); // Locomotive
+        g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("white")), 1645, 790); // White
+        g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("red")), 1712, 790); // Red
+        g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("purple")), 1777, 790); // Purple
+        g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("green")), 1845, 790); // Green
         //2nd row
-        g2d.drawString("0", 1580, 930);
-        g2d.drawString("0", 1645, 930);
-        g2d.drawString("0", 1712, 930);
-        g2d.drawString("0", 1777, 930);
-        g2d.drawString("0", 1845, 930);
+        g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("brown")), 1580, 930); // Brown
+        g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("blue")), 1645, 930); // Blue
+        g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("black")), 1712, 930); // Black
+        g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("yellow")), 1777, 930); // Yellow
+        g2d.drawString("0", 1845, 930); // Ticket
         
         //current player stuff
         
