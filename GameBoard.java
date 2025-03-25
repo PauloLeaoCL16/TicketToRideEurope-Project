@@ -69,13 +69,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawImage(ticket, 1795, 3, null);
         
         //rotate template cardholder and scale it smaller a bit
-        g2d.scale(0.8, 0.8);
+        // g2d.scale(0.8, 0.8);
         // g2d.rotate(Math.toRadians(-90), 1520, 240);
-        g2d.drawImage(faceUpCard[0].getImage(), getWidth(), 690, 150, 100, null);
-        g2d.drawImage(faceUpCard[1].getImage(), getWidth(), 590, 150, 100, null);
-        g2d.drawImage(faceUpCard[2].getImage(), getWidth(), 490, 150, 100, null);
-        g2d.drawImage(faceUpCard[3].getImage(), getWidth(), 390, 150, 100, null);
-        g2d.drawImage(faceUpCard[4].getImage(), getWidth(), 290, 150, 100, null);
+        for (int i = 0; i < 5; i++) {
+        	g2d.drawImage(faceUpCard[i].getImage(), getWidth() - 360, 220 + i*80, 120, 80, null);
+        }
         //reset those transformations
         g2d.setTransform(new AffineTransform());
         
@@ -121,7 +119,16 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 
     @Override
     public void mouseClicked(MouseEvent e) {
-    	System.out.println(e.getX() + " " + e.getY());
+    	int x = e.getX();
+    	int y = e.getY();
+    	System.out.println(x + " " + y);
+    	for (int i = 0; i < 5; i++) {
+    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80) {
+    			players.get(currentPlr).addCard(faceUpCard[i]);
+    			faceUpCard[i] = cardDeck.drawCard();
+    		}
+        }
+    	repaint();
     }
 
     @Override
