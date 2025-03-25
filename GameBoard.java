@@ -81,9 +81,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 
         g2d.drawImage(table, 0, 0, getWidth(), getHeight(), null);
         g2d.drawImage(board, 0, 0, 1500, 1040, null);
-        g2d.drawImage(cardBack, 1560, 3, null);
+        g2d.drawImage(cardBack, 1560, 3, 100, 160, null);
         g2d.drawImage(template, 1675, 3, null);
-        g2d.drawImage(ticket, 1795, 3, null);
+        g2d.drawImage(ticket, 1795, 3, 100, 160, null);
         
         //rotate template cardholder and scale it smaller a bit
 //        g2d.scale(0.8, 0.8);
@@ -149,9 +149,14 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         }
     	
     	//allow for players to draw cards from the pile
-    	if( x >= 1550 && x <= 1660 && y >= 3 && y <= 160)
+    	if( x >= 1550 && x <= 1650 && y >= 3 && y <= 163)
     	{
     		players.get(currentPlr).addCard(cardDeck.drawCard());
+    	}
+        //Allow to click ticket
+        if( x >= 1795 && x <= 1895 && y >= 3 && y <= 163)
+    	{
+    		players.get(currentPlr).addTicket(ticketDeck.draw());
     	}
     	
     	//allow for players to click on their tickets to check them
