@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import javax.imageio.*;
+import java.io.IOException;
+
 public class CardDeck {
 	
     private ArrayList<ColorCard> deck;
