@@ -2,6 +2,14 @@ package ttreImages;
 
 import java.awt.*;
 import javax.swing.*;
+import java.awt.image.*;
+import javax.imageio.ImageIO;
+import java.io.*;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
     private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
