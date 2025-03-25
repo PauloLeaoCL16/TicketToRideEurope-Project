@@ -11,7 +11,7 @@ public class TicketDeck {
 	}
 	
 	private void add() {
-		ticketList.add(new Ticket("Amsterdam", "Pamblona", 7, new BufferedImage(1, 1, 1)));
+		ticketList.add(new Ticket("Amsterdam", "Pamblona", 7, new BufferedImage(1, 1, 1))); //Example (Need directory pls)
 		shuffle();
 	}
 	
