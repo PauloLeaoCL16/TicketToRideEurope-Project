@@ -87,17 +87,17 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.setFont(new Font("Serif", Font.BOLD, 50)); g2d.setColor(Color.WHITE); 
         
         //red player station and trains
-        g2d.drawString("0", 1758, 285);
-        g2d.drawString("0", 1828, 325); 
+        g2d.drawString(players.get(0).getTrainsLeft()+"", 1758, 285);
+        g2d.drawString(players.get(0).getStations()+"", 1828, 325); 
         //green player station and trains
-        g2d.drawString("0", 1758, 385);
-        g2d.drawString("0", 1828, 420);
+        g2d.drawString(players.get(1).getTrainsLeft()+"", 1758, 385);
+        g2d.drawString(players.get(1).getStations()+"", 1828, 420);
         //yellow player station and trains
-        g2d.drawString("0", 1758, 480);
-        g2d.drawString("0", 1825, 520);
+        g2d.drawString(players.get(2).getTrainsLeft()+"", 1758, 480);
+        g2d.drawString(players.get(2).getStations()+"", 1825, 520);
         //blue player station and trains
-        g2d.drawString("0", 1752, 580);
-        g2d.drawString("0", 1822, 620);
+        g2d.drawString(players.get(3).getTrainsLeft()+"", 1752, 580);
+        g2d.drawString(players.get(3).getStations()+"", 1822, 620);
         
         //number of trains stuff
         g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
@@ -165,4 +165,3 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     @Override
     public void run() {}
 }
-
