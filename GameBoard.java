@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import static java.lang.System.*;
 
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
     private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
@@ -18,6 +19,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private ColorCard[] faceUpCard;
     private CardDeck cardDeck;
     private TicketDeck ticketDeck;
+    private ArrayList<Ticket> longRoutes;
     private ArrayList<Player> players;
     
     private int currentPlr;
@@ -37,6 +39,15 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             greenplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/greenplayer.png"));
             yellowplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/yellowplayer.png"));
             playerpointer = ImageIO.read(MainMenu.class.getResource("/ttreImages/currentplayerarrow.png"));
+            ticketDeck = new TicketDeck();
+            longRoutes = new ArrayList<>();
+            longRoutes.add(new Ticket("palermo", "moskva",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute1.png"))));
+            longRoutes.add(new Ticket("brest", "petrograd",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute2.png"))));
+            longRoutes.add(new Ticket("kobenhavwn", "erzurum",21,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute3.png"))));
+            longRoutes.add(new Ticket("cadiz", "sotckholm",21,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute4.png"))));
+            longRoutes.add(new Ticket("lisboa", "danzic",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute5.png"))));
+            longRoutes.add(new Ticket("edinburch", "athina",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute6.png"))));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,6 +67,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         players.add(new Player("blue"));
         players.add(new Player("green"));
         players.add(new Player("yellow"));
+        players.get(currentPlr).addTicket(longRoutes.get(currentPlr));
         
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -111,7 +123,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("blue")), 1645, 930); // Blue
         g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("black")), 1712, 930); // Black
         g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("yellow")), 1777, 930); // Yellow
-        g2d.drawString("0", 1845, 930); // Ticket
+        g2d.drawString(players.get(currentPlr).getTicket().size()+"", 1845, 930); // Ticket
         
         //current player stuff
         
@@ -128,6 +140,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	int x = e.getX();
     	int y = e.getY();
     	System.out.println(x + " " + y);
+    	//alow for players to draw cards from the face-up card options
     	for (int i = 0; i < 5; i++) {
     		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80) {
     			players.get(currentPlr).addCard(faceUpCard[i]);
@@ -135,10 +148,20 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     		}
         }
     	
-//    	if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80) {
-//			players.get(currentPlr).addCard(faceUpCard[i]);
-//			faceUpCard[i] = cardDeck.drawCard();
-//		}
+    	//allow for players to draw cards from the pile
+    	if( x >= 1550 && x <= 1660 && y >= 3 && y <= 160)
+    	{
+    		players.get(currentPlr).addCard(cardDeck.drawCard());
+    	}
+    	
+    	//allow for players to click on their tickets to check them
+    	if( x >=1820 && x <= 1885 && y >=798 && y <= 895)
+    	{
+    		out.println(players.get(currentPlr).getTicket().get(0).getToCity());
+    		out.println(players.get(currentPlr).getTicket().get(0).getFromCity());
+    		out.println(players.get(currentPlr).getTicket().get(0).getPoints());
+    	}
+    	
     	repaint();
     }
 
