@@ -1,12 +1,3 @@
-import java.awt.image.BufferedImage;
-import java.awt.image.*;
-import javax.imageio.ImageIO;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-
-import javax.imageio.ImageIO;
-
 public class CardDeck {
 	
     private ArrayList<ColorCard> deck;
@@ -19,7 +10,7 @@ public class CardDeck {
     private void add() {
     	try {
 	        for (int i = 0; i < 12; i++) {
-	            deck.add(new ColorCard("pink", ImageIO.read(MainMenu.class.getResource("/cards/purplecard.png"))));
+	            deck.add(new ColorCard("purple", ImageIO.read(MainMenu.class.getResource("/cards/purplecard.png"))));
 	        }
 	        for (int i = 0; i < 12; i++) {
 	            deck.add(new ColorCard("white", ImageIO.read(MainMenu.class.getResource("/cards/whitecard.png"))));
@@ -31,7 +22,7 @@ public class CardDeck {
 	            deck.add(new ColorCard("yellow", ImageIO.read(MainMenu.class.getResource("/cards/yellowcard.png"))));
 	        }
 	        for (int i = 0; i < 12; i++) {
-	            deck.add(new ColorCard("orange", ImageIO.read(MainMenu.class.getResource("/cards/browncard.png"))));
+	            deck.add(new ColorCard("brown", ImageIO.read(MainMenu.class.getResource("/cards/browncard.png"))));
 	        }
 	        for (int i = 0; i < 12; i++) {
 	            deck.add(new ColorCard("black", ImageIO.read(MainMenu.class.getResource("/cards/blackcard.png"))));
