@@ -11,8 +11,9 @@ public class Player {
     private ArrayList<Station> usedStationList;
     private ArrayList<Station> unusedStationList;
     private int trainsLeft;
+    private String color;
     
-    public Player() {
+    public Player(String color) {
         points = 0;
         trainsLeft = 45;
         tickets = new ArrayList<Ticket>();
@@ -22,12 +23,12 @@ public class Player {
         unusedStationList.add(new Station());
         unusedStationList.add(new Station());
         unusedStationList.add(new Station());
+        this.color = color;
     }
     
     public int getStations()
     {
     	int size = 0;
-    	size += usedStationList.size();
     	size += unusedStationList.size();
     	return size;
     }
