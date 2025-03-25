@@ -3,23 +3,16 @@ package ttreImages;
 import java.awt.*;
 import javax.swing.*;
 
-import java.awt.image.*;
-import javax.imageio.ImageIO;
-import java.io.*;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
-
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
     private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
     private boolean isPlayButtonHovered = false;
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
     private CardDeck cardDeck;
-    private Player p1, p2, p3, p4;
-
+    private TicketDeck ticketDeck;
+    private ArrayList<Player> players;
+    
+    private int currentPlr;
     public GameBoard() {
         try {
             table = ImageIO.read(MainMenu.class.getResource("/ttreImages/gameBackground.png"));
@@ -39,18 +32,22 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         } catch (IOException e) {
             e.printStackTrace();
         }
+        currentPlr = 0;
+        
         cardDeck = new CardDeck();
+        ticketDeck = new TicketDeck();
         faceUpCard = new ColorCard[5];
         faceUpCard[0] = cardDeck.drawCard();
         faceUpCard[1] = cardDeck.drawCard();
         faceUpCard[2] = cardDeck.drawCard();
         faceUpCard[3] = cardDeck.drawCard();
         faceUpCard[4] = cardDeck.drawCard();
-        p1 = new Player();
-        p2 = new Player();
-        p3 = new Player();
-        p4 = new Player();
         
+        players = new ArrayList<Player>();
+        players.add(new Player("red"));
+        players.add(new Player("blue"));
+        players.add(new Player("green"));
+        players.add(new Player("yellow"));
         
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -69,11 +66,12 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawImage(ticket, 1795, 3, null);
         
         //rotate template cardholder and scale it smaller a bit
-        // g2d.scale(0.8, 0.8);
-        // g2d.rotate(Math.toRadians(-90), 1520, 240);
+//        g2d.scale(0.8, 0.8);
+//        g2d.rotate(Math.toRadians(-90), 1520, 240);
         for (int i = 0; i < 5; i++) {
         	g2d.drawImage(faceUpCard[i].getImage(), getWidth() - 360, 220 + i*80, 120, 80, null);
         }
+        
         //reset those transformations
         g2d.setTransform(new AffineTransform());
         
@@ -81,8 +79,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.setFont(new Font("Serif", Font.BOLD, 50)); g2d.setColor(Color.WHITE); 
         
         //red player station and trains
-        g2d.drawString(p1.getTrainsLeft()+"", 1758, 285);
-        g2d.drawString(p1.get+"", 1828, 325); 
+        g2d.drawString("0", 1758, 285);
+        g2d.drawString("0", 1828, 325); 
         //green player station and trains
         g2d.drawString("0", 1758, 385);
         g2d.drawString("0", 1828, 420);
@@ -94,7 +92,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawString("0", 1822, 620);
         
         //number of trains stuff
-        g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE);
+        g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
         g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("wild")), 1580, 790); // Locomotive
         g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("white")), 1645, 790); // White
         g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("red")), 1712, 790); // Red
@@ -128,6 +126,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     			faceUpCard[i] = cardDeck.drawCard();
     		}
         }
+    	
+//    	if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80) {
+//			players.get(currentPlr).addCard(faceUpCard[i]);
+//			faceUpCard[i] = cardDeck.drawCard();
+//		}
     	repaint();
     }
 
@@ -154,3 +157,4 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     @Override
     public void run() {}
 }
+
