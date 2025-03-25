@@ -1,30 +1,39 @@
-import java.util.ArrayList;
-import java.util.Collections;
+package ttreImages;
+import java.util.*;
 import java.awt.image.*;
 
-public class TicketDeck {
-	private ArrayList<Ticket> ticketList;
-	public TicketDeck() {
-		ticketList = new ArrayList<Ticket>();
-		add();
+public class Ticket 
+{
+	private String toCity;
+	private String fromCity;
+	private int points;
+	private BufferedImage image;
+	
+	public Ticket(String toCity, String fromCity, int points, BufferedImage image)
+	{
+		this.toCity = toCity;
+		this.fromCity = fromCity;
+		this.points = points;
+		this.image = image;
 	}
 	
-	private void add() {
-		ticketList.add(new Ticket("Amsterdam", "Pamblona", 7, new BufferedImage(1, 1, 1)));
-		shuffle();
+	public String getToCity()
+	{
+		return toCity;
 	}
 	
-	private void shuffle() {
-        Collections.shuffle(ticketList);
-    }
-
+	public String getFromCity()
+	{
+		return fromCity;
+	}
 	
-	public void draw(Player p) {
-		Ticket item = ticketList.remove(ticketList.size() - 1);
-        if (ticketList.size() == 0) {
-            add();
-        }
-        
-        p.addTicket(item);
+	public int getPoints()
+	{
+		return points;
+	}
+	
+	public BufferedImage getImage()
+	{
+		return image;
 	}
 }
