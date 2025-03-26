@@ -26,6 +26,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private ArrayList<Integer> highlightCity; // takes in 2 locations for highlighting purposes
     
     private int currentPlr;
+
+    private int clickingAmount = 0;
+	
     public GameBoard() {
         try {
             table = ImageIO.read(MainMenu.class.getResource("/ttreImages/gameBackground.png"));
