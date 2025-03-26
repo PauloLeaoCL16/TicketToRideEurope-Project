@@ -1,3 +1,4 @@
+package ttreImages;
 import java.util.*;
 import java.awt.image.*;
 
@@ -7,10 +8,20 @@ public class City
 	private HashMap<String, RailRoad> connections;
 	private Station hasStation;
 	
+	public City(String name)
+	{
+		this.name = name;
+	}
+	
 	public City(String name, String connection, RailRoad railRoad, Station station)
 	{
 		hasStation = station;
 		this.name = name;
+		connections.put(connection, railRoad);
+	}
+	
+	public void addConnection(String connection, RailRoad railRoad)
+	{
 		connections.put(connection, railRoad);
 	}
 	
@@ -24,7 +35,7 @@ public class City
 		return connections;
 	}
 	
-	public void setHasStation(Station station)
+	public void addStation(Station station)
 	{
 		hasStation = station;
 	}
