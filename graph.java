@@ -6,4 +6,8 @@ public class graph {
 	public graph() {
 		adjacencyList = new HashMap<City, HashMap<City, ArrayList<RailRoad>>>();
 	}
+	
+	public HashMap<City, ArrayList<RailRoad>> getCity(City city) {
+		return adjacencyList.get(city);
+	}
 }
