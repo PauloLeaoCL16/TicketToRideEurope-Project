@@ -158,8 +158,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	System.out.println(x + " " + (y));
     	//alow for players to draw cards from the face-up card options
     	for (int i = 0; i < 5; i++) {
-    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80) {
+    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80 && faceUpCard[i].getCostToDraw()+clickingAmount <= 2) {
     			players.get(currentPlr).addCard(faceUpCard[i]);
+			clickingAmount += faceUpCard[i].getCostToDraw();
     			faceUpCard[i] = cardDeck.drawCard();
     		}
         }
@@ -168,12 +169,14 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	if( x >= 1550 && x <= 1650 && y >= 3 && y <= 163)
     	{
     		players.get(currentPlr).addCard(cardDeck.drawCard());
+		clickingAmount += 1;
     	}
     	
     	//Allow to click ticket
         if( x >= 1795 && x <= 1895 && y >= 3 && y <= 163)
     	{
     		players.get(currentPlr).addTicket(ticketDeck.draw());
+		clickingAmount += 2;
     	}
     	
         
@@ -972,8 +975,19 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     		System.out.println("venezia");
     	}
 
-    	
+    	if (clickingAmount >= 2) {
+    		clickingAmount = 0;
+    		changeTurn();
+    	}
     	repaint();
+    }
+
+    public void changeTurn() {
+    	currentPlr += 1;
+    	if (currentPlr >= players.size()) {
+    		currentPlr = 0;
+    	}
+    	out.println("Player " + players.get(currentPlr).getPlayerColor());
     }
 
     @Override
