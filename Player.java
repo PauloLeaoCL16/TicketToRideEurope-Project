@@ -98,4 +98,8 @@ public class Player {
     public int getTrainsLeft() {
         return trainsLeft;
     }
+
+    public String getPlayerColor() {
+    	return color;
+    }
 }
