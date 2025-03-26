@@ -241,6 +241,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	    	firstCityClicked = true;
     	    	highlightCity.add(567);
     	    	highlightCity.add(430);
+    	    	citiesToBuy[0] = new City("frankfurt");
     	    }
     	    else 
     	    {
