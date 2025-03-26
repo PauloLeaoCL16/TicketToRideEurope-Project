@@ -1,0 +1,9 @@
+import java.util.HashMap;
+import java.util.ArrayList;
+// Store all cities and railroads
+public class graph {
+	private HashMap<City, HashMap<City, ArrayList<RailRoad>>> adjacencyList;
+	public graph() {
+		adjacencyList = new HashMap<City, HashMap<City, ArrayList<RailRoad>>>();
+	}
+}
