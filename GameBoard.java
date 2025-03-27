@@ -27,7 +27,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private City[] citiesToBuy; //Stores 2 cities for buying routes purposes
     private boolean firstCityClicked; // highlighting purposes
     private ArrayList<Integer> highlightCity; // takes in 2 locations for highlighting purposes
-    HashMap<String, ArrayList<Integer>> coordMap;// stores all the coordinates of the cities in a map
+    private Graph graph;// stores all the coordinates of the cities in a map
     
     private int currentPlr;
     public GameBoard() {
@@ -79,7 +79,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         firstCityClicked = false;
         highlightCity = new ArrayList<Integer>();
         citiesToBuy = new City[2];
-        coordMap = new HashMap<String, ArrayList<Integer>>();
+        graph = new Graph();
+	graph.printCities();
         initiateCoords();
         
         addMouseListener(this);
@@ -279,182 +280,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	//venezia: 667 <= x && x <= 693 && 619 <= y && y <= 640
     	//
     	//
-    	coordMap.put( "frankfurt" , new ArrayList<Integer>() );
-    	coordMap.get("frankfurt").add(568);  
-    	coordMap.get("frankfurt").add(433);  
-
-    	coordMap.put( "brest", new ArrayList<Integer>() );
-    	coordMap.get("brest").add(341);
-    	coordMap.get("brest").add(313);
-
-    	coordMap.put( "london", new ArrayList<Integer>() );
-    	coordMap.get("london").add(341);
-    	coordMap.get("london").add(313);
-
-    	coordMap.put( "essen", new ArrayList<Integer>() );
-    	coordMap.get("essen").add(584);
-    	coordMap.get("essen").add(332);
-
-    	coordMap.put( "berlin", new ArrayList<Integer>() );
-    	coordMap.get("berlin").add(722);
-    	coordMap.get("berlin").add(350);
-
-    	coordMap.put( "wien", new ArrayList<Integer>() );
-    	coordMap.get("wien").add(801);
-    	coordMap.get("wien").add(510);
-
-    	coordMap.put( "zurich", new ArrayList<Integer>() );
-    	coordMap.get("zurich").add(552);
-    	coordMap.get("zurich").add(573);
-
-    	coordMap.put( "marseille", new ArrayList<Integer>() );
-    	coordMap.get("marseille").add(513);
-    	coordMap.get("marseille").add(703);
-
-    	coordMap.put( "roma", new ArrayList<Integer>() );
-    	coordMap.get("roma").add(673);
-    	coordMap.get("roma").add(747);
-
-    	coordMap.put( "brindisi", new ArrayList<Integer>() );
-    	coordMap.get("brindisi").add(790);
-    	coordMap.get("brindisi").add(781);
-
-    	coordMap.put( "sofia", new ArrayList<Integer>() );
-    	coordMap.get("sofia").add(987);
-    	coordMap.get("sofia").add(729);
-
-    	coordMap.put( "kobenhavn", new ArrayList<Integer>() );
-    	coordMap.get("kobenhavn").add(678);
-    	coordMap.get("kobenhavn").add(190);
-
-    	coordMap.put( "amsterdam", new ArrayList<Integer>() );
-    	coordMap.get("amsterdam").add(472);
-    	coordMap.get("amsterdam").add(319);
-
-    	coordMap.put( "dieppe", new ArrayList<Integer>() );
-    	coordMap.get("dieppe").add(322);
-    	coordMap.get("dieppe").add(438);
-
-    	coordMap.put( "paris", new ArrayList<Integer>() );
-    	coordMap.get("paris").add(390);
-    	coordMap.get("paris").add(499);
-
-    	coordMap.put( "bruxelles", new ArrayList<Integer>() );
-    	coordMap.get("bruxelles").add(439);
-    	coordMap.get("bruxelles").add(382);
-
-    	coordMap.put( "munchen", new ArrayList<Integer>() );
-    	coordMap.get("munchen").add(641);
-    	coordMap.get("munchen").add(485);
-
-    	coordMap.put( "athina", new ArrayList<Integer>() );
-    	coordMap.get("athina").add(967);
-    	coordMap.get("athina").add(885);
-
-    	coordMap.put( "madrid", new ArrayList<Integer>() );
-    	coordMap.get("madrid").add(169);
-    	coordMap.get("madrid").add(816);
-
-    	coordMap.put( "cadiz", new ArrayList<Integer>() );
-    	coordMap.get("cadiz").add(167);
-    	coordMap.get("cadiz").add(923);
-
-    	coordMap.put( "barcelona", new ArrayList<Integer>() );
-    	coordMap.get("barcelona").add(321);
-    	coordMap.get("barcelona").add(842);
-
-    	coordMap.put( "pamplona", new ArrayList<Integer>() );
-    	coordMap.get("pamplona").add(304);
-    	coordMap.get("pamplona").add(712);
-
-    	coordMap.put( "constantinople", new ArrayList<Integer>() );
-    	coordMap.get("constantinople").add(1143);
-    	coordMap.get("constantinople").add(815);
-
-    	coordMap.put( "budapest", new ArrayList<Integer>() );
-    	coordMap.get("budapest").add(860);
-    	coordMap.get("budapest").add(550);
-
-    	coordMap.put( "bucuresti", new ArrayList<Integer>() );
-    	coordMap.get("bucuresti").add(1073);
-    	coordMap.get("bucuresti").add(644);
-
-    	coordMap.put( "sevastopol", new ArrayList<Integer>() );
-    	coordMap.get("sevastopol").add(1264);
-    	coordMap.get("sevastopol").add(662);
-
-    	coordMap.put( "kharkov", new ArrayList<Integer>() );
-    	coordMap.get("kharkov").add(1336);
-    	coordMap.get("kharkov").add(486);
-
-    	coordMap.put( "kyiv", new ArrayList<Integer>() );
-    	coordMap.get("kyiv").add(1153);
-    	coordMap.get("kyiv").add(416);
-
-    	coordMap.put( "moskva", new ArrayList<Integer>() );
-    	coordMap.get("moskva").add(1360);
-    	coordMap.get("moskva").add(278);
-
-    	coordMap.put( "petrograd", new ArrayList<Integer>() );
-    	coordMap.get("petrograd").add(1227);
-    	coordMap.get("petrograd").add(112);
-
-    	coordMap.put( "rica", new ArrayList<Integer>() );
-    	coordMap.get("rica").add(994);
-    	coordMap.get("rica").add(125);
-
-    	coordMap.put( "danzic", new ArrayList<Integer>() );
-    	coordMap.get("danzic").add(875);
-    	coordMap.get("danzic").add(246);
-
-    	coordMap.put( "edinburgh", new ArrayList<Integer>() );
-    	coordMap.get("edinburgh").add(248);
-    	coordMap.get("edinburgh").add(111);
-
-    	coordMap.put( "lisboa", new ArrayList<Integer>() );
-    	coordMap.get("lisboa").add(73);
-    	coordMap.get("lisboa").add(856);
-
-    	coordMap.put( "zagrab", new ArrayList<Integer>() );
-    	coordMap.get("zagrab").add(784);
-    	coordMap.get("zagrab").add(638);
-
-    	coordMap.put( "sarajevo", new ArrayList<Integer>() );
-    	coordMap.get("sarajevo").add(897);
-    	coordMap.get("sarajevo").add(717);
-
-    	coordMap.put( "palermo", new ArrayList<Integer>() );
-    	coordMap.get("palermo").add(730);
-    	coordMap.get("palermo").add(927);
-
-    	coordMap.put( "smryna", new ArrayList<Integer>() );
-    	coordMap.get("smryna").add(1084);
-    	coordMap.get("smryna").add(921);
-
-    	coordMap.put( "angora", new ArrayList<Integer>() );
-    	coordMap.get("angora").add(1249);
-    	coordMap.get("angora").add(888);
-
-    	coordMap.put( "erzurum", new ArrayList<Integer>() );
-    	coordMap.get("erzurum").add(1357);
-    	coordMap.get("erzurum").add(855);
-
-    	coordMap.put( "sochi", new ArrayList<Integer>() );
-    	coordMap.get("sochi").add(1385);
-    	coordMap.get("sochi").add(683);
-
-    	coordMap.put( "rostov", new ArrayList<Integer>() );
-    	coordMap.get("rostov").add(1393);
-    	coordMap.get("rostov").add(562);
-
-    	coordMap.put( "stockholm", new ArrayList<Integer>() );
-    	coordMap.get("stockholm").add(822);
-    	coordMap.get("stockholm").add(81);
-
-    	coordMap.put( "wilno", new ArrayList<Integer>() );
-    	coordMap.get("wilno").add(1098);
-    	coordMap.get("wilno").add(308);
-         
 
     }
     
