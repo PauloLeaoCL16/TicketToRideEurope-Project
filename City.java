@@ -7,17 +7,18 @@ public class City
 	private String name;
 	private HashMap<String, RailRoad> connections;
 	private Station hasStation;
+	private int x;
+	private int y;
+	private float degree;
 	
-	public City(String name)
-	{
-		this.name = name;
-	}
-	
-	public City(String name, String connection, RailRoad railRoad, Station station)
+	public City(String name, Station station, int x, int y, float degree)
 	{
 		hasStation = station;
 		this.name = name;
 		connections.put(connection, railRoad);
+		this.x = x;
+		this.y = y;
+		this.degree = degree;
 	}
 	
 	public void addConnection(String connection, RailRoad railRoad)
