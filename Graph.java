@@ -53,7 +53,7 @@ public class Graph {
     }
 
     private City addCity(String name, int x, int y) {
-    	City city = new City(name, new Station(), x, y)
+    	City city = new City(name, new Station(), x, y);
         adjacencyList.add(city);
     	return city;
     }
