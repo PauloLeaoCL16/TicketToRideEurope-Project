@@ -42,4 +42,12 @@ public class City
 	{
 		return hasStation;
 	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
 }
