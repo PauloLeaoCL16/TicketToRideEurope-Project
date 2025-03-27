@@ -197,30 +197,30 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	}
 	    	
 	    	
-	    	//checks which city player clicked on and highlights it
-	    	Iterator<String> iterator = coordMap.keySet().iterator();// list of the city names
-	    	int i=0;
-	    	while (iterator.hasNext())// loop neccessary for looping through the list
-	    	{
-	    		String city = iterator.next();
-		    	if( coordMap.get(city).get(0)< x && coordMap.get(city).get(0)+25 > x && coordMap.get(city).get(1) < y && coordMap.get(city).get(1)+21 > y  )//checks where the X and Y Location is compared to the actual city locations
-				{
-	    			if(firstCityClicked == false)
-	        	    {
-	        	    	firstCityClicked = true;
-	        	    	highlightCity.add(coordMap.get(city).get(0));
-	        	    	highlightCity.add(coordMap.get(city).get(1));
-	        	    	citiesToBuy[0] = new City(city);// I think this is usefull because you can use this to then call the needed methods and you would know what cities to put into the player object. ---->
-	        	    	// you would only use as an easier way to keep track of the 2 clicked cities that the player wants to buy
-	        	    }
-	        	    else 
-	        	    {
-	        	    	firstCityClicked = false;
-	        	    	highlightCity = new ArrayList<Integer>();
-	        	    }
-				}
-		    	i++;
-	    	}
+	   //  	//checks which city player clicked on and highlights it
+	   //  	Iterator<String> iterator = coordMap.keySet().iterator();// list of the city names
+	   //  	int i=0;
+	   //  	while (iterator.hasNext())// loop neccessary for looping through the list
+	   //  	{
+	   //  		String city = iterator.next();
+		  //   	if( coordMap.get(city).get(0)< x && coordMap.get(city).get(0)+25 > x && coordMap.get(city).get(1) < y && coordMap.get(city).get(1)+21 > y  )//checks where the X and Y Location is compared to the actual city locations
+				// {
+	   //  			if(firstCityClicked == false)
+	   //      	    {
+	   //      	    	firstCityClicked = true;
+	   //      	    	highlightCity.add(coordMap.get(city).get(0));
+	   //      	    	highlightCity.add(coordMap.get(city).get(1));
+	   //      	    	citiesToBuy[0] = new City(city);// I think this is usefull because you can use this to then call the needed methods and you would know what cities to put into the player object. ---->
+	   //      	    	// you would only use as an easier way to keep track of the 2 clicked cities that the player wants to buy
+	   //      	    }
+	   //      	    else 
+	   //      	    {
+	   //      	    	firstCityClicked = false;
+	   //      	    	highlightCity = new ArrayList<Integer>();
+	   //      	    }
+				// }
+		  //   	i++;
+	   //  	}
     	}
     	else// this is where you write what happens if the player right clicks
     	{
