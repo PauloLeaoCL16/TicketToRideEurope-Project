@@ -14,7 +14,6 @@ public class City
 	{
 		hasStation = station;
 		this.name = name;
-		connections.put(connection, railRoad);
 		this.x = x;
 		this.y = y;
 	}
