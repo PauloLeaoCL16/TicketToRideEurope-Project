@@ -7,14 +7,20 @@ public class RailRoad
 	private int wildNum;
 	private boolean mountains;
 	private boolean bought;
+	private int x;
+	private int y;
+	private float degree;
 	
-	public RailRoad(int cost, String color, int wild, boolean mountains, boolean bought)
+	public RailRoad(int cost, String color, int wild, boolean mountains, boolean bought, int x, int y, float degree)
 	{
 		this.cost = cost;
 		this.color = color;
 		wildNum = wild;
 		this.mountains = mountains;
 		this.bought = bought;
+		this.x = x;
+		this.y = y;
+		this.degree = degree;
 	}
 	
 	public int getCost()
