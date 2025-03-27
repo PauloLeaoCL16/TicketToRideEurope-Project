@@ -9,16 +9,14 @@ public class City
 	private Station hasStation;
 	private int x;
 	private int y;
-	private float degree;
 	
-	public City(String name, Station station, int x, int y, float degree)
+	public City(String name, Station station, int x, int y)
 	{
 		hasStation = station;
 		this.name = name;
 		connections.put(connection, railRoad);
 		this.x = x;
 		this.y = y;
-		this.degree = degree;
 	}
 	
 	public void addConnection(String connection, RailRoad railRoad)
