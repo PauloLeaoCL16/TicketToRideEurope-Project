@@ -1,4 +1,5 @@
 package ttreImages;
+
 import java.util.*;
 import java.awt.image.*;
 
@@ -10,12 +11,19 @@ public class City
 	private int x;
 	private int y;
 	
-	public City(String name, Station station, int x, int y)
+	public City(String name, int x, int y)
+	{
+		this.name = name;
+		this.x= x;
+		this.y = y;
+		hasStation = new Station();
+	}
+	
+	public City(String name, String connection, RailRoad railRoad, Station station)
 	{
 		hasStation = station;
 		this.name = name;
-		this.x = x;
-		this.y = y;
+		connections.put(connection, railRoad);
 	}
 	
 	public void addConnection(String connection, RailRoad railRoad)
