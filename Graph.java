@@ -1,7 +1,10 @@
+package ttreImages;
+
 import java.util.ArrayList;
 
 public class Graph {
     private ArrayList<City> adjacencyList;
+    private int clickRadius = 5;
 
     public Graph() {
         adjacencyList = new ArrayList<>();
@@ -60,6 +63,10 @@ public class Graph {
 
     public ArrayList<City> getCities() {
         return adjacencyList;
+    }
+    
+    public int getClickRadius() {
+    	return clickRadius;
     }
 
     public void printCities() {
