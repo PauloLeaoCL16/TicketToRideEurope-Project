@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Graph {
     private ArrayList<City> adjacencyList;
-    private int clickRadius = 5;
+    private int clickRadius = 50;
 
     public Graph() {
         adjacencyList = new ArrayList<>();
