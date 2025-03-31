@@ -28,6 +28,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private boolean firstCityClicked; // highlighting purposes
     private ArrayList<Integer> highlightCity; // takes in 2 locations for highlighting purposes
     HashMap<String, ArrayList<Integer>> coordMap;// stores all the coordinates of the cities in a map
+    private boolean[] turns = {true, false, false, false};
     
     private int currentPlr;
     public GameBoard() {
@@ -140,13 +141,42 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         
         //current player stuff
         
-        //current player number
-        g2d.drawImage(player1, 1825, 948, null);
-        //current player arrow
-        g2d.drawImage(playerpointer, 1875, 270, null);
-        //current player's color
-        g2d.drawImage(redplayer, 1520, 925, null);
-        
+        if(turns[0])
+        {
+        	//current player number
+        	g2d.drawImage(player1, 1825, 948, null);
+        		//current player arrow
+        	g2d.drawImage(playerpointer, 1875, 270, null);
+        	//current player's color
+        	g2d.drawImage(redplayer, 1520, 925, null);
+        }
+        else if(turns[1])
+        {
+        	//current player number
+        	g2d.drawImage(player2, 1825, 948, null);
+        		//current player arrow
+        	g2d.drawImage(playerpointer, 1875, 370, null);
+        	//current player's color
+        	g2d.drawImage(blueplayer, 1520, 925, null);
+        }
+        else if(turns[2])
+        {
+        	//current player number
+        	g2d.drawImage(player3, 1825, 948, null);
+        		//current player arrow
+        	g2d.drawImage(playerpointer, 1875, 470, null);
+        	//current player's color
+        	g2d.drawImage(greenplayer, 1520, 925, null);
+        }
+        else if(turns[3])
+        {
+        	//current player number
+        	g2d.drawImage(player4, 1825, 948, null);
+        		//current player arrow
+        	g2d.drawImage(playerpointer, 1875, 570, null);
+        	//current player's color
+        	g2d.drawImage(yellowplayer, 1520, 925, null);
+        }
         
         if(firstCityClicked)
         {
@@ -155,9 +185,48 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.setColor(Color.YELLOW);
 	        g2d.drawOval(highlightCity.get(0), highlightCity.get(1), 23, 22);
         }
+        
+        //skip turn button for testing
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(1275, 10, 200, 50);
+        g2d.setColor(Color.WHITE);
+        g2d.drawString("skip turn", 1325, 40);
     }
 
-   
+   public void cycleTurn()
+   {
+	   int currentTurn = 1;
+	   if(turns[0])
+	   {
+		   turns[0]=false;
+		   turns[1]=true;
+		   currentPlr = 1;
+	   }
+	   else if(turns[1])
+	   {
+		   turns[1]=false;
+		   turns[2]=true;
+		   currentPlr = 2;
+	   }
+	   else if(turns[2])
+	   {
+		   turns[2]=false;
+		   turns[3]=true;
+		   currentPlr = 3;
+	   }
+	   else if(turns[3])
+	   {
+		   turns[3]=false;
+		   turns[0]=true;
+		   currentPlr = 0;
+	   }
+	   for(int i = 0; i<4; i++)
+	   {
+		   if(turns[i]==true)
+			   currentTurn=i+1;
+	   }
+	   System.out.println("turn cycled: player " + currentTurn);
+   }
     
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -166,6 +235,12 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	System.out.println(x + " " + (y));
     	if(e.getButton() == MouseEvent.BUTTON1)// checks if the player left clicked	
     	{
+    		//click skip turn button for testing
+    		if (x > 1275 && x < 1475 && y> 10 && y<60)
+    		{
+    			cycleTurn();
+    		}
+    		
 	    	//alow for players to draw cards from the face-up card options
 	    	for (int i = 0; i < 5; i++) {
 	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80) {
