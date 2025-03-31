@@ -244,7 +244,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    			out.println("Player clicked: " + cityList.get(i).getName());
 	    			if (clickedCity[0] == null) {
 	    				clickedCity[0] = cityList.get(i);
-	    			} else {
+	    			} else if (clickedCity[0] != cityList.get(i)) {
 	    				clickedCity[1] = cityList.get(i);
 		    			
 		    			if (clickedCity[0] != null && clickedCity[1] != null) {
