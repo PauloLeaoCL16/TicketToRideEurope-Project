@@ -62,7 +62,7 @@ public class Player {
     	return actions;
     }
     
-    public void setActions()
+    public void resetActions()
     {
     	actions = 2;
     }
