@@ -1,11 +1,11 @@
-package ttreImages;
+package test2;
 
 import java.util.*;
 
 public class Player {
 	
     private int points;
-    private ArrayList<Ticket> tickets; //(Ex: {[Berlin, Amsterdam]=8}
+    private ArrayList<Ticket> tickets;
     private ArrayList<ColorCard> card;
     private ArrayList<City> railRoadsBought;
     private ArrayList<Station> usedStationList;
@@ -20,9 +20,9 @@ public class Player {
         card = new ArrayList<ColorCard>();
         unusedStationList = new ArrayList<Station>();
         usedStationList = new ArrayList<Station>();
-        unusedStationList.add(new Station());
-        unusedStationList.add(new Station());
-        unusedStationList.add(new Station());
+        unusedStationList.add(new Station(color));
+        unusedStationList.add(new Station(color));
+        unusedStationList.add(new Station(color));
         this.color = color;
     }
     
