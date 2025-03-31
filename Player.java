@@ -94,6 +94,11 @@ public class Player {
     	if( trainsLeft - numberToRemove >= 0)
     		trainsLeft -= numberToRemove;
     }
+    
+    public Station removeStation() {
+    	Station station = unusedStationList.remove(0);
+    	return station;
+    }
 
     public int getTrainsLeft() {
         return trainsLeft;
