@@ -1,4 +1,4 @@
-package ttreImages;
+package test2;
 import java.util.*;
 import java.awt.image.*;
 
