@@ -1,4 +1,4 @@
-package ttreImages;
+package test2;
 
 import java.awt.*;
 import javax.swing.*;
@@ -30,6 +30,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private Graph graph;// stores all the coordinates of the cities in a map
     
     private int currentPlr;
+    private City[] clickedCity = new City[2];
+    private boolean inAnEvent;
+    
     public GameBoard() {
         try {
             table = ImageIO.read(MainMenu.class.getResource("/ttreImages/gameBackground.png"));
@@ -47,22 +50,24 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             yellowplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/yellowplayer.png"));
             playerpointer = ImageIO.read(MainMenu.class.getResource("/ttreImages/currentplayerarrow.png"));
             ticketDeck = new TicketDeck();
-            longRoutes = new ArrayList<>();
-            longRoutes.add(new Ticket("palermo", "moskva",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute1.png"))));
-            longRoutes.add(new Ticket("brest", "petrograd",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute2.png"))));
-            longRoutes.add(new Ticket("kobenhavwn", "erzurum",21,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute3.png"))));
-            longRoutes.add(new Ticket("cadiz", "sotckholm",21,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute4.png"))));
-            longRoutes.add(new Ticket("lisboa", "danzic",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute5.png"))));
-            longRoutes.add(new Ticket("edinburch", "athina",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute6.png"))));
+//            longRoutes = new ArrayList<>();
+//            longRoutes.add(new Ticket("palermo", "moskva",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute1.png"))));
+//            longRoutes.add(new Ticket("brest", "petrograd",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute2.png"))));
+//            longRoutes.add(new Ticket("kobenhavwn", "erzurum",21,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute3.png"))));
+//            longRoutes.add(new Ticket("cadiz", "sotckholm",21,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute4.png"))));
+//            longRoutes.add(new Ticket("lisboa", "danzic",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute5.png"))));
+//            longRoutes.add(new Ticket("edinburch", "athina",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute6.png"))));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         currentPlr = 0;
-        
+        inAnEvent = false;
         cardDeck = new CardDeck();
         ticketDeck = new TicketDeck();
         faceUpCard = new ColorCard[5];
+        clickedCity[0] = null;
+        clickedCity[1] = null;
         faceUpCard[0] = cardDeck.drawCard();
         faceUpCard[1] = cardDeck.drawCard();
         faceUpCard[2] = cardDeck.drawCard();
@@ -74,13 +79,13 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         players.add(new Player("blue"));
         players.add(new Player("green"));
         players.add(new Player("yellow"));
-        players.get(currentPlr).addTicket(longRoutes.get(currentPlr));
+//        players.get(currentPlr).addTicket(longRoutes.get(currentPlr));
         
         firstCityClicked = false;
         highlightCity = new ArrayList<Integer>();
         citiesToBuy = new City[2];
         graph = new Graph();
-	graph.printCities();
+        graph.printCities();
         initiateCoords();
         
         addMouseListener(this);
@@ -154,7 +159,32 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	        //highlight city when clicked
         	g2d.setStroke(new BasicStroke(4));
         	g2d.setColor(Color.YELLOW);
-	        g2d.drawOval(highlightCity.get(0), highlightCity.get(1), 23, 22);
+	        g2d.drawOval(highlightCity.get(0), highlightCity.get(1), 23, 23);
+        }
+        
+        if(clickedCity[0] != null)
+        {
+	        //highlight city when clicked
+        	g2d.setStroke(new BasicStroke(4));
+        	g2d.setColor(Color.YELLOW);
+	        g2d.drawOval(clickedCity[0].getX(), clickedCity[0].getY(), 22, 22);
+        }
+        if(clickedCity[1] != null)
+        {
+	        //highlight city when clicked
+        	g2d.setStroke(new BasicStroke(4));
+        	g2d.setColor(Color.YELLOW);
+	        g2d.drawOval(clickedCity[1].getX() - 11, clickedCity[1].getY() - 11, 22, 22);
+			clickedCity[0] = null;
+			clickedCity[1] = null;
+        }
+        
+        if (inAnEvent) {
+
+//        	g2d.setPaint(new Color(0, 0, 0, 0.5f));
+//        	g2d.fillRect(0, 0, getWidth(), getHeight());
+        	g2d.setPaint(new Color(0, 0, 0));
+        	g2d.fillRect(1500, 0, getWidth() - 1500, getHeight());
         }
     }
 
@@ -164,7 +194,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     public void mouseClicked(MouseEvent e) {
     	int x = e.getX();
     	int y = e.getY();
-    	System.out.println(x + " " + (y));
+    	System.out.println(x + " " + y);
+    	if (inAnEvent) {
+    		return;
+        }
     	if(e.getButton() == MouseEvent.BUTTON1)// checks if the player left clicked	
     	{
 	    	//alow for players to draw cards from the face-up card options
@@ -185,6 +218,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	        if( x >= 1795 && x <= 1895 && y >= 3 && y <= 163)
 	    	{
 	    		players.get(currentPlr).addTicket(ticketDeck.draw());
+	    		inAnEvent = true;
 	    	}
 	    	
 	        
@@ -195,11 +229,21 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    		out.println(players.get(currentPlr).getTicket().get(0).getFromCity());
 	    		out.println(players.get(currentPlr).getTicket().get(0).getPoints());
 	    	}
-		ArrayList<City> cityList = graph.getCities();
+	    	ArrayList<City> cityList = graph.getCities();
 	    	int maxSize = graph.getClickRadius();
 	    	for (int i = 0; i < cityList.size(); i++) {
 	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize) {
 	    			out.println("Player clicked: " + cityList.get(i).getName());
+	    			if (clickedCity[0] == null) {
+	    				clickedCity[0] = cityList.get(i);
+	    			} else {
+	    				clickedCity[1] = cityList.get(i);
+		    			
+		    			if (clickedCity[0] != null && clickedCity[1] != null) {
+		    				out.print(clickedCity[0].getName() + " " + clickedCity[1].getName());
+		    			}
+	    			}
+	    			break;
 	    		}
 	    	}
 	    	
@@ -229,7 +273,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 		  //   	i++;
 	   //  	}
     	}
-    	else// this is where you write what happens if the player right clicks
+    	else if (e.getButton() == MouseEvent.BUTTON2)// this is where you write what happens if the player right clicks
     	{
     		
     	}
