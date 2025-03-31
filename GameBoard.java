@@ -252,8 +252,12 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     		ArrayList<City> cityList = graph.getCities();
 	    	int maxSize = graph.getClickRadius();
 	    	for (int i = 0; i < cityList.size(); i++) {
-	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize) {
+	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize && cityList.get(i).getHasStation() == null) {
 	    			out.println("Place station at: " + cityList.get(i).getName());
+	    			cityList.get(i).addStation(new Station(players.get(currentPlr).getPlayerColor()));
+	    			cityList.get(i).getHasStation().setFromCity(cityList.get(i).getName());
+	    			
+//	    			out.println(cityList.get(i).getHasStation().getFromCity());
 	    			break;
 	    		}
 	    	}
