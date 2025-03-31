@@ -1,3 +1,4 @@
+
 package ttreImages;
 
 import java.util.*;
@@ -12,6 +13,7 @@ public class Player {
     private ArrayList<Station> unusedStationList;
     private int trainsLeft;
     private String color;
+    private int actions = 2;
     
     public Player(String color) {
         points = 0;
@@ -53,6 +55,16 @@ public class Player {
 
     public void setPoint(int pt) {
         points = pt;
+    }
+    
+    public int getActions()
+    {
+    	return actions;
+    }
+    
+    public void setActions()
+    {
+    	actions = 2;
     }
 
     public int getPoint() {
