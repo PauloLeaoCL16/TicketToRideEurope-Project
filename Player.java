@@ -62,9 +62,9 @@ public class Player {
     	return actions;
     }
     
-    public void resetActions()
+    public void setActions(int x)
     {
-    	actions = 2;
+    	actions = x;
     }
 
     public int getPoint() {
