@@ -244,15 +244,43 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	//alow for players to draw cards from the face-up card options
 	    	for (int i = 0; i < 5; i++) {
 	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80) {
-	    			players.get(currentPlr).addCard(faceUpCard[i]);
-	    			faceUpCard[i] = cardDeck.drawCard();
+	    			if(players.get(currentPlr).getActions() == 1 && faceUpCard[i].getColor().equals("wild") == false)
+	    			{
+	    				players.get(currentPlr).addCard(faceUpCard[i]);
+	    				faceUpCard[i] = cardDeck.drawCard();
+	    				players.get(currentPlr).setActions(2);
+	    				cycleTurn();
+	    			}
+	    			else if(players.get(currentPlr).getActions() == 2 && faceUpCard[i].getColor().equals("wild") == false)
+	    			{
+	    				players.get(currentPlr).addCard(faceUpCard[i]);
+	    				faceUpCard[i] = cardDeck.drawCard();
+	    				players.get(currentPlr).setActions(1);
+	    			}
+	    			else if(players.get(currentPlr).getActions() == 2 && faceUpCard[i].getColor().equals("wild") == true)
+	    			{
+	    				players.get(currentPlr).addCard(faceUpCard[i]);
+	    				faceUpCard[i] = cardDeck.drawCard();
+	    				players.get(currentPlr).setActions(2);
+	    				cycleTurn();
+	    			}
 	    		}
 	        }
 	    	
 	    	//allow for players to draw cards from the pile
 	    	if( x >= 1550 && x <= 1650 && y >= 3 && y <= 163)
 	    	{
-	    		players.get(currentPlr).addCard(cardDeck.drawCard());
+	    		if(players.get(currentPlr).getActions() == 1)
+	    		{
+	    			players.get(currentPlr).addCard(cardDeck.drawCard());
+	    			players.get(currentPlr).setActions(2);
+	    			cycleTurn();
+	    		}
+	    		else if(players.get(currentPlr).getActions() == 2)
+	    		{
+	    			players.get(currentPlr).addCard(cardDeck.drawCard());
+	    			players.get(currentPlr).setActions(1);
+	    		}
 	    	}
 	    	
 	    	//Allow to click ticket
