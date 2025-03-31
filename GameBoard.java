@@ -153,6 +153,14 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         //current player's color
         g2d.drawImage(redplayer, 1520, 925, null);
         
+        //Draw the station
+        ArrayList<City> cityList = graph.getCities();
+    	int maxSize = graph.getClickRadius();
+    	for (int i = 0; i < cityList.size(); i++) {
+    		if (cityList.get(i).getHasStation() != null) {
+    			g2d.drawImage(redplayer, cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
+    		}
+    	}
         
         if(firstCityClicked)
         {
@@ -252,9 +260,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     		ArrayList<City> cityList = graph.getCities();
 	    	int maxSize = graph.getClickRadius();
 	    	for (int i = 0; i < cityList.size(); i++) {
-	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize && cityList.get(i).getHasStation() == null) {
+	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize && cityList.get(i).getHasStation() == null && players.get(currentPlr).getStations() > 0) {
 	    			out.println("Place station at: " + cityList.get(i).getName());
-	    			cityList.get(i).addStation(new Station(players.get(currentPlr).getPlayerColor()));
+	    			cityList.get(i).addStation(players.get(currentPlr).removeStation());
 	    			cityList.get(i).getHasStation().setFromCity(cityList.get(i).getName());
 	    			
 //	    			out.println(cityList.get(i).getHasStation().getFromCity());
