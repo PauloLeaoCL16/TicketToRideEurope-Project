@@ -16,7 +16,7 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
-    private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
+    private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, playerpointer;
     private boolean isPlayButtonHovered = false;
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
@@ -42,18 +42,14 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             player2 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player2label.png"));
             player3 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player3label.png"));
             player4 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player4label.png"));
-	    p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/P1 Turn Screen.png"));
-            p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/P2 Turn Screen.png"));
-	    p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/P3 Turn Screen.png"));
-	    p4bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/P4 Turn Screen.png"));
             cardBack = ImageIO.read(MainMenu.class.getResource("/ttreImages/backofcard.png"));
             ticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticket.png"));
             template = ImageIO.read(MainMenu.class.getResource("/ttreImages/blankcardtemp.png"));
-            redplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/redplayer.png"));
-            blueplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/blueplayer.png"));
-            greenplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/greenplayer.png"));
-            yellowplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/yellowplayer.png"));
             playerpointer = ImageIO.read(MainMenu.class.getResource("/ttreImages/currentplayerarrow.png"));
+            p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p1bg.png"));
+            p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p2bg.png"));
+            p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p3bg.png"));
+            p4bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p4bg.png"));
             ticketDeck = new TicketDeck();
 //            longRoutes = new ArrayList<>();
 //            longRoutes.add(new Ticket("palermo", "moskva",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute1.png"))));
@@ -150,19 +146,38 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         
         //current player stuff
         
-        //current player number
-        g2d.drawImage(p1bg, 1546, 809, null);
-        //current player arrow
-        g2d.drawImage(playerpointer, 1875, 270, null);
-        //current player's color
-        //g2d.drawImage(redplayer, 1520, 925, null);
+        if( turns[0] )
+        {
+        	g2d.drawImage(p1bg, currentPlr, currentPlr, currentPlr, currentPlr, getFocusCycleRootAncestor())
+        	g2d.drawImage(p1bg, 1501, 763, null);
+        	g2d.drawImage(playerpointer, 1875, 270, null);
+        	//g2d.drawImage(p1bg, 1546, 809, null);
+        }
+        else if( turns[1])
+        {
+        	//g2d.drawImage(player2, 1825, 948, null);
+        	g2d.drawImage(playerpointer, 1875, 370, null);
+        	g2d.drawImage(p2bg, 1546, 809, null);
+        }
+        else if(turns[2])
+        {
+        	//.drawImage(player3, 1825, 948, null);
+        	g2d.drawImage(playerpointer, 1875, 470, null);
+        	g2d.drawImage(p3bg, 1546, 809, null);
+        }
+        else if(turns[3])
+        {
+        	//g2d.drawImage(player1, 1825, 948, null);
+        	g2d.drawImage(playerpointer, 1875, 570, null);
+        	g2d.drawImage(p4bg, 1546, 809, null);
+        }
         
         //Draw the station
         ArrayList<City> cityList = graph.getCities();
     	int maxSize = graph.getClickRadius();
     	for (int i = 0; i < cityList.size(); i++) {
     		if (cityList.get(i).getHasStation() != null) {
-    			g2d.drawImage(redplayer, cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
+    			//g2d.drawImage(redplayer, cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
     		}
     	}
         
@@ -198,8 +213,12 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.setPaint(new Color(0, 0, 0));
         	g2d.fillRect(1500, 0, getWidth() - 1500, getHeight());
         }
+        
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(1275, 10, 200, 50);
+        g2d.setColor(Color.WHITE);
+        g2d.drawString("skip turn", 1325, 40);
     }
-
    
     
     @Override
