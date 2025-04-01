@@ -33,6 +33,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private City[] clickedCity = new City[2];
     private boolean inAnEvent;
     
+    private int turnUsed = 0;
+    
     public GameBoard() {
         try {
             table = ImageIO.read(MainMenu.class.getResource("/ttreImages/gameBackground.png"));
@@ -50,6 +52,23 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             yellowplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/yellowplayer.png"));
             playerpointer = ImageIO.read(MainMenu.class.getResource("/ttreImages/currentplayerarrow.png"));
             ticketDeck = new TicketDeck();
+            players = new ArrayList<Player>();
+            currentPlr = 0;
+            inAnEvent = false;
+            cardDeck = new CardDeck();
+            ticketDeck = new TicketDeck();
+            faceUpCard = new ColorCard[5];
+            clickedCity[0] = null;
+            clickedCity[1] = null;
+            faceUpCard[0] = cardDeck.drawCard();
+            faceUpCard[1] = cardDeck.drawCard();
+            faceUpCard[2] = cardDeck.drawCard();
+            faceUpCard[3] = cardDeck.drawCard();
+            faceUpCard[4] = cardDeck.drawCard();
+            players.add(new Player("red", redplayer));
+            players.add(new Player("blue", blueplayer));
+            players.add(new Player("green", greenplayer));
+            players.add(new Player("yellow", yellowplayer));
 //            longRoutes = new ArrayList<>();
 //            longRoutes.add(new Ticket("palermo", "moskva",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute1.png"))));
 //            longRoutes.add(new Ticket("brest", "petrograd",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute2.png"))));
@@ -61,24 +80,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         } catch (IOException e) {
             e.printStackTrace();
         }
-        currentPlr = 0;
-        inAnEvent = false;
-        cardDeck = new CardDeck();
-        ticketDeck = new TicketDeck();
-        faceUpCard = new ColorCard[5];
-        clickedCity[0] = null;
-        clickedCity[1] = null;
-        faceUpCard[0] = cardDeck.drawCard();
-        faceUpCard[1] = cardDeck.drawCard();
-        faceUpCard[2] = cardDeck.drawCard();
-        faceUpCard[3] = cardDeck.drawCard();
-        faceUpCard[4] = cardDeck.drawCard();
-        
-        players = new ArrayList<Player>();
-        players.add(new Player("red"));
-        players.add(new Player("blue"));
-        players.add(new Player("green"));
-        players.add(new Player("yellow"));
 //        players.get(currentPlr).addTicket(longRoutes.get(currentPlr));
         
         firstCityClicked = false;
@@ -121,14 +122,14 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawString(players.get(0).getTrainsLeft()+"", 1758, 285);
         g2d.drawString(players.get(0).getStations()+"", 1828, 325); 
         //green player station and trains
-        g2d.drawString(players.get(1).getTrainsLeft()+"", 1758, 385);
-        g2d.drawString(players.get(1).getStations()+"", 1828, 420);
+        g2d.drawString(players.get(2).getTrainsLeft()+"", 1758, 385);
+        g2d.drawString(players.get(2).getStations()+"", 1828, 420);
         //yellow player station and trains
-        g2d.drawString(players.get(2).getTrainsLeft()+"", 1758, 480);
-        g2d.drawString(players.get(2).getStations()+"", 1825, 520);
+        g2d.drawString(players.get(3).getTrainsLeft()+"", 1758, 480);
+        g2d.drawString(players.get(3).getStations()+"", 1825, 520);
         //blue player station and trains
-        g2d.drawString(players.get(3).getTrainsLeft()+"", 1752, 580);
-        g2d.drawString(players.get(3).getStations()+"", 1822, 620);
+        g2d.drawString(players.get(1).getTrainsLeft()+"", 1752, 580);
+        g2d.drawString(players.get(1).getStations()+"", 1822, 620);
         
         //number of trains stuff
         g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
@@ -158,7 +159,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	int maxSize = graph.getClickRadius();
     	for (int i = 0; i < cityList.size(); i++) {
     		if (cityList.get(i).getHasStation() != null) {
-    			g2d.drawImage(redplayer, cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
+    			g2d.drawImage(cityList.get(i).getHasStation().getStationImage(), cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
     		}
     	}
         
@@ -210,9 +211,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	{
 	    	//alow for players to draw cards from the face-up card options
 	    	for (int i = 0; i < 5; i++) {
-	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80) {
+	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80 && turnUsed + faceUpCard[i].getCostToDraw() <= 2) {
 	    			players.get(currentPlr).addCard(faceUpCard[i]);
 	    			faceUpCard[i] = cardDeck.drawCard();
+	    			turnUsed += faceUpCard[i].getCostToDraw();
 	    		}
 	        }
 	    	
@@ -220,6 +222,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	if( x >= 1550 && x <= 1650 && y >= 3 && y <= 163)
 	    	{
 	    		players.get(currentPlr).addCard(cardDeck.drawCard());
+	    		turnUsed += 1;
 	    	}
 	    	
 	    	//Allow to click ticket
@@ -264,15 +267,25 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    			out.println("Place station at: " + cityList.get(i).getName());
 	    			cityList.get(i).addStation(players.get(currentPlr).removeStation());
 	    			cityList.get(i).getHasStation().setFromCity(cityList.get(i).getName());
-	    			
+	    			turnUsed += 2;
 //	    			out.println(cityList.get(i).getHasStation().getFromCity());
 	    			break;
 	    		}
 	    	}
     	}
-	   
+	   if (turnUsed >= 2) {
+		   changeTurn();
+	   }
     	repaint();
     }
+    public void changeTurn() {
+    	currentPlr += 1;
+    	turnUsed = 0;
+    	if (currentPlr >= players.size()) {
+    		currentPlr = 0;
+    	}
+    }
+    
     public void initiateCoords()
     {
     	//allow for player to click on a 2 cities to buy them
