@@ -1,14 +1,18 @@
+package ttreImages;
+
 import java.util.*;
 
 public class Station 
 {
 	private String toCity;
 	private String fromCity;
+	private String color;
 	
-	public Station()
+	public Station(String color)
 	{
 		toCity = "";
 		fromCity = "";
+		this.color = color;
 	}
 	
 	public String getToCity()
@@ -19,6 +23,10 @@ public class Station
 	public String getFromCity()
 	{
 		return fromCity;
+	}
+	
+	public String getColor() {
+		return color;
 	}
 	
 	public void setToCity(String city)
