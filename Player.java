@@ -12,9 +12,11 @@ public class Player {
     private ArrayList<Station> usedStationList;
     private ArrayList<Station> unusedStationList;
     private int trainsLeft;
+    private BufferedImage plrLabel;
     private String color;
+    private BufferedImage profileImage;
     
-    public Player(String color, BufferedImage stationImage) {
+    public Player(String color, BufferedImage stationImage, BufferedImage plrLabel, BufferedImage profileImage) {
         points = 0;
         trainsLeft = 45;
         tickets = new ArrayList<Ticket>();
@@ -25,6 +27,8 @@ public class Player {
         unusedStationList.add(new Station(color, stationImage));
         unusedStationList.add(new Station(color, stationImage));
         this.color = color;
+        this.plrLabel = plrLabel;
+        this.profileImage = profileImage;
     }
     
     public int getStations()
@@ -32,6 +36,14 @@ public class Player {
     	int size = 0;
     	size += unusedStationList.size();
     	return size;
+    }
+    
+    public BufferedImage getProfileImage() {
+    	return profileImage;
+    }
+    
+    public BufferedImage getPlrLabel() {
+    	return plrLabel;
     }
     
     public void useStation()
