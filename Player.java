@@ -1,6 +1,7 @@
 package test2;
 
 import java.util.*;
+import java.awt.image.*;
 
 public class Player {
 	
@@ -13,16 +14,16 @@ public class Player {
     private int trainsLeft;
     private String color;
     
-    public Player(String color) {
+    public Player(String color, BufferedImage stationImage) {
         points = 0;
         trainsLeft = 45;
         tickets = new ArrayList<Ticket>();
         card = new ArrayList<ColorCard>();
         unusedStationList = new ArrayList<Station>();
         usedStationList = new ArrayList<Station>();
-        unusedStationList.add(new Station(color));
-        unusedStationList.add(new Station(color));
-        unusedStationList.add(new Station(color));
+        unusedStationList.add(new Station(color, stationImage));
+        unusedStationList.add(new Station(color, stationImage));
+        unusedStationList.add(new Station(color, stationImage));
         this.color = color;
     }
     
