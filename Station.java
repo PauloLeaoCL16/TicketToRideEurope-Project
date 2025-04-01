@@ -1,18 +1,21 @@
 package test2;
 
 import java.util.*;
+import java.awt.image.*;
 
 public class Station 
 {
 	private String toCity;
 	private String fromCity;
 	private String color;
+	private BufferedImage stationImage;
 	
-	public Station(String color)
+	public Station(String color, BufferedImage stationImage)
 	{
 		toCity = "";
 		fromCity = "";
 		this.color = color;
+		this.stationImage = stationImage;
 	}
 	
 	public String getToCity()
@@ -27,6 +30,10 @@ public class Station
 	
 	public String getColor() {
 		return color;
+	}
+	
+	public BufferedImage getStationImage() {
+		return stationImage;
 	}
 	
 	public void setToCity(String city)
