@@ -1,4 +1,3 @@
-
 package ttreImages;
 
 import java.util.*;
@@ -6,7 +5,7 @@ import java.util.*;
 public class Player {
 	
     private int points;
-    private ArrayList<Ticket> tickets; //(Ex: {[Berlin, Amsterdam]=8}
+    private ArrayList<Ticket> tickets;
     private ArrayList<ColorCard> card;
     private ArrayList<City> railRoadsBought;
     private ArrayList<Station> usedStationList;
@@ -22,9 +21,9 @@ public class Player {
         card = new ArrayList<ColorCard>();
         unusedStationList = new ArrayList<Station>();
         usedStationList = new ArrayList<Station>();
-        unusedStationList.add(new Station());
-        unusedStationList.add(new Station());
-        unusedStationList.add(new Station());
+        unusedStationList.add(new Station(color));
+        unusedStationList.add(new Station(color));
+        unusedStationList.add(new Station(color));
         this.color = color;
     }
     
@@ -35,10 +34,13 @@ public class Player {
     	return size;
     }
     
-    public void useStation()
+    public Station useStation()
     {
+    	Station station = new Station(color);
     	if(unusedStationList.size()>=1)
-    		usedStationList.add(unusedStationList.remove(unusedStationList.size()-1));
+    		station = (unusedStationList.remove(unusedStationList.size()-1));
+    	usedStationList.add(station);
+    	return station;
     }
 
     public void addTicket(Ticket ticket) {
@@ -56,6 +58,10 @@ public class Player {
     public void setPoint(int pt) {
         points = pt;
     }
+
+    public int getPoint() {
+        return points;
+    }
     
     public int getActions()
     {
@@ -65,10 +71,6 @@ public class Player {
     public void setActions(int x)
     {
     	actions = x;
-    }
-
-    public int getPoint() {
-        return points;
     }
 
     public void addCard(ColorCard card) {
@@ -105,6 +107,11 @@ public class Player {
     {
     	if( trainsLeft - numberToRemove >= 0)
     		trainsLeft -= numberToRemove;
+    }
+    
+    public Station removeStation() {
+    	Station station = unusedStationList.remove(0);
+    	return station;
     }
 
     public int getTrainsLeft() {
