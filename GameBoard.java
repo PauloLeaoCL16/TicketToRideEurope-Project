@@ -42,6 +42,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             player2 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player2label.png"));
             player3 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player3label.png"));
             player4 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player4label.png"));
+	    p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/P1 Turn Screen.png"));
+            p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/P2 Turn Screen.png"));
+	    p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/P3 Turn Screen.png"));
+	    p4bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/P4 Turn Screen.png"));
             cardBack = ImageIO.read(MainMenu.class.getResource("/ttreImages/backofcard.png"));
             ticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticket.png"));
             template = ImageIO.read(MainMenu.class.getResource("/ttreImages/blankcardtemp.png"));
@@ -147,11 +151,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         //current player stuff
         
         //current player number
-        g2d.drawImage(player1, 1825, 948, null);
+        g2d.drawImage(p1bg, 1546, 809, null);
         //current player arrow
         g2d.drawImage(playerpointer, 1875, 270, null);
         //current player's color
-        g2d.drawImage(redplayer, 1520, 925, null);
+        //g2d.drawImage(redplayer, 1520, 925, null);
         
         //Draw the station
         ArrayList<City> cityList = graph.getCities();
