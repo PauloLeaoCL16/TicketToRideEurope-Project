@@ -65,10 +65,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             faceUpCard[2] = cardDeck.drawCard();
             faceUpCard[3] = cardDeck.drawCard();
             faceUpCard[4] = cardDeck.drawCard();
-            players.add(new Player("red", redplayer));
-            players.add(new Player("blue", blueplayer));
-            players.add(new Player("green", greenplayer));
-            players.add(new Player("yellow", yellowplayer));
+            players.add(new Player("red", redplayer, player1, redplayer));
+            players.add(new Player("blue", blueplayer, player2, blueplayer));
+            players.add(new Player("green", greenplayer, player3, greenplayer));
+            players.add(new Player("yellow", yellowplayer, player4, yellowplayer));
 //            longRoutes = new ArrayList<>();
 //            longRoutes.add(new Ticket("palermo", "moskva",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute1.png"))));
 //            longRoutes.add(new Ticket("brest", "petrograd",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute2.png"))));
@@ -148,11 +148,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         //current player stuff
         
         //current player number
-        g2d.drawImage(player1, 1825, 948, null);
+        g2d.drawImage(players.get(currentPlr).getPlrLabel(), 1825, 948, null);
         //current player arrow
         g2d.drawImage(playerpointer, 1875, 270, null);
         //current player's color
-        g2d.drawImage(redplayer, 1520, 925, null);
+        g2d.drawImage(players.get(currentPlr).getProfileImage(), 1520, 925, null);
         
         //Draw the station
         ArrayList<City> cityList = graph.getCities();
@@ -213,8 +213,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	for (int i = 0; i < 5; i++) {
 	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80 && turnUsed + faceUpCard[i].getCostToDraw() <= 2) {
 	    			players.get(currentPlr).addCard(faceUpCard[i]);
-	    			faceUpCard[i] = cardDeck.drawCard();
 	    			turnUsed += faceUpCard[i].getCostToDraw();
+	    			faceUpCard[i] = cardDeck.drawCard();
 	    		}
 	        }
 	    	
