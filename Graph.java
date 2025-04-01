@@ -1,10 +1,10 @@
-package ttreImages;
+package test2;
 
 import java.util.ArrayList;
 
 public class Graph {
     private ArrayList<City> adjacencyList;
-    private int clickRadius = 50;
+    private int clickRadius = 50; // Max distance the player can click the city
 
     public Graph() {
         adjacencyList = new ArrayList<>();
@@ -56,7 +56,7 @@ public class Graph {
     }
 
     private City addCity(String name, int x, int y) {
-    	City city = new City(name, new Station(), x, y);
+    	City city = new City(name, null, x, y);
         adjacencyList.add(city);
     	return city;
     }
@@ -73,5 +73,9 @@ public class Graph {
         for (City city : adjacencyList) {
             System.out.println(city.getName() + " (" + city.getX() + ", " + city.getY() + ")");
         }
+    }
+    
+    public void addStation(City city, Station station) {
+    	city.addStation(station);
     }
 }
