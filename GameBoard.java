@@ -212,6 +212,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.fillRect(1275, 10, 200, 50);
         g2d.setColor(Color.WHITE);
         g2d.drawString("skip turn", 1325, 40);
+        
+        /*
+        g2d.rotate(-Math.toRadians(20), 700, 500);
+        g2d.drawImage(cardBack, 700, 500, null);
+        */
     }
    
     
