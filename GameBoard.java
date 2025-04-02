@@ -279,11 +279,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	repaint();
     }
     public void changeTurn() {
-    	currentPlr += 1;
+    	currentPlr = (currentPlr + 1) % players.size();
     	turnUsed = 0;
-    	if (currentPlr >= players.size()) {
-    		currentPlr = 0;
-    	}
     }
     
     public void initiateCoords()
