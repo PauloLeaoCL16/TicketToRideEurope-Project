@@ -1,34 +1,27 @@
 package ttreImages;
-
 import java.util.*;
 import java.awt.image.*;
 
 public class City 
 {
 	private String name;
-	private HashMap<String, RailRoad> connections;
+	private HashMap<City, ArrayList<RailRoad>> connections;
 	private Station hasStation;
 	private int x;
 	private int y;
 	
-	public City(String name, int x, int y)
-	{
-		this.name = name;
-		this.x= x;
-		this.y = y;
-		hasStation = new Station();
-	}
-	
-	public City(String name, String connection, RailRoad railRoad, Station station)
+	public City(String name, Station station, int x, int y)
 	{
 		hasStation = station;
 		this.name = name;
-		connections.put(connection, railRoad);
+		this.x = x;
+		this.y = y;
+		connections = new HashMap<>();
 	}
 	
-	public void addConnection(String connection, RailRoad railRoad)
+	public void addConnection(City city, ArrayList<RailRoad> railRoad)
 	{
-		connections.put(connection, railRoad);
+		connections.put(city, railRoad);
 	}
 	
 	public String getName()
@@ -36,7 +29,7 @@ public class City
 		return name;
 	}
 	
-	public HashMap<String, RailRoad> getConnections()
+	public HashMap<City, ArrayList<RailRoad>> getConnections()
 	{
 		return connections;
 	}
