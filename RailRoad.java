@@ -1,3 +1,4 @@
+package ttreImages;
 import java.util.*;
 
 public class RailRoad
@@ -9,9 +10,9 @@ public class RailRoad
 	private boolean bought;
 	private int x;
 	private int y;
-	private float degree;
+	private double degree;
 	
-	public RailRoad(int cost, String color, int wild, boolean mountains, boolean bought, int x, int y, float degree)
+	public RailRoad(int cost, String color, int wild, boolean mountains, boolean bought, int x, int y, double degree)
 	{
 		this.cost = cost;
 		this.color = color;
@@ -21,6 +22,26 @@ public class RailRoad
 		this.x = x;
 		this.y = y;
 		this.degree = degree;
+	}
+	
+	public int getX()
+	{
+		return x;
+	}
+	
+	public int getY()
+	{
+		return y;
+	}
+
+	public double getDegree()
+	{
+		return degree;	
+	}
+	
+	public void buyRailRoad()
+	{
+		bought = true;
 	}
 	
 	public int getCost()
