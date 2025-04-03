@@ -344,6 +344,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     }
     
     public void buyEvent() {
+    	inAnEvent = true;
+		repaint();
+    	
     	ArrayList<RailRoad> neededRailRoad = graph.getCityConnection(clickedCity[0], clickedCity[1]);
 		//Check if the railroad is already bought
 		if (neededRailRoad != null && !neededRailRoad.get(0).getBought()) {
@@ -374,8 +377,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				//Buy the railroad successfully (Will add it to UI and remove from player card later)
 				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
 			} else {
-				out.println("Not enough");
+				out.println("Not enough railroads");
 			}
+//			inAnEvent = false;
+//			repaint();
 		}
     }
 
