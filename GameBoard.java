@@ -29,6 +29,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private ArrayList<Integer> highlightCity; // takes in 2 locations for highlighting purposes
     private Graph graph;// stores all the coordinates of the cities in a map
     private boolean[] turns = {true, false, false, false};
+    private int endNumTurns = 5; //this counts the num of turns till the game ends after endGame has been set to true
+    private boolean endGame = false; //this triggers the final stage of the game where players have 1 turn each
+    private boolean gameHasEnded = false; //if this is set to true it should toggle the end game panel with the score board
     
     private int currentPlr;
     private City[] clickedCity = new City[2];
@@ -333,27 +336,79 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
  	   int currentTurn = 1;
  	   if(turns[0])
  	   {
+ 		   if(players.get(0).getTrainsLeft() <= 2)
+ 		   {
+ 			   endGame = true;
+ 		   }
  		   turns[0]=false;
  		   turns[1]=true;
  		   currentPlr = 1;
+ 		   if(endGame)
+ 		   {
+ 			   endNumTurns--;
+ 		   }
+ 		   if(endNumTurns == 0)
+ 		   {
+ 			   gameHasEnded = true;
+ 			   System.out.println("game has ended");
+ 		   }
  	   }
  	   else if(turns[1])
  	   {
+ 		   if(players.get(1).getTrainsLeft() <= 2)
+		   {
+			   endGame = true;
+		   }
  		   turns[1]=false;
  		   turns[2]=true;
  		   currentPlr = 2;
+ 		   if(endGame)
+		   {
+			   endNumTurns--;
+		   }
+		   if(endNumTurns == 0)
+		   {
+			   gameHasEnded = true;
+			   System.out.println("game has ended");
+		   }
  	   }
  	   else if(turns[2])
  	   {
+ 		  if(players.get(2).getTrainsLeft() <= 2)
+		   {
+			   endGame = true;
+		   }
  		   turns[2]=false;
  		   turns[3]=true;
  		   currentPlr = 3;
+ 		   if(endGame)
+		   {
+			   endNumTurns--;
+		   }
+		   if(endNumTurns == 0)
+		   {
+			   gameHasEnded = true;
+			   System.out.println("game has ended");
+		   }
  	   }
  	   else if(turns[3])
  	   {
+ 		  if(players.get(3).getTrainsLeft() <= 2)
+		   {
+			   endGame = true;
+		   }
  		   turns[3]=false;
  		   turns[0]=true;
  		   currentPlr = 0;
+ 		   if(endGame)
+		   {
+			   endNumTurns--;
+		   }
+		   if(endNumTurns == 0)
+		   {
+			   gameHasEnded = true;
+			   System.out.println("game has ended");
+		   }
  	   }
  	   for(int i = 0; i<4; i++)
  	   {
