@@ -269,7 +269,15 @@ public class Graph {
         railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, -Math.toRadians(20)));
         railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, -Math.toRadians(20)));
         railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, -Math.toRadians(20)));
-        lisboa.addConnection(madrid, railRoadList);	//lisboa to madrid
+        lisboa.addConnection(madrid, railRoadList);	//lisboa to madrid	
+        
+        
+        railRoadList = new ArrayList<RailRoad>();
+        railRoadList.add(new RailRoad(4, "red", 0, false, false,592,463, -Math.toRadians(20)));
+        railRoadList.add(new RailRoad(4, "red", 0, false, false,592,463, -Math.toRadians(20)));
+        railRoadList.add(new RailRoad(4, "red", 0, false, false,592,463, -Math.toRadians(20)));
+        railRoadList.add(new RailRoad(4, "red", 0, false, false,592,463, -Math.toRadians(20)));
+        marseille.addConnection(pamplona, railRoadList);	//lisboa to cadiz
         
     }
 
