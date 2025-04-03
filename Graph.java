@@ -1,11 +1,13 @@
-package ttreImages;
+package test2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Graph {
     private ArrayList<City> adjacencyList;
-    private int clickRadius = 50;
-
+    private int clickRadius = 25; // Max distance the player can click the city
+//    private HashMap<Player, City[]> railRoadBought;
+    
     public Graph() {
         adjacencyList = new ArrayList<>();
 
@@ -57,19 +59,17 @@ public class Graph {
         
         //adding all the connections
         ArrayList<RailRoad> railRoadList = new ArrayList<RailRoad>();
-        railRoadList.add(new RailRoad(2, "purple", 0, false, false, 604, 481, Math.toRadians(4)));
-        railRoadList.add(new RailRoad(2, "purple", 0, false, false, 604, 481, Math.toRadians(4)));
+        railRoadList.add(new RailRoad(2, "purple", 0, false, 604, 481, Math.toRadians(4)));
+        railRoadList.add(new RailRoad(2, "purple", 0, false, 604, 481, Math.toRadians(4)));
         frankfurt.addConnection(munchen, railRoadList);
-        
-        
     }
 
     private City addCity(String name, int x, int y) {
-    	City city = new City(name, null , x, y);
+    	City city = new City(name, null, x, y);
         adjacencyList.add(city);
     	return city;
     }
-
+    
     public ArrayList<RailRoad> getCityConnection(City city1, City city2) {
     	// Get the railroad connection of city to city stuff
     	if (!city1.getConnections().containsKey(city2)) {
@@ -82,6 +82,10 @@ public class Graph {
         return adjacencyList;
     }
     
+//    public HashMap<Player, City[]> getBoughtRailRoads() {
+//    	return railRoadBought;
+//    }
+    
     public int getClickRadius() {
     	return clickRadius;
     }
@@ -90,5 +94,9 @@ public class Graph {
         for (City city : adjacencyList) {
             System.out.println(city.getName() + " (" + city.getX() + ", " + city.getY() + ")");
         }
+    }
+    
+    public void addStation(City city, Station station) {
+    	city.addStation(station);
     }
 }
