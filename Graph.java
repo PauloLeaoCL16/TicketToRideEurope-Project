@@ -1,7 +1,6 @@
 package test2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Graph {
     private ArrayList<City> adjacencyList;
