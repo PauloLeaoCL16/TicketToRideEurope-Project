@@ -87,7 +87,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         citiesToBuy = new City[2];
         graph = new Graph();
         graph.printCities();
-        initiateCoords();
         
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -244,14 +243,14 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	int maxSize = graph.getClickRadius();
 	    	for (int i = 0; i < cityList.size(); i++) {
 	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize) {
-	    			out.println("Player clicked: " + cityList.get(i).getName());
+//	    			out.println("Player clicked: " + cityList.get(i).getName());
 	    			if (clickedCity[0] == null) {
 	    				clickedCity[0] = cityList.get(i);
 	    			} else if (clickedCity[0] != cityList.get(i)) {
 	    				clickedCity[1] = cityList.get(i);
 		    			
 		    			if (clickedCity[0] != null && clickedCity[1] != null) {
-		    				out.print(clickedCity[0].getName() + " " + clickedCity[1].getName());
+		    				buyEvent();
 		    			}
 	    			}
 	    			break;
@@ -260,18 +259,22 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	}
     	else if (e.getButton() == MouseEvent.BUTTON3)// this is where you write what happens if the player right clicks
     	{
-    		ArrayList<City> cityList = graph.getCities();
-	    	int maxSize = graph.getClickRadius();
-	    	for (int i = 0; i < cityList.size(); i++) {
-	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize && cityList.get(i).getHasStation() == null && players.get(currentPlr).getStations() > 0) {
-	    			out.println("Place station at: " + cityList.get(i).getName());
-	    			cityList.get(i).addStation(players.get(currentPlr).removeStation());
-	    			cityList.get(i).getHasStation().setFromCity(cityList.get(i).getName());
-	    			turnUsed += 2;
-//	    			out.println(cityList.get(i).getHasStation().getFromCity());
-	    			break;
-	    		}
-	    	}
+    		clickedCity[0] = null;
+			clickedCity[1] = null;
+			if (turnUsed + 2 <= 2) {
+				ArrayList<City> cityList = graph.getCities();
+		    	int maxSize = graph.getClickRadius();
+		    	for (int i = 0; i < cityList.size(); i++) {
+		    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize && cityList.get(i).getHasStation() == null && players.get(currentPlr).getStations() > 0) {
+		    			out.println("Place station at: " + cityList.get(i).getName());
+		    			cityList.get(i).addStation(players.get(currentPlr).removeStation());
+		    			cityList.get(i).getHasStation().setFromCity(cityList.get(i).getName());
+		    			turnUsed += 2;
+//		    			out.println(cityList.get(i).getHasStation().getFromCity());
+		    			break;
+		    		}
+		    	}
+			}
     	}
 	   if (turnUsed >= 2) {
 		   changeTurn();
@@ -279,8 +282,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	repaint();
     }
     public void changeTurn() {
-    	currentPlr = (currentPlr + 1) % players.size();
+    	currentPlr += 1;
     	turnUsed = 0;
+    	if (currentPlr >= players.size()) {
+    		currentPlr = 0;
+    	}
     }
     
     public void initiateCoords()
@@ -337,6 +343,41 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 
     }
     
+    public void buyEvent() {
+    	ArrayList<RailRoad> neededRailRoad = graph.getCityConnection(clickedCity[0], clickedCity[1]);
+		//Check if the railroad is already bought
+		if (neededRailRoad != null && !neededRailRoad.get(0).getBought()) {
+			//Requirements to build a railroad
+			String railroadColor = neededRailRoad.get(0).getColor();
+			int amountNeeded = neededRailRoad.get(0).getCost();
+			boolean isMountain = neededRailRoad.get(0).getMountains();
+			int wildNeeded = neededRailRoad.get(0).getWildNum();
+			
+			
+			if (isMountain) {
+				//Draw additional cards needed from deck if the railroad is a mountain
+				ColorCard draw1 = cardDeck.drawCard();
+				ColorCard draw2 = cardDeck.drawCard();
+				ColorCard draw3 = cardDeck.drawCard();
+				if (railroadColor.equals(draw1.getColor()) || draw1.getColor().equals("wild")) {
+					amountNeeded++;
+				}
+				if (railroadColor.equals(draw2.getColor()) || draw2.getColor().equals("wild")) {
+					amountNeeded++;
+				}
+				if (railroadColor.equals(draw3.getColor()) || draw3.getColor().equals("wild")) {
+					amountNeeded++;
+				}
+			}
+			int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
+			if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded) {
+				//Buy the railroad successfully (Will add it to UI and remove from player card later)
+				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
+			} else {
+				out.println("Not enough");
+			}
+		}
+    }
 
     @Override
     public void mouseMoved(MouseEvent e) {
