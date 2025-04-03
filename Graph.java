@@ -70,6 +70,14 @@ public class Graph {
     	return city;
     }
 
+    public ArrayList<RailRoad> getCityConnection(City city1, City city2) {
+    	// Get the railroad connection of city to city stuff
+    	if (!city1.getConnections().containsKey(city2)) {
+    		return null;
+    	}
+    	return city1.getConnections().get(city2);
+    }
+
     public ArrayList<City> getCities() {
         return adjacencyList;
     }
