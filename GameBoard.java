@@ -103,26 +103,26 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         if( turns[0] )
         {
         	g2d.drawImage(p1bg, 1420, 750, 500, 300, null);
-        	g2d.drawImage(playerpointer, 1875, 270, null);
+        	g2d.drawImage(playerpointer, 1875, 225, null);
         	//g2d.drawImage(p1bg, 1546, 809, null);
         }
         else if( turns[1])
         {
-        	//g2d.drawImage(player2, 1825, 948, null);
-        	g2d.drawImage(playerpointer, 1875, 370, null);
-        	g2d.drawImage(p2bg, 1546, 809, null);
+        	g2d.drawImage(p2bg, 1420, 750, 500, 300, null);
+        	g2d.drawImage(playerpointer, 1875, 350, null);
+        	//g2d.drawImage(p2bg, 1546, 809, null);
         }
         else if(turns[2])
         {
-        	//.drawImage(player3, 1825, 948, null);
-        	g2d.drawImage(playerpointer, 1875, 470, null);
-        	g2d.drawImage(p3bg, 1546, 809, null);
+        	g2d.drawImage(p3bg, 1420, 750, 500, 300, null);
+        	g2d.drawImage(playerpointer, 1875, 450, null);
+        	//g2d.drawImage(p3bg, 1546, 809, null);
         }
         else if(turns[3])
         {
-        	//g2d.drawImage(player1, 1825, 948, null);
-        	g2d.drawImage(playerpointer, 1875, 570, null);
-        	g2d.drawImage(p4bg, 1546, 809, null);
+        	g2d.drawImage(p4bg, 1420, 750, 500, 300, null);
+        	g2d.drawImage(playerpointer, 1875, 560, null);
+        	//g2d.drawImage(p4bg, 1546, 809, null);
         }
         
         //rotate template cardholder and scale it smaller a bit
