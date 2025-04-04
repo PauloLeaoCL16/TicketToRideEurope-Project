@@ -160,7 +160,17 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     		if (cityList.get(i).getHasStation() != null) {
     			g2d.drawImage(cityList.get(i).getHasStation().getStationImage(), cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
     		}
+    		HashMap<City, ArrayList<RailRoad>> allConnections = cityList.get(i).getConnections();
+    		Set<City> cityKeys = allConnections.keySet();
+    		for (City cities: cityKeys) {
+    			ArrayList<RailRoad> currentRailRoad = allConnections.get(cities);
+    			for (int j = 0; j < currentRailRoad.size(); j++) {
+    				g2d.rotate(currentRailRoad.get(j).getDegree(), getWidth(), getHeight());
+    				g2d.fillRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
+    			}
+    		}
     	}
+    	g2d.setTransform(new AffineTransform());
         
         if(firstCityClicked)
         {
@@ -344,8 +354,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     }
     
     public void buyEvent() {
-    	inAnEvent = true;
-		repaint();
+//    	inAnEvent = true;
+//		repaint();
     	
     	ArrayList<RailRoad> neededRailRoad = graph.getCityConnection(clickedCity[0], clickedCity[1]);
 		//Check if the railroad is already bought
@@ -358,29 +368,30 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 			
 			
 			if (isMountain) {
-				//Draw additional cards needed from deck if the railroad is a mountain
-				ColorCard draw1 = cardDeck.drawCard();
-				ColorCard draw2 = cardDeck.drawCard();
-				ColorCard draw3 = cardDeck.drawCard();
-				if (railroadColor.equals(draw1.getColor()) || draw1.getColor().equals("wild")) {
-					amountNeeded++;
-				}
-				if (railroadColor.equals(draw2.getColor()) || draw2.getColor().equals("wild")) {
-					amountNeeded++;
-				}
-				if (railroadColor.equals(draw3.getColor()) || draw3.getColor().equals("wild")) {
-					amountNeeded++;
+				//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
+				for (int i = 0; i < 3; i++) {
+					ColorCard draw = cardDeck.drawCard();
+					if (railroadColor.equals(draw.getColor()) || draw.getColor().equals("wild")) {
+						amountNeeded++;
+					}
 				}
 			}
 			int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
 			if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded) {
 				//Buy the railroad successfully (Will add it to UI and remove from player card later)
+				for (int i = 0; i < neededRailRoad.size(); i++) {
+					neededRailRoad.get(i).setBought();
+				}
 				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
 			} else {
 				out.println("Not enough railroads");
 			}
 //			inAnEvent = false;
 //			repaint();
+		} else if (neededRailRoad == null) {
+			out.println("No connection");
+		} else {
+			out.println("Railroad is already owned");
 		}
     }
 
