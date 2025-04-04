@@ -153,7 +153,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         //current player's color
         g2d.drawImage(players.get(currentPlr).getProfileImage(), 1520, 925, null);
         
-        //Draw the station
+        //Draw the station and railroads
         ArrayList<City> cityList = graph.getCities();
     	int maxSize = graph.getClickRadius();
     	for (int i = 0; i < cityList.size(); i++) {
