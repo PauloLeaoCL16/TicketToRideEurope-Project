@@ -216,12 +216,26 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.setColor(Color.WHITE);
         g2d.drawString("skip turn", 1325, 40);
         
-        ArrayList<City> railRoads = new ArrayList<City>();
-        railRoads = graph.getCities();
-        for(int i = 0; i<)
-        g2d.rotate(-Math.toRadians(-48), 231, 800);
-        g2d.drawImage(cardBack, 231, 798,100 ,100, null);
-        
+    	for (int i = 0; i < cityList.size(); i++) {
+    		// Draw station
+    		if (cityList.get(i).getHasStation() != null) {
+    			g2d.drawImage(cityList.get(i).getHasStation().getStationImage(), cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
+    		}
+    		// Get all connections
+    		HashMap<City, ArrayList<RailRoad>> allConnections = cityList.get(i).getConnections();
+    		Set<City> cityKeys = allConnections.keySet();
+    		// Go through all connections
+    		for (City cities: cityKeys) {
+    			// Get the railroads
+    			ArrayList<RailRoad> currentRailRoad = allConnections.get(cities);
+    			// Draw all the railroads
+    			for (int j = 0; j < currentRailRoad.size(); j++) {
+    				g2d.setTransform(new AffineTransform());
+    				g2d.rotate(currentRailRoad.get(j).getDegree() + Math.toRadians(90), currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
+    				g2d.fillRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
+    			}
+    		}
+    	}
     }
    
     
