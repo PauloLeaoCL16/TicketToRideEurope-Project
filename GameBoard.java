@@ -172,7 +172,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     			// Draw all the railroads
     			for (int j = 0; j < currentRailRoad.size(); j++) {
     				g2d.setTransform(new AffineTransform());
-    				g2d.rotate(currentRailRoad.get(j).getDegree(), currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
+    				g2d.rotate(currentRailRoad.get(j).getDegree() + Math.toRadians(90), currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
     				g2d.fillRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
     			}
     		}
