@@ -154,22 +154,26 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawImage(players.get(currentPlr).getProfileImage(), 1520, 925, null);
         
         //Draw the station and railroads
-        g2d.setTransform(new AffineTransform());
+
         ArrayList<City> cityList = graph.getCities();
     	int maxSize = graph.getClickRadius();
     	for (int i = 0; i < cityList.size(); i++) {
+    		// Draw station
     		if (cityList.get(i).getHasStation() != null) {
     			g2d.drawImage(cityList.get(i).getHasStation().getStationImage(), cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
     		}
+    		// Get all connections
     		HashMap<City, ArrayList<RailRoad>> allConnections = cityList.get(i).getConnections();
     		Set<City> cityKeys = allConnections.keySet();
+    		// Go through all connections
     		for (City cities: cityKeys) {
+    			// Get the railroads
     			ArrayList<RailRoad> currentRailRoad = allConnections.get(cities);
+    			// Draw all the railroads
     			for (int j = 0; j < currentRailRoad.size(); j++) {
-    				out.print(allConnections.get(cities));
-//    				g2d.rotate(currentRailRoad.get(j).getDegree(), currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
-    				g2d.fillRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
     				g2d.setTransform(new AffineTransform());
+    				g2d.rotate(currentRailRoad.get(j).getDegree(), currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
+    				g2d.fillRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
     			}
     		}
     	}
