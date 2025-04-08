@@ -24,6 +24,7 @@ public class RailRoad
 		this.degree = degree;
 	}
 	
+	
 	public int getX()
 	{
 		return x;
