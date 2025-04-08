@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 public class Graph {
 	private ArrayList<City> adjacencyList;
-	private int clickRadius = 50;
+	private int clickRadius = 25;
+	private int railRoadSizeX = 35;
+    private int railRoadSizeY = 15;	
 
 	public Graph() {
 		adjacencyList = new ArrayList<>();
@@ -54,6 +56,7 @@ public class Graph {
 		City rostov = addCity("rostov", 1393, 562);
 		City stockholm = addCity("stockholm", 822, 81);
 		City wilno = addCity("wilno", 1098, 308);
+		City venezia = addCity("venezia", 681,632);
 
 		//adding all the connections
 		ArrayList<RailRoad> railRoadList = new ArrayList<RailRoad>();
@@ -339,7 +342,7 @@ public class Graph {
 		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, -Math.toRadians(20)));
 		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, -Math.toRadians(20)));
 		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, -Math.toRadians(20)));
-		paris.addConnection(pamoplona, railRoadList);	//paris to pamoplona
+		paris.addConnection(pamplona, railRoadList);	//paris to pamoplona
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(4, "green", 0, false, false,592,463, -Math.toRadians(20)));
 		railRoadList.add(new RailRoad(4, "green", 0, false, false,592,463, -Math.toRadians(20)));
@@ -476,7 +479,7 @@ public class Graph {
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(2, "white", 0, false, false,592,463, -Math.toRadians(20)));
 		railRoadList.add(new RailRoad(2, "white", 0, false, false,592,463, -Math.toRadians(20)));
-		roma.addConnection(brindesi, railRoadList);	//roma to brindesi
+		roma.addConnection(brindisi, railRoadList);	//roma to brindesi
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, -Math.toRadians(20)));
 		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, -Math.toRadians(20)));
@@ -510,24 +513,43 @@ public class Graph {
 
 	}
 
-	private City addCity(String name, int x, int y) {
-		City city = new City(name, null , x, y);
-		adjacencyList.add(city);
-		return city;
-	}
+	 private City addCity(String name, int x, int y) {
+	    	City city = new City(name, null, x, y);
+	        adjacencyList.add(city);
+	    	return city;
+	    }
+	    
+	    public int getRailRoadSizeX() {
+	    	return railRoadSizeX;
+	    }
+	    
+	    public int getRailRoadSizeY() {
+	    	return railRoadSizeY;
+	    }
+	    
+	    public ArrayList<RailRoad> getCityConnection(City city1, City city2) {
+	    	// Get the railroad connection of city to city stuff
+	    	if (!city1.getConnections().containsKey(city2)) {
+	    		return null;
+	    	}
+	    	return city1.getConnections().get(city2);
+	    }
 
-	public ArrayList<City> getCities() {
-		return adjacencyList;
-	}
+	    public ArrayList<City> getCities() {
+	        return adjacencyList;
+	    }
+	    
+	    public int getClickRadius() {
+	    	return clickRadius;
+	    }
 
-	public int getClickRadius() {
-		return clickRadius;
-	}
-
-	public void printCities() {
-		for (City city : adjacencyList) {
-			System.out.println(city.getName() + " (" + city.getX() + ", " + city.getY() + ")");
-		}
-	}
+	    public void printCities() {
+	        for (City city : adjacencyList) {
+	            System.out.println(city.getName() + " (" + city.getX() + ", " + city.getY() + ")");
+	        }
+	    }
+	    
+	    public void addStation(City city, Station station) {
+	    	city.addStation(station);
+	    }
 }
-
