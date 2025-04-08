@@ -1,7 +1,13 @@
+package test2;
+
+import java.awt.image.BufferedImage;
+import java.awt.image.*;
+import javax.imageio.ImageIO;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.imageio.*;
-import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class CardDeck {
 	
