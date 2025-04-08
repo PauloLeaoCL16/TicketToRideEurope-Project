@@ -5,7 +5,8 @@ import java.awt.image.*;
 public class City 
 {
 	private String name;
-	private HashMap<String, RailRoad> connections;
+	private HashMap<City, ArrayList<RailRoad>> connections;
+	private HashMap<City, ArrayList<RailRoad>> secondConnections;
 	private Station hasStation;
 	private int x;
 	private int y;
@@ -16,9 +17,11 @@ public class City
 		this.name = name;
 		this.x = x;
 		this.y = y;
+		connections = new HashMap<City, ArrayList<RailRoad>>();
+		secondConnections = new HashMap<City, ArrayList<RailRoad>>();
 	}
 	
-	public void addConnection(String connection, RailRoad railRoad)
+	public void addConnection(City connection, ArrayList<RailRoad> railRoad)
 	{
 		connections.put(connection, railRoad);
 	}
@@ -28,7 +31,7 @@ public class City
 		return name;
 	}
 	
-	public HashMap<String, RailRoad> getConnections()
+	public HashMap<City, ArrayList<RailRoad>> getConnections()
 	{
 		return connections;
 	}
