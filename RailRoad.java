@@ -1,5 +1,6 @@
 package test2;
 
+import java.awt.Color;
 import java.util.*;
 
 public class RailRoad
@@ -12,17 +13,41 @@ public class RailRoad
 	private int x;
 	private int y;
 	private double degree;
+	private Color railRoadColor;
+	private Player plrThatBoughtTheRailRoad;
 	
-	public RailRoad(int cost, String color, int wild, boolean mountains, int x, int y, double degree)
+	public RailRoad(int cost, String color, int wild, boolean mountains, boolean bought, int x, int y, double degree)
 	{
 		this.cost = cost;
 		this.color = color;
 		wildNum = wild;
 		this.mountains = mountains;
-		this.bought = false;
+		this.bought = bought;
 		this.x = x;
 		this.y = y;
 		this.degree = degree;
+		this.railRoadColor = null;
+		plrThatBoughtTheRailRoad = null;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public Player getThePlayerRailroad() {
+		return plrThatBoughtTheRailRoad;
+	}
+	
+	public Color getRailRoadColor() {
+		return railRoadColor;
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
+	public double getDegree() {
+		return degree;
 	}
 	
 	public int getCost()
@@ -48,6 +73,12 @@ public class RailRoad
 	public boolean getBought()
 	{
 		return bought;
+	}
+	
+	public void setBought(Player plrThatBoughtTheRailRoad, Color railRoadColor) {
+		bought = true;
+		this.plrThatBoughtTheRailRoad = plrThatBoughtTheRailRoad;
+		this.railRoadColor = railRoadColor;
 	}
 	
 	public int getPoints()
