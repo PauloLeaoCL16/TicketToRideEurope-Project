@@ -431,7 +431,27 @@ public class Graph {
 		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, -Math.toRadians(20)));
 		sarajevo.addSecondConnection(budapesi, railRoadList);	//sarajevo to budapesi
 		
+		railRoadList = new ArrayList<RailRoad>();
+		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, -Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, -Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, -Math.toRadians(20)));
+		athina.addSecondConnection(sofia, railRoadList);	//athina to sofia
 		
+		railRoadList = new ArrayList<RailRoad>();
+		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, -Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, -Math.toRadians(20)));
+		sofia.addSecondConnection(sarajevo, railRoadList);	//sofia to sarajevo
+		
+		railRoadList = new ArrayList<RailRoad>();
+		railRoadList.add(new RailRoad(3, "blue", 0, false, false,592,463, -Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "blue", 0, false, false,592,463, -Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "blue", 0, false, false,592,463, -Math.toRadians(20)));
+		sofia.addSecondConnection(constantinople, railRoadList);	//sofia to constantinople
+		
+		railRoadList = new ArrayList<RailRoad>();
+		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, -Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, -Math.toRadians(20)));
+		sofia.addSecondConnection(bucuresti, railRoadList);	//sofia to bucuresti
 		
 	}
 
