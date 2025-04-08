@@ -16,7 +16,7 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
-    private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, playerpointer;
+    private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, playerpointer, redplayer, blueplayer, greenplayer, yellowplayer;
     private boolean isPlayButtonHovered = false;
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
@@ -37,6 +37,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private City[] clickedCity = new City[2];
     private boolean inAnEvent;
     
+    private int turnUsed = 0;
+    
     public GameBoard() {
         try {
             board = ImageIO.read(MainMenu.class.getResource("/ttreImages/gamebg.png"));
@@ -48,6 +50,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             ticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticket.png"));
             template = ImageIO.read(MainMenu.class.getResource("/ttreImages/blankcardtemp.png"));
             playerpointer = ImageIO.read(MainMenu.class.getResource("/ttreImages/currentplayerarrow.png"));
+            redplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/redplayer.png"));
+            blueplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/blueplayer.png"));
+            greenplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/greenplayer.png"));
+            yellowplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/yellowplayer.png"));
             p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p1bg.png"));
             p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p2bg.png"));
             p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p3bg.png"));
@@ -78,10 +84,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         faceUpCard[4] = cardDeck.drawCard();
         
         players = new ArrayList<Player>();
-        players.add(new Player("red"));
-        players.add(new Player("blue"));
-        players.add(new Player("green"));
-        players.add(new Player("yellow"));
+        players.add(new Player("red", redplayer, player1, redplayer));
+        players.add(new Player("blue", blueplayer, player2, blueplayer));
+        players.add(new Player("green", greenplayer, player3, greenplayer));
+        players.add(new Player("yellow", yellowplayer, player4, yellowplayer));
 //        players.get(currentPlr).addTicket(longRoutes.get(currentPlr));
         
         firstCityClicked = false;
@@ -103,25 +109,25 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawImage(cardBack, 1560, 3, null);
         g2d.drawImage(template, 1675, 3, null);
         g2d.drawImage(ticket, 1795, 3, null);
-        if( turns[0] )
+        if( currentPlr ==0 )
         {
         	g2d.drawImage(p1bg, 1420, 750, 500, 300, null);
         	g2d.drawImage(playerpointer, 1875, 225, null);
         	//g2d.drawImage(p1bg, 1546, 809, null);
         }
-        else if( turns[1])
+        else if( currentPlr ==1)
         {
         	g2d.drawImage(p2bg, 1420, 750, 500, 300, null);
         	g2d.drawImage(playerpointer, 1875, 350, null);
         	//g2d.drawImage(p2bg, 1546, 809, null);
         }
-        else if(turns[2])
+        else if(currentPlr ==2)
         {
         	g2d.drawImage(p3bg, 1420, 750, 500, 300, null);
         	g2d.drawImage(playerpointer, 1875, 450, null);
         	//g2d.drawImage(p3bg, 1546, 809, null);
         }
-        else if(turns[3])
+        else if(currentPlr ==3)
         {
         	g2d.drawImage(p4bg, 1420, 750, 500, 300, null);
         	g2d.drawImage(playerpointer, 1875, 560, null);
@@ -251,49 +257,24 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	{
     		if (x > 1275 && x < 1475 && y> 10 && y<60)
     		{
-    			cycleTurn();
+    			changeTurn();
     		}
     		
     		//alow for players to draw cards from the face-up card options
 	    	for (int i = 0; i < 5; i++) {
-	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80) {
-	    			if(players.get(currentPlr).getActions() == 1 && faceUpCard[i].getColor().equals("wild") == false)
-	    			{
-	    				players.get(currentPlr).addCard(faceUpCard[i]);
-	    				faceUpCard[i] = cardDeck.drawCard();
-	    				players.get(currentPlr).setActions(2);
-	    				cycleTurn();
-	    			}
-	    			else if(players.get(currentPlr).getActions() == 2 && faceUpCard[i].getColor().equals("wild") == false)
-	    			{
-	    				players.get(currentPlr).addCard(faceUpCard[i]);
-	    				faceUpCard[i] = cardDeck.drawCard();
-	    				players.get(currentPlr).setActions(1);
-	    			}
-	    			else if(players.get(currentPlr).getActions() == 2 && faceUpCard[i].getColor().equals("wild") == true)
-	    			{
-	    				players.get(currentPlr).addCard(faceUpCard[i]);
-	    				faceUpCard[i] = cardDeck.drawCard();
-	    				players.get(currentPlr).setActions(2);
-	    				cycleTurn();
-	    			}
+	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80 && turnUsed + faceUpCard[i].getCostToDraw() <= 2) {
+	    			players.get(currentPlr).addCard(faceUpCard[i]);
+	    			turnUsed += faceUpCard[i].getCostToDraw();
+	    			faceUpCard[i] = cardDeck.drawCard();
 	    		}
 	        }
+	        
 	    	
 	    	//allow for players to draw cards from the pile
 	    	if( x >= 1550 && x <= 1650 && y >= 3 && y <= 163)
 	    	{
-	    		if(players.get(currentPlr).getActions() == 1)
-	    		{
-	    			players.get(currentPlr).addCard(cardDeck.drawCard());
-	    			players.get(currentPlr).setActions(2);
-	    			cycleTurn();
-	    		}
-	    		else if(players.get(currentPlr).getActions() == 2)
-	    		{
-	    			players.get(currentPlr).addCard(cardDeck.drawCard());
-	    			players.get(currentPlr).setActions(1);
-	    		}
+	    		players.get(currentPlr).addCard(cardDeck.drawCard());
+	    		turnUsed += 1;
 	    	}
 	    	
 	    	//Allow to click ticket
@@ -331,107 +312,35 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	}
     	else if (e.getButton() == MouseEvent.BUTTON3)// this is where you write what happens if the player right clicks
     	{
-    		ArrayList<City> cityList = graph.getCities();
-	    	int maxSize = graph.getClickRadius();
-	    	for (int i = 0; i < cityList.size(); i++) {
-	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize && cityList.get(i).getHasStation() == null && players.get(currentPlr).getStations() > 0) {
-	    			out.println("Place station at: " + cityList.get(i).getName());
-	    			cityList.get(i).addStation(players.get(currentPlr).useStation());
-	    			cityList.get(i).getHasStation().setFromCity(cityList.get(i).getName());
-	    			
-//	    			out.println(cityList.get(i).getHasStation().getFromCity());
-	    			break;
-	    		}
-	    	}
+    		clickedCity[0] = null;
+			clickedCity[1] = null;
+			if (turnUsed + 2 <= 2) {
+				ArrayList<City> cityList = graph.getCities();
+		    	int maxSize = graph.getClickRadius();
+		    	for (int i = 0; i < cityList.size(); i++) {
+		    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize && cityList.get(i).getHasStation() == null && players.get(currentPlr).getStations() > 0) {
+		    			out.println("Place station at: " + cityList.get(i).getName());
+		    			cityList.get(i).addStation(players.get(currentPlr).removeStation());
+		    			cityList.get(i).getHasStation().setFromCity(cityList.get(i).getName());
+		    			turnUsed += 2;
+//		    			out.println(cityList.get(i).getHasStation().getFromCity());
+		    			break;
+		    		}
+		    	}
+			}
     	}
-	   
+	   if (turnUsed >= 2) {
+		   changeTurn();
+	   }
     	repaint();
     }
-    public void cycleTurn()
-    {
- 	   int currentTurn = 1;
- 	   if(turns[0])
- 	   {
- 		   if(players.get(0).getTrainsLeft() <= 2)
- 		   {
- 			   endGame = true;
- 		   }
- 		   turns[0]=false;
- 		   turns[1]=true;
- 		   currentPlr = 1;
- 		   if(endGame)
- 		   {
- 			   endNumTurns--;
- 		   }
- 		   if(endNumTurns == 0)
- 		   {
- 			   gameHasEnded = true;
- 			   System.out.println("game has ended");
- 		   }
- 	   }
- 	   else if(turns[1])
- 	   {
- 		   if(players.get(1).getTrainsLeft() <= 2)
-		   {
-			   endGame = true;
-		   }
- 		   turns[1]=false;
- 		   turns[2]=true;
- 		   currentPlr = 2;
- 		   if(endGame)
-		   {
-			   endNumTurns--;
-		   }
-		   if(endNumTurns == 0)
-		   {
-			   gameHasEnded = true;
-			   System.out.println("game has ended");
-		   }
- 	   }
- 	   else if(turns[2])
- 	   {
- 		  if(players.get(2).getTrainsLeft() <= 2)
-		   {
-			   endGame = true;
-		   }
- 		   turns[2]=false;
- 		   turns[3]=true;
- 		   currentPlr = 3;
- 		   if(endGame)
-		   {
-			   endNumTurns--;
-		   }
-		   if(endNumTurns == 0)
-		   {
-			   gameHasEnded = true;
-			   System.out.println("game has ended");
-		   }
- 	   }
- 	   else if(turns[3])
- 	   {
- 		  if(players.get(3).getTrainsLeft() <= 2)
-		   {
-			   endGame = true;
-		   }
- 		   turns[3]=false;
- 		   turns[0]=true;
- 		   currentPlr = 0;
- 		   if(endGame)
-		   {
-			   endNumTurns--;
-		   }
-		   if(endNumTurns == 0)
-		   {
-			   gameHasEnded = true;
-			   System.out.println("game has ended");
-		   }
- 	   }
- 	   for(int i = 0; i<4; i++)
- 	   {
- 		   if(turns[i]==true)
- 			   currentTurn=i+1;
- 	   }
- 	   System.out.println("turn cycled: player " + currentTurn);
+    
+    public void changeTurn() {
+    	currentPlr += 1;
+    	turnUsed = 0;
+    	if (currentPlr >= players.size()) {
+    		currentPlr = 0;
+    	}
     }
     
 
