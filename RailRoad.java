@@ -40,7 +40,7 @@ public class RailRoad
 		return degree;	
 	}
 	
-	public void buyRailRoad()
+	public void setBought()
 	{
 		bought = true;
 	}
