@@ -1,6 +1,7 @@
 package test2;
 
 import java.util.*;
+import java.awt.Color;
 import java.awt.image.*;
 
 public class Player {
@@ -12,11 +13,10 @@ public class Player {
     private ArrayList<Station> usedStationList;
     private ArrayList<Station> unusedStationList;
     private int trainsLeft;
-    private BufferedImage plrLabel;
     private String color;
-    private BufferedImage profileImage;
+    private Color plrColor;
     
-    public Player(String color, BufferedImage stationImage, BufferedImage plrLabel, BufferedImage profileImage) {
+    public Player(String color, BufferedImage stationImage, Color plrColor) {
         points = 0;
         trainsLeft = 45;
         tickets = new ArrayList<Ticket>();
@@ -27,8 +27,7 @@ public class Player {
         unusedStationList.add(new Station(color, stationImage));
         unusedStationList.add(new Station(color, stationImage));
         this.color = color;
-        this.plrLabel = plrLabel;
-        this.profileImage = profileImage;
+        this.plrColor = plrColor;
     }
     
     public int getStations()
@@ -36,14 +35,6 @@ public class Player {
     	int size = 0;
     	size += unusedStationList.size();
     	return size;
-    }
-    
-    public BufferedImage getProfileImage() {
-    	return profileImage;
-    }
-    
-    public BufferedImage getPlrLabel() {
-    	return plrLabel;
     }
     
     public void useStation()
@@ -119,5 +110,9 @@ public class Player {
 
     public String getPlayerColor() {
     	return color;
+    }
+    
+    public Color getPlrColor() {
+    	return plrColor;
     }
 }
