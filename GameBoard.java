@@ -16,7 +16,7 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
-    private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, playerpointer, redplayer, blueplayer, greenplayer, yellowplayer;
+    private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
     private boolean isPlayButtonHovered = false;
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
@@ -28,20 +28,17 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private boolean firstCityClicked; // highlighting purposes
     private ArrayList<Integer> highlightCity; // takes in 2 locations for highlighting purposes
     private Graph graph;// stores all the coordinates of the cities in a map
-    private boolean[] turns = {true, false, false, false};
-    private int endNumTurns = 5; //this counts the num of turns till the game ends after endGame has been set to true
-    private boolean endGame = false; //this triggers the final stage of the game where players have 1 turn each
-    private boolean gameHasEnded = false; //if this is set to true it should toggle the end game panel with the score board
     
     private int currentPlr;
     private City[] clickedCity = new City[2];
-    private boolean inAnEvent;
+    private int panelStuff = 1; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck
     
     private int turnUsed = 0;
     
     public GameBoard() {
         try {
-            board = ImageIO.read(MainMenu.class.getResource("/ttreImages/gamebg.png"));
+            table = ImageIO.read(MainMenu.class.getResource("/ttreImages/gamebg.png"));
+            board = ImageIO.read(MainMenu.class.getResource("/ttreImages/gameboard.png"));
             player1 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player1label.png"));
             player2 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player2label.png"));
             player3 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player3label.png"));
@@ -49,45 +46,36 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             cardBack = ImageIO.read(MainMenu.class.getResource("/ttreImages/backofcard.png"));
             ticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticket.png"));
             template = ImageIO.read(MainMenu.class.getResource("/ttreImages/blankcardtemp.png"));
-            playerpointer = ImageIO.read(MainMenu.class.getResource("/ttreImages/currentplayerarrow.png"));
             redplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/redplayer.png"));
             blueplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/blueplayer.png"));
             greenplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/greenplayer.png"));
             yellowplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/yellowplayer.png"));
+            playerpointer = ImageIO.read(MainMenu.class.getResource("/ttreImages/currentplayerarrow.png"));
+            ticketDeck = new TicketDeck();
+            players = new ArrayList<Player>();
+            currentPlr = 0;
+            cardDeck = new CardDeck();
+            ticketDeck = new TicketDeck();
+            faceUpCard = new ColorCard[5];
+            clickedCity[0] = null;
+            clickedCity[1] = null;
+            faceUpCard[0] = cardDeck.drawCard();
+            faceUpCard[1] = cardDeck.drawCard();
+            faceUpCard[2] = cardDeck.drawCard();
+            faceUpCard[3] = cardDeck.drawCard();
+            faceUpCard[4] = cardDeck.drawCard();
+            players.add(new Player("red", redplayer, new Color(255,0,0)));
+            players.add(new Player("blue", blueplayer, new Color(0,0,255)));
+            players.add(new Player("green", greenplayer, new Color(0,255,0)));
+            players.add(new Player("yellow", yellowplayer, new Color(255,255,0)));
             p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p1bg.png"));
             p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p2bg.png"));
             p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p3bg.png"));
             p4bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p4bg.png"));
-            ticketDeck = new TicketDeck();
-//            longRoutes = new ArrayList<>();
-//            longRoutes.add(new Ticket("palermo", "moskva",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute1.png"))));
-//            longRoutes.add(new Ticket("brest", "petrograd",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute2.png"))));
-//            longRoutes.add(new Ticket("kobenhavwn", "erzurum",21,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute3.png"))));
-//            longRoutes.add(new Ticket("cadiz", "sotckholm",21,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute4.png"))));
-//            longRoutes.add(new Ticket("lisboa", "danzic",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute5.png"))));
-//            longRoutes.add(new Ticket("edinburch", "athina",20,ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute6.png"))));
-
+            startticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticketchoose.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        currentPlr = 0;
-        inAnEvent = true;
-        cardDeck = new CardDeck();
-        ticketDeck = new TicketDeck();
-        faceUpCard = new ColorCard[5];
-        clickedCity[0] = null;
-        clickedCity[1] = null;
-        faceUpCard[0] = cardDeck.drawCard();
-        faceUpCard[1] = cardDeck.drawCard();
-        faceUpCard[2] = cardDeck.drawCard();
-        faceUpCard[3] = cardDeck.drawCard();
-        faceUpCard[4] = cardDeck.drawCard();
-        
-        players = new ArrayList<Player>();
-        players.add(new Player("red", redplayer, player1, redplayer));
-        players.add(new Player("blue", blueplayer, player2, blueplayer));
-        players.add(new Player("green", greenplayer, player3, greenplayer));
-        players.add(new Player("yellow", yellowplayer, player4, yellowplayer));
 //        players.get(currentPlr).addTicket(longRoutes.get(currentPlr));
         
         firstCityClicked = false;
@@ -105,7 +93,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(board, 0, 0, getWidth(), getHeight(), null);
+
+
+        g2d.drawImage(table, 0, 0, getWidth(), getHeight(), null);
+        g2d.drawImage(board, 0, 0, 1500, 1040, null);
         g2d.drawImage(cardBack, 1560, 3, null);
         g2d.drawImage(template, 1675, 3, null);
         g2d.drawImage(ticket, 1795, 3, null);
@@ -174,18 +165,41 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("yellow")), 1777, 890); // Yellow
         g2d.drawString(players.get(currentPlr).getTicket().size()+"", 1845, 890	); // Ticket
         
-        //current player stuff
         
         
-        
-        //Draw the station
+        //Draw the station and railroads
+
         ArrayList<City> cityList = graph.getCities();
     	int maxSize = graph.getClickRadius();
     	for (int i = 0; i < cityList.size(); i++) {
+    		// Draw station
     		if (cityList.get(i).getHasStation() != null) {
-    			//g2d.drawImage(redplayer, cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
+    			g2d.drawImage(cityList.get(i).getHasStation().getStationImage(), cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
+    		}
+    		// Get all connections
+    		HashMap<City, ArrayList<RailRoad>> allConnections = cityList.get(i).getConnections();
+    		Set<City> cityKeys = allConnections.keySet();
+    		// Go through all connections
+    		for (City cities: cityKeys) {
+    			// Get the railroads
+    			ArrayList<RailRoad> currentRailRoad = allConnections.get(cities);
+    			// Get the railroad color
+    			Color railRoadColor = null;
+    			if (currentRailRoad.get(0).getRailRoadColor() == null) {
+    				railRoadColor = new Color(255, 255, 255);
+    			} else {
+    				railRoadColor = currentRailRoad.get(0).getRailRoadColor();
+    			}
+    			g2d.setColor(railRoadColor);
+    			// Draw all the railroads
+    			for (int j = 0; j < currentRailRoad.size(); j++) {
+    				g2d.rotate(currentRailRoad.get(j).getDegree() + Math.toRadians(90), currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
+    				g2d.fillRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
+    				g2d.setTransform(new AffineTransform());
+    			}
     		}
     	}
+    	g2d.setColor(new Color(255,255,255));
         
         if(firstCityClicked)
         {
@@ -204,45 +218,26 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         }
         if(clickedCity[1] != null)
         {
+	        //highlight city when clicked
+        	g2d.setStroke(new BasicStroke(4));
+        	g2d.setColor(Color.YELLOW);
+	        g2d.drawOval(clickedCity[1].getX() - 11, clickedCity[1].getY() - 11, 22, 22);
 			clickedCity[0] = null;
 			clickedCity[1] = null;
-			repaint();
         }
         
-        if (inAnEvent) {
+        if (panelStuff != 0) {
 
 //        	g2d.setPaint(new Color(0, 0, 0, 0.5f));
 //        	g2d.fillRect(0, 0, getWidth(), getHeight());
         	g2d.setPaint(new Color(0, 0, 0));
         	g2d.fillRect(1500, 0, getWidth() - 1500, getHeight());
+        	if (panelStuff == 1) {
+        		g2d.drawImage(startticket, 1500, 3, null);
+        	}
         }
-        
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect(1275, 10, 200, 50);
-        g2d.setColor(Color.WHITE);
-        g2d.drawString("skip turn", 1325, 40);
-        
-    	for (int i = 0; i < cityList.size(); i++) {
-    		// Draw station
-    		if (cityList.get(i).getHasStation() != null) {
-    			g2d.drawImage(cityList.get(i).getHasStation().getStationImage(), cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
-    		}
-    		// Get all connections
-    		HashMap<City, ArrayList<RailRoad>> allConnections = cityList.get(i).getConnections();
-    		Set<City> cityKeys = allConnections.keySet();
-    		// Go through all connections
-    		for (City cities: cityKeys) {
-    			// Get the railroads
-    			ArrayList<RailRoad> currentRailRoad = allConnections.get(cities);
-    			// Draw all the railroads
-    			for (int j = 0; j < currentRailRoad.size(); j++) {
-    				g2d.setTransform(new AffineTransform());
-    				g2d.rotate(currentRailRoad.get(j).getDegree() + Math.toRadians(90), currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
-    				g2d.fillRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
-    			}
-    		}
-    	}
     }
+
    
     
     @Override
@@ -250,17 +245,12 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	int x = e.getX();
     	int y = e.getY();
     	System.out.println(x + " " + y);
-    	if (inAnEvent) {
+    	if (panelStuff != 0) {
     		return;
         }
     	if(e.getButton() == MouseEvent.BUTTON1)// checks if the player left clicked	
     	{
-    		if (x > 1275 && x < 1475 && y> 10 && y<60)
-    		{
-    			changeTurn();
-    		}
-    		
-    		//alow for players to draw cards from the face-up card options
+	    	//alow for players to draw cards from the face-up card options
 	    	for (int i = 0; i < 5; i++) {
 	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80 && turnUsed + faceUpCard[i].getCostToDraw() <= 2) {
 	    			players.get(currentPlr).addCard(faceUpCard[i]);
@@ -268,7 +258,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    			faceUpCard[i] = cardDeck.drawCard();
 	    		}
 	        }
-	        
 	    	
 	    	//allow for players to draw cards from the pile
 	    	if( x >= 1550 && x <= 1650 && y >= 3 && y <= 163)
@@ -281,7 +270,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	        if( x >= 1795 && x <= 1895 && y >= 3 && y <= 163)
 	    	{
 	    		players.get(currentPlr).addTicket(ticketDeck.draw());
-	    		inAnEvent = true;
+	    		panelStuff = 2;
 	    	}
 	    	
 	        
@@ -296,14 +285,14 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	int maxSize = graph.getClickRadius();
 	    	for (int i = 0; i < cityList.size(); i++) {
 	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize) {
-	    			out.println("Player clicked: " + cityList.get(i).getName());
+//	    			out.println("Player clicked: " + cityList.get(i).getName());
 	    			if (clickedCity[0] == null) {
 	    				clickedCity[0] = cityList.get(i);
 	    			} else if (clickedCity[0] != cityList.get(i)) {
 	    				clickedCity[1] = cityList.get(i);
 		    			
 		    			if (clickedCity[0] != null && clickedCity[1] != null) {
-		    				out.print(clickedCity[0].getName() + " " + clickedCity[1].getName());
+		    				buyEvent();
 		    			}
 	    			}
 	    			break;
@@ -334,7 +323,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	   }
     	repaint();
     }
-    
     public void changeTurn() {
     	currentPlr += 1;
     	turnUsed = 0;
@@ -343,6 +331,101 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	}
     }
     
+    public void initiateCoords()
+    {
+    	//allow for player to click on a 2 cities to buy them
+    	//coordinates for each point
+    	//frankfurt: 568 <= x && x <= 603 && 433 <= y && y <= 462
+    	//brest: 341 <= x && x <= 366 && 313 <= y && y <= 334
+    	//essen: 584 <= x && x <= 609 && 332 <= y && y <= 353
+    	//berlin: 722 <= x && x <= 747 && 350 <= y && y <= 371
+    	//wien: 801 <= x && x <= 826 && 510 <= y && y <= 531
+    	//zurich: 552 <= x && x <= 577 && 573 <= y && y <= 594
+    	//marseille: 513 <= x && x <= 538 && 703 <= y && y <= 724
+    	//roma: 673 <= x && x <= 698 && 747 <= y && y <= 768
+    	//brindisi: 790 <= x && x <= 815 && 781 <= y && y <= 802
+    	//sofia: 987 <= x && x <= 1012 && 729 <= y && y <= 750
+    	//kobenhavn: 678 <= x && x <= 703 && 190 <= y && y <= 211
+    	//amsterdam: 472 <= x && x <= 497 && 319 <= y && y <= 340
+    	//dieppe: 322 <= x && x <= 347 && 438 <= y && y <= 459
+    	//paris: 390 <= x && x <= 415 && 499 <= y && y <= 520
+    	//bruxelles: 439 <= x && x <= 464 && 382 <= y && y <= 403
+    	//munchen: 641 <= x && x <= 666 && 485 <= y && y <= 506
+    	//athina: 967 <= x && x <= 992 && 885 <= y && y <= 906
+    	//madrid: 169 <= x && x <= 194 && 816 <= y && y <= 847
+    	//cadiz: 167 <= x && x <= 192 && 923 <= y && y <= 944
+    	//barcelona: 321 <= x && x <= 346 && 842 <= y && y <= 863
+    	//pamplona: 304 <= x && x <= 329 && 712 <= y && y <= 733
+    	//constantinople: 1143 <= x && x <= 1168 && 815 <= y && y <= 836
+    	//budapest: 860 <= x && x <= 885 && 550 <= y && y <= 571
+    	//bucuresti: 1073 <= x && x <= 1098 && 644 <= y && y <= 665
+    	//sevastopol: 1264 <= x && x <= 1289 && 662 <= y && y <= 683
+    	//kharkov: 1336 <= x && x <= 1361 && 486 <= y && y <= 507
+    	//kyiv: 1153 <= x && x <= 1178 && 416 <= y && y <= 437
+    	//moskva: 1360 <= x && x <= 1385 && 278 <= y && y <= 299
+    	//petrograd: 1227 <= x && x <= 1252 && 112 <= y && y <= 133
+    	//rica: 994 <= x && x <= 1019 && 125 <= y && y <= 146
+    	//danzic: 875 <= x && x <= 900 && 246 <= y && y <= 267
+    	//edinburgh: 248 <= x && x <= 273 && 111 <= y && y <= 132
+    	//lisboa: 73 <= x && x <= 98 && 856 <= y && y <= 877
+    	//zagrab: 784 <= x && x <= 809 && 638 <= y && y <= 659
+    	//sarajevo: 897 <= x && x <= 922 && 717 <= y && y <= 738
+    	//palermo: 730 <= x && x <= 755 && 927 <= y && y <= 948
+    	//smyrna: 1084 <= x && x <= 1109 && 921 <= y && y <= 942
+    	//angora: 1249 <= x && x <= 1274 && 888 <= y && y <= 909
+    	//erzurum: 1357 <= x && x <= 1382 && 855 <= y && y <= 876
+    	//sochi: 1385 <= x && x <= 1410 && 683 <= y && y <= 704
+    	//rostov: 1393 <= x && x <= 1418 && 562 <= y && y <= 583
+    	//stockholm: 822 <= x && x <= 847 && 81 <= y && y <= 102
+    	//wilno: 1098 <= x && x <= 1123 && 308 <= y && y <= 329
+    	//warszawa: 946 <= x && x <= 971 && 344 <= y && y <= 365
+    	//venezia: 667 <= x && x <= 693 && 619 <= y && y <= 640
+    	//
+    	//
+
+    }
+    
+    public void buyEvent() {
+//    	inAnEvent = true;
+//		repaint();
+    	
+    	ArrayList<RailRoad> neededRailRoad = graph.getCityConnection(clickedCity[0], clickedCity[1]);
+		//Check if the railroad is already bought
+		if (neededRailRoad != null && !neededRailRoad.get(0).getBought()) {
+			//Requirements to build a railroad
+			String railroadColor = neededRailRoad.get(0).getColor();
+			int amountNeeded = neededRailRoad.get(0).getCost();
+			boolean isMountain = neededRailRoad.get(0).getMountains();
+			int wildNeeded = neededRailRoad.get(0).getWildNum();
+			
+			
+			if (isMountain) {
+				//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
+				for (int i = 0; i < 3; i++) {
+					ColorCard draw = cardDeck.drawCard();
+					if (railroadColor.equals(draw.getColor()) || draw.getColor().equals("wild")) {
+						amountNeeded++;
+					}
+				}
+			}
+			int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
+			if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded) {
+				//Buy the railroad successfully (Will add it to UI and remove from player card later)
+				for (int i = 0; i < neededRailRoad.size(); i++) {
+					neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+				}
+				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
+			} else {
+				out.println("Not enough railroads");
+			}
+//			inAnEvent = false;
+//			repaint();
+		} else if (neededRailRoad == null) {
+			out.println("No connection");
+		} else {
+			out.println("Railroad is already owned");
+		}
+    }
 
     @Override
     public void mouseMoved(MouseEvent e) {
