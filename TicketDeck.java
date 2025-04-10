@@ -5,47 +5,29 @@ import java.util.Collections;
 import javax.imageio.ImageIO;
 
 import java.awt.image.*;
-import java.io.IOException;
 
 public class TicketDeck {
 	private ArrayList<Ticket> ticketList;
 	private ArrayList<Ticket> longTicketList;
-	
 	public TicketDeck() {
 		ticketList = new ArrayList<Ticket>();
-		longTicketList = new ArrayList<Ticket>();
 		add();
 	}
 	
 	private void add() {
-		try 
-		{
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			ticketList.add(new Ticket("amsterdam", "pamplona", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/amsterdam-pamplona.png"))));
-			shuffle();
+		try {
+		longTicketList.add(new Ticket("palermo", "moskva", 20, ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute1.png"))));
+		longTicketList.add(new Ticket("brest", "petrograd", 20, ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute2.png"))));
+		longTicketList.add(new Ticket("kobenhavn", "erzurum", 21, ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute3.png"))));
+		longTicketList.add(new Ticket("cadiz", "stockholm", 21, ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute4.png"))));
+		longTicketList.add(new Ticket("lisboa", "danzic", 20, ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute5.png"))));
+		longTicketList.add(new Ticket("edinburch", "athina", 21, ImageIO.read(MainMenu.class.getResource("/ttreImages/longRoute6.png"))));
+		shuffle();
 		}
-		catch (IOException e) {
-            e.printStackTrace();
-        }
-		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	private void shuffle() {
@@ -62,15 +44,12 @@ public class TicketDeck {
         
         return item;
 	}
-	
 	public Ticket drawLongTicket() {
-		Ticket item = longTicketList.remove(longTicketList.size() - 1);
-        if (longTicketList.size() == 0) {
-            add();
-        }
-        
-        return item;
-	}
-	
-	
+ 		Ticket item = longTicketList.remove(longTicketList.size() - 1);
+         if (longTicketList.size() == 0) {
+             add();
+         }
+         
+         return item;
+ 	}
 }
