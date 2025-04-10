@@ -71,7 +71,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             e.printStackTrace();
         }
         currentPlr = 0;
-        inAnEvent = false;
+        inAnEvent = true;
         cardDeck = new CardDeck();
         ticketDeck = new TicketDeck();
         faceUpCard = new ColorCard[5];
