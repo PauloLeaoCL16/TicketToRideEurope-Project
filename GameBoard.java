@@ -34,6 +34,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private boolean inAnEvent;
     
     private int turnUsed = 0;
+    private City currentCityHovered = null;
+    
+	private int globalX = 0;
+	private int globalY = 0;
     
     public GameBoard() {
         try {
@@ -66,13 +70,20 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             faceUpCard[3] = cardDeck.drawCard();
             faceUpCard[4] = cardDeck.drawCard();
             players.add(new Player("red", redplayer, new Color(255,0,0)));
-            players.add(new Player("blue", blueplayer, new Color(0,0,255)));
-            players.add(new Player("green", greenplayer, new Color(0,255,0)));
-            players.add(new Player("yellow", yellowplayer, new Color(255,255,0)));
+            players.add(new Player("orange", blueplayer, new Color(255,122,0)));
+            players.add(new Player("white", greenplayer, new Color(255,255,255)));
+            players.add(new Player("blue", yellowplayer, new Color(0,0,255)));
             p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p1bg.png"));
             p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p2bg.png"));
             p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p3bg.png"));
             p4bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p4bg.png"));
+            longRoutes = new ArrayList<>();
+//          longRoutes.add(new Ticket("palermo", "moskva",20,ImageIO.read(MainMenu.class.getResource("/tickets/longRoute1.png"))));
+//          longRoutes.add(new Ticket("brest", "petrograd",20,ImageIO.read(MainMenu.class.getResource("/tickets/longRoute2.png"))));
+//          longRoutes.add(new Ticket("kobenhavwn", "erzurum",21,ImageIO.read(MainMenu.class.getResource("/tickets/longRoute3.png"))));
+//          longRoutes.add(new Ticket("cadiz", "sotckholm",21,ImageIO.read(MainMenu.class.getResource("/tickets/longRoute4.png"))));
+//          longRoutes.add(new Ticket("lisboa", "danzic",20,ImageIO.read(MainMenu.class.getResource("/tickets/longRoute5.png"))));
+//          longRoutes.add(new Ticket("edinburch", "athina",20,ImageIO.read(MainMenu.class.getResource("/tickets/longRoute6.png"))));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -184,7 +195,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     			// Get the railroad color
     			Color railRoadColor = null;
     			if (currentRailRoad.get(0).getRailRoadColor() == null) {
-    				railRoadColor = new Color(255, 255, 255);
+    				continue;
     			} else {
     				railRoadColor = currentRailRoad.get(0).getRailRoadColor();
     			}
@@ -222,6 +233,14 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	        g2d.drawOval(clickedCity[1].getX() - 11, clickedCity[1].getY() - 11, 22, 22);
 			clickedCity[0] = null;
 			clickedCity[1] = null;
+        }
+        
+        if (currentCityHovered != null)
+        {
+        	g2d.setPaint(new Color(255, 255, 255));
+        	g2d.fillRoundRect(globalX, globalY, 250, 80, 15, 15);
+        	g2d.setPaint(new Color(0, 0, 0));
+        	g2d.drawString(currentCityHovered.getName(), globalX + 55, globalY + 40);
         }
         
         if (inAnEvent) {
@@ -424,7 +443,21 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 
     @Override
     public void mouseMoved(MouseEvent e) {
-      
+    	globalX = e.getX();
+    	globalY = e.getY();
+    	ArrayList<City> cityList = graph.getCities();
+    	int maxSize = graph.getClickRadius();
+    	for (int i = 0; i < cityList.size(); i++) {
+    		if (globalX > cityList.get(i).getX() - maxSize && globalX < cityList.get(i).getX() + maxSize && globalY > cityList.get(i).getY() - maxSize && globalY < cityList.get(i).getY() + maxSize) {
+    			out.println("Hover: " + cityList.get(i).getName());
+    			currentCityHovered = cityList.get(i);
+//    			out.println(cityList.get(i).getHasStation().getFromCity());
+    			break;
+    		} else {
+    			currentCityHovered = null;
+    		}
+    	}
+		repaint();
     }
 
     @Override
@@ -437,7 +470,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     public void mouseReleased(MouseEvent e) {}
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+
+    }
 
     @Override
     public void mouseExited(MouseEvent e) {}
