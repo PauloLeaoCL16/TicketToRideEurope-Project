@@ -235,10 +235,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.fillRect(1500, 0, getWidth() - 1500, getHeight());
         	if (panelStuff == 1) {
         		g2d.drawImage(startticket, 1490, 3, null);
-        		g2d.drawImage(sidewaytemplate, 1600, 100, null);
-        		g2d.drawImage(sidewaytemplate, 1600, 300, null);
+        		g2d.drawImage(player1, 1760, 3, null);
+        		g2d.drawImage(sidewaytemplate, 1600, 200, null);
+        		g2d.drawImage(sidewaytemplate, 1600, 400, null);
         		g2d.drawImage(sidewaytemplate, 1600, 600, null);
-        		g2d.drawImage(sidewaytemplate, 1600, 900, null);
+        		g2d.drawImage(sidewaytemplate, 1600, 800, null);
         	}
         }
     }
