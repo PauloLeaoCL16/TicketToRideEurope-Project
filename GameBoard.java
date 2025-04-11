@@ -16,7 +16,7 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
-    private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
+    private BufferedImage sidewaytemplate, table, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
     private boolean isPlayButtonHovered = false;
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
@@ -52,6 +52,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             yellowplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/yellowplayer.png"));
             playerpointer = ImageIO.read(MainMenu.class.getResource("/ttreImages/currentplayerarrow.png"));
             ticketDeck = new TicketDeck();
+            sidewaytemplate = ImageIO.read(MainMenu.class.getResource("/ttreImages/blankcardtemp2.png"));
             players = new ArrayList<Player>();
             currentPlr = 0;
             cardDeck = new CardDeck();
@@ -233,7 +234,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.setPaint(new Color(0, 0, 0));
         	g2d.fillRect(1500, 0, getWidth() - 1500, getHeight());
         	if (panelStuff == 1) {
-        		g2d.drawImage(startticket, 1500, 3, null);
+        		g2d.drawImage(startticket, 1490, 3, null);
+        		g2d.drawImage(sidewaytemplate, 1600, 100, null);
+        		g2d.drawImage(sidewaytemplate, 1600, 300, null);
+        		g2d.drawImage(sidewaytemplate, 1600, 600, null);
+        		g2d.drawImage(sidewaytemplate, 1600, 900, null);
         	}
         }
     }
