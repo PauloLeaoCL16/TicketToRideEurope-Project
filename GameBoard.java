@@ -240,6 +240,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.setPaint(new Color(255, 255, 255));
         	g2d.fillRoundRect(globalX, globalY, 250, 80, 15, 15);
         	g2d.setPaint(new Color(0, 0, 0));
+        	g2d.drawRoundRect(globalX, globalY, 250, 80, 15, 15);
         	g2d.drawString(currentCityHovered.getName(), globalX + 55, globalY + 40);
         }
         
