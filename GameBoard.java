@@ -16,7 +16,7 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
-    private BufferedImage sidewaytemplate, table, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
+    private BufferedImage sidewaytemplate, table, okbutton, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
     private boolean isPlayButtonHovered = false;
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
@@ -31,7 +31,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     
     private int currentPlr;
     private City[] clickedCity = new City[2];
-    private int panelStuff = 1; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck
+    private int panelStuff = 0; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck
     
     private int turnUsed = 0;
     
@@ -44,6 +44,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             player3 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player3label.png"));
             player4 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player4label.png"));
             cardBack = ImageIO.read(MainMenu.class.getResource("/ttreImages/backofcard.png"));
+            okbutton = ImageIO.read(MainMenu.class.getResource("/ttreImages/okButton.png"));
             ticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticket.png"));
             template = ImageIO.read(MainMenu.class.getResource("/ttreImages/blankcardtemp.png"));
             redplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/redplayer.png"));
@@ -240,6 +241,14 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         		g2d.drawImage(sidewaytemplate, 1600, 400, null);
         		g2d.drawImage(sidewaytemplate, 1600, 600, null);
         		g2d.drawImage(sidewaytemplate, 1600, 800, null);
+        	}
+        	if (panelStuff == 2) {
+        		g2d.drawImage(startticket, 1490, 3, null);
+        		g2d.drawImage(player1, 1760, 3, null);
+        		g2d.drawImage(ticket, 1650, 200, null);
+        		g2d.drawImage(ticket, 1550, 500, null);
+        		g2d.drawImage(ticket, 1750, 500, null);
+        		g2d.drawImage(okbutton, 1490, 800, null);
         	}
         }
     }
