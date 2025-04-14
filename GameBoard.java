@@ -195,15 +195,19 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     			// Get the railroad color
     			Color railRoadColor = null;
     			if (currentRailRoad.get(0).getRailRoadColor() == null) {
-    				continue;
-    			} else {
+    				railRoadColor = new Color(255, 255, 255); //temporary color (Delete this later on to not have white)
+//    				continue;
+    			}
+    			else {
     				railRoadColor = currentRailRoad.get(0).getRailRoadColor();
     			}
-    			g2d.setColor(railRoadColor);
     			// Draw all the railroads
     			for (int j = 0; j < currentRailRoad.size(); j++) {
     				g2d.rotate(currentRailRoad.get(j).getDegree() + Math.toRadians(90), currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
+    				g2d.setColor(railRoadColor);
     				g2d.fillRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
+    				g2d.setColor(new Color(0, 0, 0));
+    				g2d.drawRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
     				g2d.setTransform(new AffineTransform());
     			}
     		}
@@ -241,7 +245,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.fillRoundRect(globalX, globalY, 250, 80, 15, 15);
         	g2d.setPaint(new Color(0, 0, 0));
         	g2d.drawRoundRect(globalX, globalY, 250, 80, 15, 15);
-        	g2d.drawString(currentCityHovered.getName(), globalX + 55, globalY + 40);
+        	g2d.drawString(currentCityHovered.getName(), globalX + 45, globalY + 45);
         }
         
         if (inAnEvent) {
@@ -299,7 +303,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	ArrayList<City> cityList = graph.getCities();
 	    	int maxSize = graph.getClickRadius();
 	    	for (int i = 0; i < cityList.size(); i++) {
-	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize) {
+	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize && turnUsed == 0) {
 //	    			out.println("Player clicked: " + cityList.get(i).getName());
 	    			if (clickedCity[0] == null) {
 	    				clickedCity[0] = cityList.get(i);
@@ -336,7 +340,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	   if (turnUsed >= 2) {
 		   changeTurn();
 	   }
-    	repaint();
+	   repaint();
     }
     public void changeTurn() {
     	currentPlr += 1;
@@ -429,6 +433,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				for (int i = 0; i < neededRailRoad.size(); i++) {
 					neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
 				}
+				turnUsed = 2;
 				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
 			} else {
 				out.println("Not enough railroads");
