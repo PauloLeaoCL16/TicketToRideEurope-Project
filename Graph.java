@@ -60,9 +60,11 @@ public class Graph {
 		City warszawa = addCity("warszawa", 962, 352);
 		City smolensk = addCity("smolensk", 1254, 322);
 
+		//if the railroad is facing upwards, get point from top right
+		//if the railroad is facing sideways, get the point from top left
 		//adding all the connections
 		ArrayList<RailRoad> railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(2, "purple", 0, false, false,579, 455, Math.toRadians(74.1)));
+		railRoadList.add(new RailRoad(2, "purple", 0, false, false,591, 452, Math.toRadians(74.1)));
 		railRoadList.add(new RailRoad(2, "purple", 0, false, false,592,503, Math.toRadians(-13.2)));
 		frankfurt.addConnection(munchen, railRoadList);	//frankfurt to munchen
 		railRoadList = new ArrayList<RailRoad>();
