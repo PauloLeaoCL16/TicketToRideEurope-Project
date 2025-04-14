@@ -350,12 +350,12 @@ public class Graph {
 		railRoadList.add(new RailRoad(6, "any", 2, false, false,592,463, -Math.toRadians(20)));
 		railRoadList.add(new RailRoad(6, "any", 2, false, false,592,463, -Math.toRadians(20)));
 		railRoadList.add(new RailRoad(6, "any", 2, false, false,592,463, -Math.toRadians(20)));
-		palermo.addConnection(smyrna, railRoadList);	//palermo to smyrna
+		palermo.addConnection(smryna, railRoadList);	//palermo to smyrna
 		
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(2, "any", 1, false, false,592,463, -Math.toRadians(20)));
 		railRoadList.add(new RailRoad(2, "any", 1, false, false,592,463, -Math.toRadians(20)));
-		athina.addConnection(smyrna, railRoadList);	//athina to smyrna
+		athina.addConnection(smryna, railRoadList);	//athina to smyrna
 		
 		
 		railRoadList = new ArrayList<RailRoad>();
@@ -522,13 +522,13 @@ public class Graph {
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, -Math.toRadians(20)));
 		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, -Math.toRadians(20)));
-		smyrna.addConnection(constantinople, railRoadList);	//smyrna to constantinople
+		smryna.addConnection(constantinople, railRoadList);	//smyrna to constantinople
 		
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(3, "orange", 0, true, false,592,463, -Math.toRadians(20)));
 		railRoadList.add(new RailRoad(3, "orange", 0, true, false,592,463, -Math.toRadians(20)));
 		railRoadList.add(new RailRoad(3, "orange", 0, true, false,592,463, -Math.toRadians(20)));
-		smyrna.addConnection(angora, railRoadList);	//smyrna to angora
+		smryna.addConnection(angora, railRoadList);	//smyrna to angora
 		
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, -Math.toRadians(20)));
@@ -676,4 +676,3 @@ public class Graph {
 		}
 	}
 }
-
