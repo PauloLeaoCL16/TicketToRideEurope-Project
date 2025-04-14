@@ -35,7 +35,7 @@ public class TicketDeck {
 			ticketList.add(new Ticket("brest", "venezia", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/brest-venezia.png"))));
 			ticketList.add(new Ticket("bruxelles", "danzic", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/bruxelles-danzic.png"))));
 			ticketList.add(new Ticket("budapest", "sofia", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/budapest-sofia.png"))));
-			ticketList.add(new Ticket("cadiz", "stockholm", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/cadiz-pamplona.png"))));
+			ticketList.add(new Ticket("cadiz", "stockholm", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/cadiz-stockholm.png"))));
 			ticketList.add(new Ticket("edinburgh", "athina", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/edinburgh-athina.png"))));
 			ticketList.add(new Ticket("edinburgh", "paris", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/edinburgh-paris.png"))));
 			ticketList.add(new Ticket("erzurum", "rostov", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/erzurum-rostov.png"))));
@@ -58,7 +58,7 @@ public class TicketDeck {
 			ticketList.add(new Ticket("riga", "bucuresti", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/riga-bucuresti.png"))));
 			ticketList.add(new Ticket("roma", "smyrna", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/roma-smyrna.png"))));
 			ticketList.add(new Ticket("sarajevo", "sevastopol", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/sarajevo-sevastopol.png"))));
-			ticketList.add(new Ticket("smolensk", "rostov", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/smolensk-rostov.png"))));
+			ticketList.add(new Ticket("smolensk", "rostov", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/smolensk-rostov.jpg"))));
 			ticketList.add(new Ticket("sofia", "smyrna", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/sofia-smyrna.png"))));
 			ticketList.add(new Ticket("stockholm", "wien", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/stockholm-wien.png"))));
 			ticketList.add(new Ticket("venezia", "constantinople", 7, ImageIO.read(MainMenu.class.getResource("/ttreImages/venezia-constantinople.png"))));
