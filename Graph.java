@@ -56,6 +56,7 @@ public class Graph {
 		City wilno = addCity("wilno", 1098, 308);
 		City venezia = addCity("venezia", 695, 666);
 		City warszawa = addCity("warszawa", 962, 352);
+		City smolensk = addCity("smolensk", 1254, 322);
 
 		//adding all the connections
 		ArrayList<RailRoad> railRoadList = new ArrayList<RailRoad>();
