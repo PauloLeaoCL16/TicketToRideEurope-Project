@@ -16,7 +16,7 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
-    private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
+    private BufferedImage sidewaytemplate, table, okbutton, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
     private boolean isPlayButtonHovered = false;
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
@@ -31,7 +31,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     
     private int currentPlr;
     private City[] clickedCity = new City[2];
-    private int panelStuff = 0;
+    private int panelStuff = 0; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck
     
     private int turnUsed = 0;
     private City currentCityHovered = null;
