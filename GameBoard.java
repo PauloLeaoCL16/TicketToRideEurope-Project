@@ -31,7 +31,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     
     private int currentPlr;
     private City[] clickedCity = new City[2];
-    private boolean inAnEvent;
+    private int panelStuff = 0;
     
     private int turnUsed = 0;
     private City currentCityHovered = null;
@@ -58,7 +58,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             ticketDeck = new TicketDeck();
             players = new ArrayList<Player>();
             currentPlr = 0;
-            inAnEvent = false;
             cardDeck = new CardDeck();
             ticketDeck = new TicketDeck();
             faceUpCard = new ColorCard[5];
@@ -250,12 +249,28 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.drawString(currentCityHovered.getName(), globalX + 45, globalY + 45);
         }
         
-        if (inAnEvent) {
+         if (panelStuff != 0) {
 
 //        	g2d.setPaint(new Color(0, 0, 0, 0.5f));
 //        	g2d.fillRect(0, 0, getWidth(), getHeight());
         	g2d.setPaint(new Color(0, 0, 0));
         	g2d.fillRect(1500, 0, getWidth() - 1500, getHeight());
+        	if (panelStuff == 1) {
+        		g2d.drawImage(startticket, 1490, 3, null);
+        		g2d.drawImage(player1, 1760, 3, null);
+        		g2d.drawImage(sidewaytemplate, 1600, 200, null);
+        		g2d.drawImage(sidewaytemplate, 1600, 400, null);
+        		g2d.drawImage(sidewaytemplate, 1600, 600, null);
+        		g2d.drawImage(sidewaytemplate, 1600, 800, null);
+        	}
+        	if (panelStuff == 2) {
+        		g2d.drawImage(startticket, 1490, 3, null);
+        		g2d.drawImage(player1, 1760, 3, null);
+        		g2d.drawImage(ticket, 1650, 200, null);
+        		g2d.drawImage(ticket, 1550, 500, null);
+        		g2d.drawImage(ticket, 1750, 500, null);
+        		g2d.drawImage(okbutton, 1490, 800, null);
+        	}
         }
     }
 
