@@ -48,6 +48,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             player3 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player3label.png"));
             player4 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player4label.png"));
             cardBack = ImageIO.read(MainMenu.class.getResource("/ttreImages/backofcard.png"));
+            okbutton = ImageIO.read(MainMenu.class.getResource("/ttreImages/okButton.png"));
             ticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticket.png"));
             template = ImageIO.read(MainMenu.class.getResource("/ttreImages/blankcardtemp.png"));
             redplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/redplayer.png"));
@@ -56,6 +57,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             yellowplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/yellowplayer.png"));
             playerpointer = ImageIO.read(MainMenu.class.getResource("/ttreImages/currentplayerarrow.png"));
             ticketDeck = new TicketDeck();
+            sidewaytemplate = ImageIO.read(MainMenu.class.getResource("/ttreImages/blankcardtemp2.png"));
             players = new ArrayList<Player>();
             currentPlr = 0;
             cardDeck = new CardDeck();
@@ -69,13 +71,14 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             faceUpCard[3] = cardDeck.drawCard();
             faceUpCard[4] = cardDeck.drawCard();
             players.add(new Player("red", redplayer, new Color(255,0,0)));
-            players.add(new Player("orange", blueplayer, new Color(255,122,0)));
-            players.add(new Player("white", greenplayer, new Color(255,255,255)));
-            players.add(new Player("blue", yellowplayer, new Color(0,0,255)));
+            players.add(new Player("blue", blueplayer, new Color(0,0,255)));
+            players.add(new Player("green", greenplayer, new Color(0,255,0)));
+            players.add(new Player("yellow", yellowplayer, new Color(255,255,0)));
             p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p1bg.png"));
             p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p2bg.png"));
             p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p3bg.png"));
             p4bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p4bg.png"));
+            startticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticketchoose.png"));
             longRoutes = new ArrayList<>();
 //          longRoutes.add(new Ticket("palermo", "moskva",20,ImageIO.read(MainMenu.class.getResource("/tickets/longRoute1.png"))));
 //          longRoutes.add(new Ticket("brest", "petrograd",20,ImageIO.read(MainMenu.class.getResource("/tickets/longRoute2.png"))));
