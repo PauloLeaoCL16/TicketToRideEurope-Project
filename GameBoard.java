@@ -170,7 +170,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         
         
         //Draw the station and railroads
-
         ArrayList<City> cityList = graph.getCities();
     	int maxSize = graph.getClickRadius();
     	for (int i = 0; i < cityList.size(); i++) {
@@ -180,7 +179,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     		}
     		// Get all connections
     		HashMap<City, ArrayList<RailRoad>> allConnections = cityList.get(i).getConnections();
+    		HashMap<City, ArrayList<RailRoad>> allSecondConnections = cityList.get(i).getSecondConnections();
     		Set<City> cityKeys = allConnections.keySet();
+    		Set<City> citySecondKeys = allSecondConnections.keySet();
     		// Go through all connections
     		for (City cities: cityKeys) {
     			// Get the railroads
@@ -195,11 +196,40 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     			g2d.setColor(railRoadColor);
     			// Draw all the railroads
     			for (int j = 0; j < currentRailRoad.size(); j++) {
-    				g2d.rotate(currentRailRoad.get(j).getDegree() + Math.toRadians(90), currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
+    				
+    				if(currentRailRoad.get(j).getDegree() != Math.toRadians(20))
+    				{
+    				g2d.rotate( currentRailRoad.get(j).getDegree() , currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
     				g2d.fillRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
     				g2d.setTransform(new AffineTransform());
+    				}
+    				
     			}
     		}
+    		for (City cities: citySecondKeys) {
+    			// Get the railroads
+    			ArrayList<RailRoad> currentRailRoad = allSecondConnections.get(cities);
+    			// Get the railroad color
+    			Color railRoadColor = null;
+    			if (currentRailRoad.get(0).getRailRoadColor() == null) {
+    				railRoadColor = new Color(255, 255, 255);
+    			} else {
+    				railRoadColor = currentRailRoad.get(0).getRailRoadColor();
+    			}
+    			g2d.setColor(railRoadColor);
+    			// Draw all the railroads
+    			for (int j = 0; j < currentRailRoad.size(); j++) {
+    				
+    				if(currentRailRoad.get(j).getDegree() != Math.toRadians(20))
+    				{
+    				g2d.rotate( currentRailRoad.get(j).getDegree() , currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
+    				g2d.fillRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
+    				g2d.setTransform(new AffineTransform());
+    				}
+    				
+    			}
+    		}
+    		
     	}
     	g2d.setColor(new Color(255,255,255));
         
