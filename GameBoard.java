@@ -22,7 +22,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private ColorCard[] faceUpCard;
     private CardDeck cardDeck;
     private TicketDeck ticketDeck;
-    private ArrayList<Ticket> longRoutes;
     private ArrayList<Player> players;
     private City[] citiesToBuy; //Stores 2 cities for buying routes purposes
     private boolean firstCityClicked; // highlighting purposes
@@ -31,7 +30,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     
     private int currentPlr;
     private City[] clickedCity = new City[2];
-    private int panelStuff = 0; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck
+    private int panelStuff = 1; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck
     
     private int turnUsed = 0;
     
@@ -267,17 +266,18 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	if (panelStuff == 1) {
         		g2d.drawImage(startticket, 1490, 3, null);
         		g2d.drawImage(player1, 1760, 3, null);
-        		g2d.drawImage(sidewaytemplate, 1600, 200, null);
-        		g2d.drawImage(sidewaytemplate, 1600, 400, null);
-        		g2d.drawImage(sidewaytemplate, 1600, 600, null);
-        		g2d.drawImage(sidewaytemplate, 1600, 800, null);
+        		g2d.drawImage(ticketDeck.drawLongTicket().getImage(), 1540, 150, 300, 150, null);
+        		g2d.drawImage(ticketDeck.draw().getImage(), 1540, 350, 300, 150, null);
+        		g2d.drawImage(ticketDeck.draw().getImage(), 1540, 550, 300, 150, null);
+        		g2d.drawImage(ticketDeck.draw().getImage(), 1540, 750, 300, 150, null);
+        		g2d.drawImage(okbutton, 1490, 900, null);
         	}
         	if (panelStuff == 2) {
         		g2d.drawImage(startticket, 1490, 3, null);
         		g2d.drawImage(player1, 1760, 3, null);
-        		g2d.drawImage(ticket, 1650, 200, null);
-        		g2d.drawImage(ticket, 1550, 500, null);
-        		g2d.drawImage(ticket, 1750, 500, null);
+        		g2d.drawImage(ticketDeck.draw().getImage(), 1540, 200, 300, 150, null);
+        		g2d.drawImage(ticketDeck.draw().getImage(), 1540, 400, 300, 150, null);
+        		g2d.drawImage(ticketDeck.draw().getImage(), 1540, 600, 300, 150, null);
         		g2d.drawImage(okbutton, 1490, 800, null);
         	}
         }
@@ -318,6 +318,35 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    		panelStuff = 2;
 	    	}
 	    	
+	        //ticket 1 during start phase 
+	        if( x >= 1540 && x <= 1840 && y >= 150 && y <= 300 && panelStuff == 1)
+	        {
+	        	System.out.println("1");
+	        }
+	        
+	      //ticket 2 during start phase 
+	        if( x >= 1540 && x <= 1840 && y >= 350 && y <= 500 && panelStuff == 1)
+	        {
+	        	System.out.println("2");
+	        }
+	        
+	      //ticket 3 during start phase 
+	        if( x >= 1540 && x <= 1840 && y >= 550 && y <= 700 && panelStuff == 1)
+	        {
+	        	System.out.println("3");
+	        }
+	        
+	      //ticket 4 during start phase 
+	        if( x >= 1540 && x <= 1840 && y >= 750 && y <= 900 && panelStuff == 1)
+	        {
+	        	System.out.println("4");
+	        }
+	        
+	      //ok button during start phase 
+	        if( x >= 1540 && x <= 1840 && y >= 900 && y <= 1000 && panelStuff == 1)
+	        {
+	        	System.out.println("ok");
+	        }
 	        
 	    	//allow for players to click on their tickets to check them
 	    	if( x >=1820 && x <= 1885 && y >=798 && y <= 895)
