@@ -27,7 +27,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private boolean firstCityClicked; // highlighting purposes
     private ArrayList<Integer> highlightCity; // takes in 2 locations for highlighting purposes
     private Graph graph;// stores all the coordinates of the cities in a map
-    private Stack<ColorCard> discardDeck;
+    private boolean firstTicketClicked, secondTicketClicked, thirdTicketClicked, fourthTicketClicked;
+    private BufferedImage t1, t2, t3, t4; 
+    
     private int currentPlr;
     private City[] clickedCity = new City[2];
     private int panelStuff = 1; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck
@@ -56,7 +58,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             players = new ArrayList<Player>();
             currentPlr = 0;
             cardDeck = new CardDeck();
-	    discardDeck = new Stack<>();
             ticketDeck = new TicketDeck();
             faceUpCard = new ColorCard[5];
             clickedCity[0] = null;
@@ -85,6 +86,14 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         citiesToBuy = new City[2];
         graph = new Graph();
         graph.printCities();
+        firstTicketClicked = false;
+        secondTicketClicked = false;
+        thirdTicketClicked = false;
+        fourthTicketClicked = false;
+         t1 =ticketDeck.drawLongTicket().getImage();
+         t2 = ticketDeck.draw().getImage();
+         t3 = ticketDeck.draw().getImage();
+         t4 = ticketDeck.draw().getImage();
         
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -258,6 +267,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 			clickedCity[1] = null;
         }
         
+       
+        
         if (panelStuff != 0) {
 
 //        	g2d.setPaint(new Color(0, 0, 0, 0.5f));
@@ -265,12 +276,13 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.setPaint(new Color(0, 0, 0));
         	g2d.fillRect(1500, 0, getWidth() - 1500, getHeight());
         	if (panelStuff == 1) {
+        		
         		g2d.drawImage(startticket, 1490, 3, null);
         		g2d.drawImage(player1, 1760, 3, null);
-        		g2d.drawImage(ticketDeck.drawLongTicket().getImage(), 1540, 150, 300, 150, null);
-        		g2d.drawImage(ticketDeck.draw().getImage(), 1540, 350, 300, 150, null);
-        		g2d.drawImage(ticketDeck.draw().getImage(), 1540, 550, 300, 150, null);
-        		g2d.drawImage(ticketDeck.draw().getImage(), 1540, 750, 300, 150, null);
+        		g2d.drawImage(t1, 1540, 150, 300, 150, null);
+        		g2d.drawImage(t2, 1540, 350, 300, 150, null);
+        		g2d.drawImage(t3, 1540, 550, 300, 150, null);
+        		g2d.drawImage(t4, 1540, 750, 300, 150, null);
         		g2d.drawImage(okbutton, 1490, 900, null);
         	}
         	if (panelStuff == 2) {
@@ -282,6 +294,35 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         		g2d.drawImage(okbutton, 1490, 800, null);
         	}
         }
+        //highlights the ticket clicked 
+        if(firstTicketClicked)
+        {
+	       
+        	g2d.setStroke(new BasicStroke(4));
+        	g2d.setColor(Color.YELLOW);
+	        g2d.drawRect(1688, 219, 300, 150);
+        }
+        if(secondTicketClicked)
+        {
+	        //highlight city when clicked
+        	g2d.setStroke(new BasicStroke(4));
+        	g2d.setColor(Color.YELLOW);
+	        g2d.drawRect(1685, 422, 300, 150);
+        }
+        if(thirdTicketClicked)
+        {
+	        //highlight city when clicked
+        	g2d.setStroke(new BasicStroke(4));
+        	g2d.setColor(Color.YELLOW);
+	        g2d.drawRect(1689, 620, 300, 150);
+        }
+        if(fourthTicketClicked)
+        {
+	        //highlight city when clicked
+        	g2d.setStroke(new BasicStroke(4));
+        	g2d.setColor(Color.YELLOW);
+	        g2d.drawRect(1690, 823, 100, 150);
+        }
     }
 
    
@@ -291,45 +332,33 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	int x = e.getX();
     	int y = e.getY();
     	System.out.println(x + " " + y);
-    	if (panelStuff != 0) {
-    		return;
-        }
+    	
     	if(e.getButton() == MouseEvent.BUTTON1)// checks if the player left clicked	
     	{
+    		
 	    	//alow for players to draw cards from the face-up card options
 	    	for (int i = 0; i < 5; i++) {
-	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80 && turnUsed + faceUpCard[i].getCostToDraw() <= 2) {
+	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80 && turnUsed + faceUpCard[i].getCostToDraw() <= 2 && panelStuff == 0) {
 	    			players.get(currentPlr).addCard(faceUpCard[i]);
 	    			turnUsed += faceUpCard[i].getCostToDraw();
 	    			faceUpCard[i] = cardDeck.drawCard();
-	    			for (int z = 0; z < faceUpCard.length; z++) {
-		    			out.println(faceUpCard[z].getColor());
-	    			}
-	    			out.println("-------");
-
-	    		}
-	    		int wildNum = 0;
-	    		for (int j = 0; j < faceUpCard.length; j++) {
-	    			if (faceUpCard[j].getColor().equals("wild")) wildNum++;
-	    		}
-	    		if (wildNum >= 3) {
-	    			for (int j = 0; j < faceUpCard.length; j++) {
-	    				discardDeck.add(faceUpCard[j]);
-		    			faceUpCard[j] = cardDeck.drawCard();
-		    		}
 	    		}
 	        }
 	    	
 	    	//allow for players to draw cards from the pile
-	    	if( x >= 1550 && x <= 1650 && y >= 3 && y <= 163)
+	    	if( x >= 1550 && x <= 1650 && y >= 3 && y <= 163 && panelStuff == 0)
 	    	{
+	            t2 = ticketDeck.draw().getImage();
+	            t3 = ticketDeck.draw().getImage();
+	            t4 = ticketDeck.draw().getImage();
 	    		players.get(currentPlr).addCard(cardDeck.drawCard());
 	    		turnUsed += 1;
 	    	}
 	    	
 	    	//Allow to click ticket
-	        if( x >= 1795 && x <= 1895 && y >= 3 && y <= 163)
+	        if( x >= 1795 && x <= 1895 && y >= 3 && y <= 163 && panelStuff == 0)
 	    	{
+	        	
 	    		players.get(currentPlr).addTicket(ticketDeck.draw());
 	    		panelStuff = 2;
 	    	}
@@ -337,35 +366,43 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	        //ticket 1 during start phase 
 	        if( x >= 1540 && x <= 1840 && y >= 150 && y <= 300 && panelStuff == 1)
 	        {
+	        	firstTicketClicked = true;
 	        	System.out.println("1");
 	        }
 	        
 	      //ticket 2 during start phase 
 	        if( x >= 1540 && x <= 1840 && y >= 350 && y <= 500 && panelStuff == 1)
 	        {
+	        	secondTicketClicked = true;
 	        	System.out.println("2");
 	        }
 	        
 	      //ticket 3 during start phase 
-	        if( x >= 1540 && x <= 1840 && y >= 550 && y <= 700 && panelStuff == 1)
+	        if( x >= 1540 && x <= 1840 && y >= 550 && y <= 700 && panelStuff == 1 )
 	        {
+	        	thirdTicketClicked = true;
 	        	System.out.println("3");
 	        }
 	        
 	      //ticket 4 during start phase 
 	        if( x >= 1540 && x <= 1840 && y >= 750 && y <= 900 && panelStuff == 1)
 	        {
+	        	fourthTicketClicked = true;
 	        	System.out.println("4");
 	        }
 	        
 	      //ok button during start phase 
 	        if( x >= 1540 && x <= 1840 && y >= 900 && y <= 1000 && panelStuff == 1)
 	        {
+	        	firstTicketClicked = false;
+	        	secondTicketClicked = false;
+	        	thirdTicketClicked = false;
+	        	fourthTicketClicked = false;
 	        	System.out.println("ok");
 	        }
 	        
 	    	//allow for players to click on their tickets to check them
-	    	if( x >=1820 && x <= 1885 && y >=798 && y <= 895)
+	    	if( x >=1820 && x <= 1885 && y >=798 && y <= 895 && panelStuff == 0)
 	    	{
 	    		out.println(players.get(currentPlr).getTicket().get(0).getToCity());
 	    		out.println(players.get(currentPlr).getTicket().get(0).getFromCity());
@@ -374,7 +411,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	ArrayList<City> cityList = graph.getCities();
 	    	int maxSize = graph.getClickRadius();
 	    	for (int i = 0; i < cityList.size(); i++) {
-	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize) {
+	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize && panelStuff == 0) {
 //	    			out.println("Player clicked: " + cityList.get(i).getName());
 	    			if (clickedCity[0] == null) {
 	    				clickedCity[0] = cityList.get(i);
@@ -409,6 +446,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 			}
     	}
 	   if (turnUsed >= 2) {
+		   	t1 =ticketDeck.drawLongTicket().getImage();
+	         t2 = ticketDeck.draw().getImage();
+	         t3 = ticketDeck.draw().getImage();
+	         t4 = ticketDeck.draw().getImage();
 		   changeTurn();
 	   }
     	repaint();
