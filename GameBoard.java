@@ -27,7 +27,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private boolean firstCityClicked; // highlighting purposes
     private ArrayList<Integer> highlightCity; // takes in 2 locations for highlighting purposes
     private Graph graph;// stores all the coordinates of the cities in a map
-    
+    private Stack<ColorCard> discardDeck;
     private int currentPlr;
     private City[] clickedCity = new City[2];
     private int panelStuff = 1; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck
@@ -56,6 +56,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             players = new ArrayList<Player>();
             currentPlr = 0;
             cardDeck = new CardDeck();
+	    discardDeck = new Stack<>();
             ticketDeck = new TicketDeck();
             faceUpCard = new ColorCard[5];
             clickedCity[0] = null;
@@ -301,6 +302,21 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    			players.get(currentPlr).addCard(faceUpCard[i]);
 	    			turnUsed += faceUpCard[i].getCostToDraw();
 	    			faceUpCard[i] = cardDeck.drawCard();
+	    			for (int z = 0; z < faceUpCard.length; z++) {
+		    			out.println(faceUpCard[z].getColor());
+	    			}
+	    			out.println("-------");
+
+	    		}
+	    		int wildNum = 0;
+	    		for (int j = 0; j < faceUpCard.length; j++) {
+	    			if (faceUpCard[j].getColor().equals("wild")) wildNum++;
+	    		}
+	    		if (wildNum >= 3) {
+	    			for (int j = 0; j < faceUpCard.length; j++) {
+	    				discardDeck.add(faceUpCard[j]);
+		    			faceUpCard[j] = cardDeck.drawCard();
+		    		}
 	    		}
 	        }
 	    	
