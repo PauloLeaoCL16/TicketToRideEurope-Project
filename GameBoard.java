@@ -304,7 +304,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         		g2d.drawImage(okbutton, 1490, 800, null);
         	}
         	if (panelStuff == 3) {
-        		g2d.drawImage(player1, 1760, 3, null);
+        		//g2d.drawImage(player1, 1760, 3, null);
     			for(int i= 0; i<players.get(currentPlr).getTicket().size();i++)
     			{
     				g2d.drawImage(players.get(currentPlr).getTicket().get(i).getImage(), 1540, 100 + (200*i), 300, 150, null);
