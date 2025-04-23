@@ -307,9 +307,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         		g2d.drawImage(player1, 1760, 3, null);
     			for(int i= 0; i<players.get(currentPlr).getTicket().size();i++)
     			{
-    				g2d.drawImage(players.get(currentPlr).getTicket().get(i).getImage(), 1540, 200 + (200*i), 300, 150, null);
+    				g2d.drawImage(players.get(currentPlr).getTicket().get(i).getImage(), 1540, 100 + (200*i), 300, 150, null);
     			}
-        		g2d.drawImage(okbutton, 1490, 800, null);
+        		g2d.drawImage(okbutton, 1490, 900, null);
         	}
         }
         //highlights the ticket clicked 
@@ -374,7 +374,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	
     	if(e.getButton() == MouseEvent.BUTTON1)// checks if the player left clicked	
     	{
-    		
+    		if (panelStuff == 3) {
+	    		if (x >= 1510 && x<= 1880 && y>= 915 && y <= 1000) {
+	    			panelStuff = 0;
+	    		}
+    		}
 	    	//alow for players to draw cards from the face-up card options
 	    	for (int i = 0; i < 5; i++) {
 	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80 && turnUsed + faceUpCard[i].getCostToDraw() <= 2 && panelStuff == 0) {
