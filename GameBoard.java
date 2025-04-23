@@ -16,7 +16,7 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
-    private BufferedImage sidewaytemplate, table, okbutton, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
+    private BufferedImage sidewaytemplate, nextButton, previousButton,table, okbutton, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
     private boolean isPlayButtonHovered = false;
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
@@ -34,8 +34,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private int currentPlr;
     private City[] clickedCity = new City[2];
     private int panelStuff = 1; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck
-    
+    private int ticketPage = 1; // 1 = first page, 2 = seconds page, 3 = third page(max)
     private int turnUsed = 0;
+    private ArrayList<Ticket> ticketsShownList;
+    private int ticketsShown = 0;
+
     
     public GameBoard() {
         try {
@@ -77,6 +80,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p3bg.png"));
             p4bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p4bg.png"));
             startticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticketchoose.png"));
+            nextButton = ImageIO.read(MainMenu.class.getResource("/ttreImages/nextButton.png"));
+            previousButton = ImageIO.read(MainMenu.class.getResource("/ttreImages/previousButton.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,6 +101,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         t3 = ticketDeck.draw();
         t4 = ticketDeck.draw();
         ticketsClicked = 0;
+        ticketsShownList = new ArrayList<>();
         
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -303,11 +309,15 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         		g2d.drawImage(t4.getImage(), 1540, 600, 300, 150, null);
         		g2d.drawImage(okbutton, 1490, 800, null);
         	}
+        	
+        	
         	if (panelStuff == 3) {
+        		g2d.drawImage( nextButton, 1700, 870, 50,50,null );
+        		g2d.drawImage( previousButton, 1600, 870, 50,50,null );
         		//g2d.drawImage(player1, 1760, 3, null);
-    			for(int i= 0; i<players.get(currentPlr).getTicket().size();i++)
+    			for(int i= 0; i<4;i++)
     			{
-    				g2d.drawImage(players.get(currentPlr).getTicket().get(i).getImage(), 1540, 100 + (200*i), 300, 150, null);
+    				g2d.drawImage(ticketsShownList.get(i).getImage(), 1540, 100 + (200*i), 300, 150, null);
     			}
         		g2d.drawImage(okbutton, 1490, 900, null);
         	}
@@ -536,6 +546,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	        	{
 	        		players.get(currentPlr).addTicket(t4);;
 	        	}
+	        	
 	        	out.println(players.get(0).getTicket().size());
 	        	out.println(players.get(1).getTicket().size());
 	        	out.println(players.get(2).getTicket().size());
@@ -593,6 +604,118 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	{
 	    		panelStuff = 3;
 	    	}
+	    	
+	    	// allows for player to go through their ticket pages
+	    	// previous button
+	    	if (x >=1600 && x <= 1650 && y >=870 && y <= 920 && panelStuff == 3)
+	    	{
+	    		if( ticketPage == 2 )
+	    		{
+	    			ticketsShownList = new ArrayList<>();
+    				if( players.get(currentPlr).getTicket().size() > 0 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(0) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+    				//-------------------------------------------------------------------------------------
+    				if( players.get(currentPlr).getTicket().size() > 1 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(1) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+    				//-------------------------------------------------------------------------------------
+    				if( players.get(currentPlr).getTicket().size() > 2 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(2) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+    				//-------------------------------------------------------------------------------------
+    				if( players.get(currentPlr).getTicket().size() > 3 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(3) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+	    			ticketPage--;
+	    			
+	    		}
+	    		else if( ticketPage == 3)
+	    		{
+	    			ticketsShownList = new ArrayList<>();
+    				if( players.get(currentPlr).getTicket().size() > 4 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(4) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+    				//-------------------------------------------------------------------------------------
+    				if( players.get(currentPlr).getTicket().size() > 5 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(5) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+    				//-------------------------------------------------------------------------------------
+    				if( players.get(currentPlr).getTicket().size() > 6 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(6) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+    				//-------------------------------------------------------------------------------------
+    				if( players.get(currentPlr).getTicket().size() > 7 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(7) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+	    			ticketPage--;
+	    			
+	    		}
+	    		
+	    	}
+	    	// next button
+	    	if (x >=1700 && x <= 1750 && y >=870 && y <= 920 && panelStuff == 3)
+	    	{
+	    		if( ticketPage == 1)
+	    		{
+	    			ticketsShownList = new ArrayList<>();
+    				if( players.get(currentPlr).getTicket().size() > 4 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(4) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+    				//-------------------------------------------------------------------------------------
+    				if( players.get(currentPlr).getTicket().size() > 5 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(5) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+    				//-------------------------------------------------------------------------------------
+    				if( players.get(currentPlr).getTicket().size() > 6 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(6) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+    				//-------------------------------------------------------------------------------------
+    				if( players.get(currentPlr).getTicket().size() > 7 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(7) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+	    			ticketPage++;
+
+	    		}
+	    		else if( ticketPage == 2)
+	    		{
+    				ticketsShownList = new ArrayList<>();
+    				if( players.get(currentPlr).getTicket().size() > 8 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(8) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+    				//-------------------------------------------------------------------------------------
+    				if( players.get(currentPlr).getTicket().size() > 9 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(9) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+    				//-------------------------------------------------------------------------------------
+    				if( players.get(currentPlr).getTicket().size() > 10 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(10) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+    				//-------------------------------------------------------------------------------------
+    				if( players.get(currentPlr).getTicket().size() > 11 )
+    					ticketsShownList.add( players.get(currentPlr).getTicket().get(11) );
+    				else
+    					ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+	    			ticketPage++;
+	    			
+	    		}
+	    	}
+	    	
 	    	ArrayList<City> cityList = graph.getCities();
 	    	int maxSize = graph.getClickRadius();
 	    	for (int i = 0; i < cityList.size(); i++) {
@@ -630,11 +753,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 		    	}
 			}
     	}
-	   if (turnUsed >= 2) {
-		   	t1 =ticketDeck.drawLongTicket();
-	         t2 = ticketDeck.draw();
-	         t3 = ticketDeck.draw();
-	         t4 = ticketDeck.draw();
+	   if (turnUsed >= 2)
+	   {
 		   changeTurn();
 	   }
     	repaint();
@@ -644,6 +764,30 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	turnUsed = 0;
     	if (currentPlr >= players.size()) {
     		currentPlr = 0;
+    	}
+    	out.println("PanelStuff = " + panelStuff);
+    	if( panelStuff !=1)
+    	{
+    		ticketsShownList = new ArrayList<>();
+    		if( players.get(currentPlr).getTicket().size() > 0 )
+				ticketsShownList.add( players.get(currentPlr).getTicket().get(0) );
+			else
+				ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+			//-------------------------------------------------------------------------------------
+			if( players.get(currentPlr).getTicket().size() > 1 )
+				ticketsShownList.add( players.get(currentPlr).getTicket().get(1) );
+			else
+				ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+			//-------------------------------------------------------------------------------------
+			if( players.get(currentPlr).getTicket().size() > 2 )
+				ticketsShownList.add( players.get(currentPlr).getTicket().get(2) );
+			else
+				ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
+			//-------------------------------------------------------------------------------------
+			if( players.get(currentPlr).getTicket().size() > 3 )
+				ticketsShownList.add( players.get(currentPlr).getTicket().get(3) );
+			else
+				ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
     	}
     }
     
