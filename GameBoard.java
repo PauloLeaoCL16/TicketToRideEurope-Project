@@ -27,10 +27,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private boolean firstCityClicked; // highlighting purposes
     private ArrayList<Integer> highlightCity; // takes in 2 locations for highlighting purposes
     private Graph graph;// stores all the coordinates of the cities in a map
-    private boolean firstTicketClicked, secondTicketClicked, thirdTicketClicked, fourthTicketClicked;
+    private boolean firstTicketClicked, secondTicketClicked, thirdTicketClicked, fourthTicketClicked, t1Clicked, t2Clicked, t3Clicked;
     private Ticket t1, t2, t3, t4; 
     private int ticketsClicked;
-    
+    private int tClicked;
     private int currentPlr;
     private City[] clickedCity = new City[2];
     private int panelStuff = 1; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck
@@ -341,6 +341,27 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.setColor(Color.YELLOW);
 	        g2d.drawRect(1541, 751, 300, 150);
         }
+        if(t1Clicked)
+        {
+	        //highlight city when clicked
+        	g2d.setStroke(new BasicStroke(6));
+        	g2d.setColor(Color.YELLOW);
+	        g2d.drawRect(1541, 200, 300, 150);
+        }
+        if(t2Clicked)
+        {
+	        //highlight city when clicked
+        	g2d.setStroke(new BasicStroke(6));
+        	g2d.setColor(Color.YELLOW);
+	        g2d.drawRect(1541, 400, 300, 150);
+        }
+        if(t3Clicked)
+        {
+	        //highlight city when clicked
+        	g2d.setStroke(new BasicStroke(6));
+        	g2d.setColor(Color.YELLOW);
+	        g2d.drawRect(1541, 600, 300, 150);
+        }
     }
 
    
@@ -376,10 +397,56 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	//Allow to click ticket
 	        if( x >= 1795 && x <= 1895 && y >= 3 && y <= 163 && panelStuff == 0)
 	    	{
-	        	
-	    		players.get(currentPlr).addTicket(ticketDeck.draw());
 	    		panelStuff = 2;
 	    	}
+	        
+	        //ticket 1 mid game draw
+	        if( x >= 1540 && x <= 1840 && y >= 200 && y <= 350 && panelStuff == 2)
+	        {
+	        	if( !t1Clicked )
+	        	{
+	        		t1Clicked = true;
+	        		tClicked++;
+	        	}
+	        	else
+	        	{
+	        		t1Clicked = false;
+	        		tClicked--;
+	        	}
+	        	System.out.println("1");
+	        }
+	        
+	      //ticket 2 mid game draw
+	        if( x >= 1540 && x <= 1840 && y >= 400 && y <= 550 && panelStuff == 2)
+	        {
+	        	if( !t2Clicked )
+	        	{
+	        		t2Clicked = true;
+	        		tClicked++;
+	        	}
+	        	else
+	        	{
+	        		t2Clicked = false;
+	        		tClicked--;
+	        	}
+	        	System.out.println("1");
+	        }
+	        
+	      //ticket 3 mid game draw
+	        if( x >= 1540 && x <= 1840 && y >= 600 && y <= 750 && panelStuff == 2)
+	        {
+	        	if( !t3Clicked )
+	        	{
+	        		t3Clicked = true;
+	        		tClicked++;
+	        	}
+	        	else
+	        	{
+	        		t3Clicked = false;
+	        		tClicked--;
+	        	}
+	        	System.out.println("1");
+	        }
 	    	
 	        //ticket 1 during start phase 
 	        if( x >= 1540 && x <= 1840 && y >= 150 && y <= 300 && panelStuff == 1)
@@ -482,6 +549,37 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	        	{
 	        		panelStuff = 0;
 	        	}
+	        	ticketsClicked = 0;
+	        	changeTurn();
+	        }
+	        
+	      //ok button mid game draw 
+	        if( x >= 1510 && x <= 1880 && y >= 820 && y <= 900 && panelStuff == 2 && tClicked>=1 )
+	        {
+	        	if( t1Clicked)
+	        	{
+	        		players.get(currentPlr).addTicket(t2);;
+	        	}
+	        	if( t2Clicked)
+	        	{
+	        		players.get(currentPlr).addTicket(t3);;
+	        	}
+	        	if( t3Clicked)
+	        	{
+	        		players.get(currentPlr).addTicket(t4);;
+	        	}
+	        	out.println(players.get(0).getTicket().size());
+	        	out.println(players.get(1).getTicket().size());
+	        	out.println(players.get(2).getTicket().size());
+	        	out.println(players.get(3).getTicket().size());
+	        	t1Clicked = false;
+	        	t2Clicked = false;
+	        	t3Clicked = false;
+		        t2 = ticketDeck.draw();
+		        t3 = ticketDeck.draw();
+		        t4 = ticketDeck.draw();
+	        	System.out.println("ok");
+	        	panelStuff = 0;
 	        	ticketsClicked = 0;
 	        	changeTurn();
 	        }
