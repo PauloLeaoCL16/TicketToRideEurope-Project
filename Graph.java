@@ -384,278 +384,278 @@ public class Graph {
 		
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(98)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(129)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(169)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(12)));
 		berlin.addConnection(danzig, railRoadList);	//berlin to danzig
 		
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "purple", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "purple", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "purple", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "purple", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "purple", 0, false, false,592,463, Math.toRadians(160)));
+		railRoadList.add(new RailRoad(4, "purple", 0, false, false,592,463, Math.toRadians(175)));
+		railRoadList.add(new RailRoad(4, "purple", 0, false, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(4, "purple", 0, false, false,592,463, Math.toRadians(9)));
 		berlin.addConnection(warszawa, railRoadList);	//berlin to warszawa
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "yellow", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "yellow", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "yellow", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "yellow", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "yellow", 0, false, false,592,463, Math.toRadians(160)));
+		railRoadList.add(new RailRoad(4, "yellow", 0, false, false,592,463, Math.toRadians(175)));
+		railRoadList.add(new RailRoad(4, "yellow", 0, false, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(4, "yellow", 0, false, false,592,463, Math.toRadians(9)));
 		berlin.addSecondConnection(warszawa, railRoadList);	//berlin to warszawa
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(3, "green", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "green", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "green", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "green", 0, false, false,592,463, Math.toRadians(73)));
+		railRoadList.add(new RailRoad(3, "green", 0, false, false,592,463, Math.toRadians(60)));
+		railRoadList.add(new RailRoad(3, "green", 0, false, false,592,463, Math.toRadians(51)));
 		berlin.addConnection(wien, railRoadList);	//berlin to wien
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(124)));
+		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(127)));
+		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(137)));
+		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(150)));
 		warszawa.addConnection(wien, railRoadList);	//warszawa to wien
 
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(1, "white", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(1, "white", 0, false, false,592,463, Math.toRadians(31)));
 		wien.addConnection(budapest, railRoadList);	//wien to budapest
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(1, "red", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(1, "red", 0, false, false,592,463, Math.toRadians(31)));
 		wien.addSecondConnection(budapest, railRoadList);	//wien to budapest
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(2, "orange", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(2, "orange", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "orange", 0, false, false,592,463, Math.toRadians(135)));
+		railRoadList.add(new RailRoad(2, "orange", 0, false, false,592,463, Math.toRadians(124)));
 		zagrab.addSecondConnection(budapest, railRoadList);	//zagrab to budapest
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, Math.toRadians(81)));
+		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, Math.toRadians(81)));
+		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, Math.toRadians(81)));
 		sarajevo.addSecondConnection(budapest, railRoadList);	//sarajevo to budapest
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, Math.toRadians(62)));
+		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, Math.toRadians(94)));
+		railRoadList.add(new RailRoad(3, "purple", 0, false, false,592,463, Math.toRadians(133)));
 		athina.addSecondConnection(sofia, railRoadList);	//athina to sofia
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(62)));
+		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(157)));
 		sofia.addSecondConnection(sarajevo, railRoadList);	//sofia to sarajevo
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(3, "blue", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "blue", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "blue", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "blue", 0, false, false,592,463, Math.toRadians(30)));
+		railRoadList.add(new RailRoad(3, "blue", 0, false, false,592,463, Math.toRadians(30)));
+		railRoadList.add(new RailRoad(3, "blue", 0, false, false,592,463, Math.toRadians(30)));
 		sofia.addSecondConnection(constantinople, railRoadList);	//sofia to constantinople
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(164)));
+		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(94)));
 		sofia.addSecondConnection(bucuresti, railRoadList);	//sofia to bucuresti
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(6, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(6, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(6, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(6, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(6, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(6, "any", 0, true, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(6, "any", 0, true, false,592,463, Math.toRadians(3)));
+		railRoadList.add(new RailRoad(6, "any", 0, true, false,592,463, Math.toRadians(173)));
+		railRoadList.add(new RailRoad(6, "any", 0, true, false,592,463, Math.toRadians(163)));
+		railRoadList.add(new RailRoad(6, "any", 0, true, false,592,463, Math.toRadians(151)));
+		railRoadList.add(new RailRoad(6, "any", 0, true, false,592,463, Math.toRadians(143)));
+		railRoadList.add(new RailRoad(6, "any", 0, true, false,592,463, Math.toRadians(131)));
 		kyiv.addConnection(budapest, railRoadList);	//kyiv to budapest
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(6)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(24)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(45)));
 		kyiv.addConnection(warszawa, railRoadList);	//kyiv to warszawa
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(3, "black", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "black", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "black", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "black", 0, false, false,592,463, Math.toRadians(105)));
+		railRoadList.add(new RailRoad(3, "black", 0, false, false,592,463, Math.toRadians(123)));
+		railRoadList.add(new RailRoad(3, "black", 0, false, false,592,463, Math.toRadians(163)));
 		danzig.addConnection(riga, railRoadList);	//danzig to riga
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, true, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "any", 0, true, false,592,463, Math.toRadians(25)));
+		railRoadList.add(new RailRoad(4, "any", 0, true, false,592,463, Math.toRadians(25)));
+		railRoadList.add(new RailRoad(4, "any", 0, true, false,592,463, Math.toRadians(25)));
+		railRoadList.add(new RailRoad(4, "any", 0, true, false,592,463, Math.toRadians(25)));
 		bucuresti.addConnection(budapest, railRoadList); //bucuresti to budapest
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(2, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(2, "any", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "any", 0, false, false,592,463, Math.toRadians(32)));
+		railRoadList.add(new RailRoad(2, "any", 0, false, false,592,463, Math.toRadians(78)));
 		danzig.addConnection(warszawa, railRoadList);	//danzig to warszawa
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(53)));
+		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(141)));
+		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(8, "any", 0, true, false,592,463, Math.toRadians(22)));
 		stockholm.addConnection(petrograd, railRoadList);	//stockholm to petrograd
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(3, "red", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "red", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "red", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "red", 0, false, false,592,463, Math.toRadians(119)));
+		railRoadList.add(new RailRoad(3, "red", 0, false, false,592,463, Math.toRadians(165)));
+		railRoadList.add(new RailRoad(3, "red", 0, false, false,592,463, Math.toRadians(31)));
 		warszawa.addConnection(wilno, railRoadList);	//warszawa to wilno
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "green", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "green", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "green", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "green", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "green", 0, false, false,592,463, Math.toRadians(31)));
+		railRoadList.add(new RailRoad(4, "green", 0, false, false,592,463, Math.toRadians(31)));
+		railRoadList.add(new RailRoad(4, "green", 0, false, false,592,463, Math.toRadians(69)));
+		railRoadList.add(new RailRoad(4, "green", 0, false, false,592,463, Math.toRadians(101)));
 		wilno.addConnection(riga, railRoadList);	//wilno to riga
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,592,463, Math.toRadians(65)));
+		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,592,463, Math.toRadians(65)));
+		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,592,463, Math.toRadians(65)));
 		bucuresti.addConnection(constantinople, railRoadList);	//bucuresti to constantinople
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(117)));
+		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(117)));
 		smryna.addConnection(constantinople, railRoadList);	//smyrna to constantinople
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(3, "orange", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "orange", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "orange", 0, true, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "orange", 0, true, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(3, "orange", 0, true, false,592,463, Math.toRadians(177)));
+		railRoadList.add(new RailRoad(3, "orange", 0, true, false,592,463, Math.toRadians(146)));
 		smryna.addConnection(angora, railRoadList);	//smyrna to angora
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(37)));
+		railRoadList.add(new RailRoad(2, "any", 0, true, false,592,463, Math.toRadians(37)));
 		constantinople.addConnection(angora, railRoadList);	//constantinople to angora
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(110)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(110)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(110)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(110)));
 		bucuresti.addConnection(kyiv, railRoadList);	//bucuresti to kyiv
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(0)));
 		riga.addConnection(petrograd, railRoadList);	//riga to petrograd
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(124)));
+		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(124)));
+		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(124)));
+		railRoadList.add(new RailRoad(4, "blue", 0, false, false,592,463, Math.toRadians(124)));
 		wilno.addConnection(petrograd, railRoadList);	//wilno to petrograd
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(2, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(2, "any", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "any", 0, false, false,592,463, Math.toRadians(35)));
+		railRoadList.add(new RailRoad(2, "any", 0, false, false,592,463, Math.toRadians(92)));
 		wilno.addConnection(kyiv, railRoadList);	//wilno to kyiv
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(126)));
+		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(38)));
+		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(126)));
+		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(90)));
 		constantinople.addConnection(sevastopol, railRoadList);	//constantinople to sevastopol
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(30)));
+		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(53)));
+		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(81)));
+		railRoadList.add(new RailRoad(4, "any", 2, false, false,592,463, Math.toRadians(90)));
 		erzurum.addConnection(sevastopol, railRoadList);	//erzurum to sevastopol
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(3, "black", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "black", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "black", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "black", 0, false, false,592,463, Math.toRadians(79)));
+		railRoadList.add(new RailRoad(3, "black", 0, false, false,592,463, Math.toRadians(171)));
+		railRoadList.add(new RailRoad(3, "black", 0, false, false,592,463, Math.toRadians(33)));
 		erzurum.addConnection(angora, railRoadList);	//erzurum to angora
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(3, "red", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "red", 0, true, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "red", 0, true, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "red", 0, true, false,592,463, Math.toRadians(92)));
+		railRoadList.add(new RailRoad(3, "red", 0, true, false,592,463, Math.toRadians(92)));
+		railRoadList.add(new RailRoad(3, "red", 0, true, false,592,463, Math.toRadians(92)));
 		erzurum.addConnection(sochi, railRoadList);	//erzurum to sochi
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(2, "any", 1, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(2, "any", 1, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "any", 1, false, false,592,463, Math.toRadians(8)));
+		railRoadList.add(new RailRoad(2, "any", 1, false, false,592,463, Math.toRadians(8)));
 		sochi.addConnection(sevastopol, railRoadList);	//sochi to sevastopol
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(2, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(2, "any", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "any", 0, false, false,592,463, Math.toRadians(95)));
+		railRoadList.add(new RailRoad(2, "any", 0, false, false,592,463, Math.toRadians(95)));
 		sochi.addConnection(rostov, railRoadList);	//sochi to rostov
 
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(100)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(100)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(9)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(9)));
 		sevastopol.addConnection(rostov, railRoadList);	//sevastopol to rostov
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(53)));
+		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(27)));
+		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(173)));
+		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(145)));
 		sevastopol.addConnection(bucuresti, railRoadList);	//sevastopol to bucuresti
 
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(2, "green", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(2, "green", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "green", 0, false, false,592,463, Math.toRadians(88)));
+		railRoadList.add(new RailRoad(2, "green", 0, false, false,592,463, Math.toRadians(0)));
 		rostov.addConnection(kharkov, railRoadList);	//rostov to kharkov
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(163)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(27)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(69)));
 		kharkov.addConnection(kyiv, railRoadList);	//kharkov to kyiv
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(3, "red", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "red", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "red", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "red", 0, false, false,592,463, Math.toRadians(0)));
+		railRoadList.add(new RailRoad(3, "red", 0, false, false,592,463, Math.toRadians(143)));
+		railRoadList.add(new RailRoad(3, "red", 0, false, false,592,463, Math.toRadians(73)));
 		kyiv.addConnection(smolensk, railRoadList);	//kyiv to smolensk
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,592,463, Math.toRadians(35)));
+		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,592,463, Math.toRadians(35)));
+		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,592,463, Math.toRadians(123)));
 		smolensk.addConnection(wilno, railRoadList);	//smolensk to wilno
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(2, "orange", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(2, "orange", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(2, "orange", 0, false, false,592,463, Math.toRadians(5)));
+		railRoadList.add(new RailRoad(2, "orange", 0, false, false,592,463, Math.toRadians(141)));
 		smolensk.addConnection(moskva, railRoadList);	//smolensk to moskva
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(79)));
+		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(65)));
+		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(43)));
+		railRoadList.add(new RailRoad(4, "white", 0, false, false,592,463, Math.toRadians(31)));
 		moskva.addConnection(petrograd, railRoadList);	//moskva to petrograd
 		
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
-		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(20)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(70)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(77)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(107)));
+		railRoadList.add(new RailRoad(4, "any", 0, false, false,592,463, Math.toRadians(137)));
 		moskva.addConnection(kharkov, railRoadList);	//moskva to kharkov
 		
 	}
