@@ -15,6 +15,7 @@ public class Player {
     private int trainsLeft;
     private String color;
     private Color plrColor;
+    private boolean lastTurn;
     
     public Player(String color, BufferedImage stationImage, Color plrColor) {
         points = 0;
@@ -28,6 +29,7 @@ public class Player {
         unusedStationList.add(new Station(color, stationImage));
         this.color = color;
         this.plrColor = plrColor;
+        lastTurn = false;
     }
     
     public int getStations()
@@ -81,6 +83,62 @@ public class Player {
     	return total;
     }
     
+    public String getHighestColorNumStr() {
+    	Integer highest = null;
+    	String highestColor = null;
+    	String[] arr = new String[9];
+    	arr[0] = "purple";
+    	arr[1] = "white";
+    	arr[2] = "blue";
+    	arr[3] = "yellow";
+    	arr[4] = "brown";
+    	arr[5] = "black";
+    	arr[6] = "red";
+    	arr[7] = "green";
+    	arr[8] = "wild";
+    	
+    	for (int j = 0; j < arr.length; j++) {
+    		int temp = 0;
+    		for (int i = 0; i< card.size(); i++) {
+        		if (card.get(i).getColor().equals(arr[j])) {
+        			temp += 1;
+        		}
+        	}
+    		if (highest == null || highest < temp) {
+    			highest = temp;
+    			highestColor = arr[j];
+    		}
+    	}
+    	return highestColor;
+    }
+    
+    public int getHighestColorNum() {
+    	Integer highest = null;
+    	String[] arr = new String[9];
+    	arr[0] = "purple";
+    	arr[1] = "white";
+    	arr[2] = "blue";
+    	arr[3] = "yellow";
+    	arr[4] = "brown";
+    	arr[5] = "black";
+    	arr[6] = "red";
+    	arr[7] = "green";
+    	arr[8] = "wild";
+    	
+    	for (int j = 0; j < arr.length; j++) {
+    		int temp = 0;
+    		for (int i = 0; i< card.size(); i++) {
+        		if (card.get(i).getColor().equals(arr[j])) {
+        			temp += 1;
+        		}
+        	}
+    		if (highest == null || highest < temp) {
+    			highest = temp;
+    		}
+    	}
+    	return highest;
+    }
+    
     public void removeCards(String color, int num)
     {
     	for(ColorCard cardRemove : card)
@@ -114,5 +172,13 @@ public class Player {
     
     public Color getPlrColor() {
     	return plrColor;
+    }
+    
+    public void setLastTurn() {
+    	lastTurn = true;
+    }
+    
+    public boolean getLastTurn() {
+    	return lastTurn;
     }
 }
