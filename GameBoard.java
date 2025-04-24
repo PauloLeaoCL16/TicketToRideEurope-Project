@@ -196,8 +196,35 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     			// Get the railroad color
     			Color railRoadColor = null;
     			if (currentRailRoad.get(0).getRailRoadColor() == null) {
-//    				railRoadColor = new Color(255, 255, 255); //temporary color (Delete this later on to not have white)
-    				continue;
+    				railRoadColor = new Color(255, 255, 255); //temporary color (Delete this later on to not have white)
+//    				continue;
+    			}
+    			else {
+    				railRoadColor = currentRailRoad.get(0).getRailRoadColor();
+    			}
+    			// Draw all the railroads
+    			for (int j = 0; j < currentRailRoad.size(); j++) {
+    				g2d.rotate(currentRailRoad.get(j).getDegree(), currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
+    				g2d.setColor(railRoadColor);
+    				g2d.fillRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
+    				g2d.setColor(new Color(0, 0, 0));
+    				g2d.setStroke(new BasicStroke(2));
+    				g2d.drawRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
+    				g2d.setTransform(new AffineTransform());
+    			}
+    			
+    		}
+    		allConnections = cityList.get(i).getSecondConnections();
+    		cityKeys = allConnections.keySet();
+    		// Go through all connections
+    		for (City cities: cityKeys) {
+    			// Get the railroads
+    			ArrayList<RailRoad> currentRailRoad = allConnections.get(cities);
+    			// Get the railroad color
+    			Color railRoadColor = null;
+    			if (currentRailRoad.get(0).getRailRoadColor() == null) {
+    				railRoadColor = new Color(255, 255, 255); //temporary color (Delete this later on to not have white)
+//    				continue;
     			}
     			else {
     				railRoadColor = currentRailRoad.get(0).getRailRoadColor();
@@ -213,6 +240,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     				g2d.setTransform(new AffineTransform());
     			}
     		}
+    		
+    		
     	}
     	g2d.setColor(new Color(255,255,255));
         
