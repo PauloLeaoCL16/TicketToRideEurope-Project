@@ -317,6 +317,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.setStroke(new BasicStroke(2));
         	g2d.drawRoundRect(globalX, globalY, 250, 80, 15, 15);
         	g2d.drawString(currentCityHovered.getName(), globalX + 45, globalY + 45);
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 15)); 
+        	g2d.drawString("right click to place station", globalX + 20, globalY + 72);
         }
     }
 
