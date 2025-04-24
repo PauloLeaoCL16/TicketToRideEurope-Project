@@ -16,7 +16,7 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
-    private BufferedImage sidewaytemplate, table, okbutton, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
+    private BufferedImage table, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
     private boolean isPlayButtonHovered = false;
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
@@ -31,13 +31,15 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     
     private int currentPlr;
     private City[] clickedCity = new City[2];
-    private int panelStuff = 0; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck
+    private int panelStuff;
     
     private int turnUsed = 0;
     private City currentCityHovered = null;
     
 	private int globalX = 0;
 	private int globalY = 0;
+	
+	private boolean lastTurn = false;
     
     public GameBoard() {
         try {
@@ -48,7 +50,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             player3 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player3label.png"));
             player4 = ImageIO.read(MainMenu.class.getResource("/ttreImages/player4label.png"));
             cardBack = ImageIO.read(MainMenu.class.getResource("/ttreImages/backofcard.png"));
-            okbutton = ImageIO.read(MainMenu.class.getResource("/ttreImages/okButton.png"));
             ticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticket.png"));
             template = ImageIO.read(MainMenu.class.getResource("/ttreImages/blankcardtemp.png"));
             redplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/redplayer.png"));
@@ -57,7 +58,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             yellowplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/yellowplayer.png"));
             playerpointer = ImageIO.read(MainMenu.class.getResource("/ttreImages/currentplayerarrow.png"));
             ticketDeck = new TicketDeck();
-            sidewaytemplate = ImageIO.read(MainMenu.class.getResource("/ttreImages/blankcardtemp2.png"));
             players = new ArrayList<Player>();
             currentPlr = 0;
             cardDeck = new CardDeck();
@@ -71,14 +71,13 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             faceUpCard[3] = cardDeck.drawCard();
             faceUpCard[4] = cardDeck.drawCard();
             players.add(new Player("red", redplayer, new Color(255,0,0)));
-            players.add(new Player("blue", blueplayer, new Color(0,0,255)));
-            players.add(new Player("green", greenplayer, new Color(0,255,0)));
-            players.add(new Player("yellow", yellowplayer, new Color(255,255,0)));
+            players.add(new Player("orange", blueplayer, new Color(255,122,0)));
+            players.add(new Player("white", greenplayer, new Color(255,255,255)));
+            players.add(new Player("blue", yellowplayer, new Color(0,0,255)));
             p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p1bg.png"));
             p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p2bg.png"));
             p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p3bg.png"));
             p4bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p4bg.png"));
-            startticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticketchoose.png"));
             longRoutes = new ArrayList<>();
 //          longRoutes.add(new Ticket("palermo", "moskva",20,ImageIO.read(MainMenu.class.getResource("/tickets/longRoute1.png"))));
 //          longRoutes.add(new Ticket("brest", "petrograd",20,ImageIO.read(MainMenu.class.getResource("/tickets/longRoute2.png"))));
@@ -197,15 +196,15 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     			// Get the railroad color
     			Color railRoadColor = null;
     			if (currentRailRoad.get(0).getRailRoadColor() == null) {
-    				railRoadColor = new Color(255, 255, 255); //temporary color (Delete this later on to not have white)
-//    				continue;
+//    				railRoadColor = new Color(255, 255, 255); //temporary color (Delete this later on to not have white)
+    				continue;
     			}
     			else {
     				railRoadColor = currentRailRoad.get(0).getRailRoadColor();
     			}
     			// Draw all the railroads
     			for (int j = 0; j < currentRailRoad.size(); j++) {
-    				g2d.rotate(currentRailRoad.get(j).getDegree() + Math.toRadians(90), currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
+    				g2d.rotate(currentRailRoad.get(j).getDegree(), currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY());
     				g2d.setColor(railRoadColor);
     				g2d.fillRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
     				g2d.setColor(new Color(0, 0, 0));
@@ -242,6 +241,45 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 			clickedCity[1] = null;
         }
         
+        if (panelStuff != 0) {
+
+//        	g2d.setPaint(new Color(0, 0, 0, 0.5f));
+//        	g2d.fillRect(0, 0, getWidth(), getHeight());
+        	g2d.setPaint(new Color(0, 0, 0));
+        	g2d.fillRect(1500, 0, getWidth() - 1500, getHeight());
+        }
+        for (int i = 0; i < players.size(); i++) {
+        	Player currentPlayer = players.get(i);
+        	int pt = currentPlayer.getPoint();
+        	g2d.setPaint(currentPlayer.getPlrColor());
+        	int reset = (pt + players.get(i).getStations() * 4) % 100;
+        	if (reset <= 20) {
+        		g2d.fillOval(32, 960 - (reset * 46), 30, 30);
+            	g2d.setPaint(new Color(0, 0, 0));
+            	g2d.setStroke(new BasicStroke(2));
+            	g2d.drawOval(32, 960 - (reset * 46), 30, 30);
+        	}
+        	else if (reset <= 50) {
+        		g2d.fillOval(32 + ((reset-20) * 47), 48, 30, 30);
+            	g2d.setPaint(new Color(0, 0, 0));
+            	g2d.setStroke(new BasicStroke(2));
+            	g2d.drawOval(32 + ((reset-20) * 47), 48, 30, 30);
+        	}
+        	else if (reset <= 70) {
+        		g2d.fillOval(1447, 61 + ((reset-50) * 46), 30, 30);
+            	g2d.setPaint(new Color(0, 0, 0));
+            	g2d.setStroke(new BasicStroke(2));
+            	g2d.drawOval(1447, 61 + ((reset-50) * 46), 30, 30);
+        	}
+        	else {
+        		g2d.fillOval(1447 - ((reset-70) * 47), 960, 30, 30);
+            	g2d.setPaint(new Color(0, 0, 0));
+            	g2d.setStroke(new BasicStroke(2));
+            	g2d.drawOval(1447 - ((reset-70) * 47), 960, 30, 30);
+        	}
+        }
+        
+        
         if (currentCityHovered != null)
         {
         	g2d.setPaint(new Color(255, 255, 255));
@@ -250,30 +288,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.setStroke(new BasicStroke(2));
         	g2d.drawRoundRect(globalX, globalY, 250, 80, 15, 15);
         	g2d.drawString(currentCityHovered.getName(), globalX + 45, globalY + 45);
-        }
-        
-         if (panelStuff != 0) {
-
-//        	g2d.setPaint(new Color(0, 0, 0, 0.5f));
-//        	g2d.fillRect(0, 0, getWidth(), getHeight());
-        	g2d.setPaint(new Color(0, 0, 0));
-        	g2d.fillRect(1500, 0, getWidth() - 1500, getHeight());
-        	if (panelStuff == 1) {
-        		g2d.drawImage(startticket, 1490, 3, null);
-        		g2d.drawImage(player1, 1760, 3, null);
-        		g2d.drawImage(sidewaytemplate, 1600, 200, null);
-        		g2d.drawImage(sidewaytemplate, 1600, 400, null);
-        		g2d.drawImage(sidewaytemplate, 1600, 600, null);
-        		g2d.drawImage(sidewaytemplate, 1600, 800, null);
-        	}
-        	if (panelStuff == 2) {
-        		g2d.drawImage(startticket, 1490, 3, null);
-        		g2d.drawImage(player1, 1760, 3, null);
-        		g2d.drawImage(ticket, 1650, 200, null);
-        		g2d.drawImage(ticket, 1550, 500, null);
-        		g2d.drawImage(ticket, 1750, 500, null);
-        		g2d.drawImage(okbutton, 1490, 800, null);
-        	}
         }
     }
 
@@ -284,12 +298,12 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	int x = e.getX();
     	int y = e.getY();
     	System.out.println(x + " " + y);
-    	if (inAnEvent) {
+    	if (panelStuff != 0) {
     		return;
         }
     	if(e.getButton() == MouseEvent.BUTTON1)// checks if the player left clicked	
     	{
-	    	//alow for players to draw cards from the face-up card options
+	    	//allow for players to draw cards from the face-up card options
 	    	for (int i = 0; i < 5; i++) {
 	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80 && turnUsed + faceUpCard[i].getCostToDraw() <= 2) {
 	    			players.get(currentPlr).addCard(faceUpCard[i]);
@@ -309,7 +323,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	        if( x >= 1795 && x <= 1895 && y >= 3 && y <= 163)
 	    	{
 	    		players.get(currentPlr).addTicket(ticketDeck.draw());
-	    		inAnEvent = true;
+	    		panelStuff = 2;
 	    	}
 	    	
 	        
@@ -363,10 +377,13 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	   repaint();
     }
     public void changeTurn() {
-    	currentPlr += 1;
+    	currentPlr = (currentPlr + 1) % players.size();
     	turnUsed = 0;
-    	if (currentPlr >= players.size()) {
-    		currentPlr = 0;
+    	if (players.get(currentPlr).getLastTurn() == true) {
+    		out.println("End Game");
+    	}
+    	if (lastTurn == true) {
+    		players.get(currentPlr).setLastTurn();
     	}
     }
     
@@ -375,6 +392,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 //		repaint();
     	
     	ArrayList<RailRoad> neededRailRoad = graph.getCityConnection(clickedCity[0], clickedCity[1]);
+    	ArrayList<RailRoad> neededRailRoad2 = graph.getCitySecondConnection(clickedCity[0], clickedCity[1]);
 		//Check if the railroad is already bought
 		if (neededRailRoad != null && !neededRailRoad.get(0).getBought()) {
 			//Requirements to build a railroad
@@ -394,23 +412,69 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				}
 			}
 			int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
+			if (railroadColor == null) {
+				plrTotalCard = players.get(currentPlr).getHighestColorNum();
+			}
 			if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded) {
 				//Buy the railroad successfully (Will add it to UI and remove from player card later)
 				for (int i = 0; i < neededRailRoad.size(); i++) {
 					neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
 				}
 				turnUsed = 2;
+				players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+				players.get(currentPlr).removeTrain(amountNeeded);
 				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
 			} else {
 				out.println("Not enough railroads");
 			}
 //			inAnEvent = false;
 //			repaint();
-		} else if (neededRailRoad == null) {
+		} else if (neededRailRoad2 != null && !neededRailRoad2.get(0).getBought()) {
+			//Requirements to build a railroad
+			String railroadColor = neededRailRoad2.get(0).getColor();
+			int amountNeeded = neededRailRoad2.get(0).getCost();
+			boolean isMountain = neededRailRoad2.get(0).getMountains();
+			int wildNeeded = neededRailRoad2.get(0).getWildNum();
+			
+			
+			if (isMountain) {
+				//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
+				for (int i = 0; i < 3; i++) {
+					ColorCard draw = cardDeck.drawCard();
+					if (railroadColor.equals(draw.getColor()) || draw.getColor().equals("wild")) {
+						amountNeeded++;
+					}
+				}
+			}
+			int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
+			if (railroadColor == null) {
+				plrTotalCard = players.get(currentPlr).getHighestColorNum();
+			}
+			if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded) {
+				//Buy the railroad successfully (Will add it to UI and remove from player card later)
+				for (int i = 0; i < neededRailRoad2.size(); i++) {
+					neededRailRoad2.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+				}
+				turnUsed = 2;
+				players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+				players.get(currentPlr).removeTrain(amountNeeded);
+				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
+			} else {
+				out.println("Not enough railroads");
+			}
+//			inAnEvent = false;
+//			repaint();
+		} else if (neededRailRoad == null && neededRailRoad2 == null) {
 			out.println("No connection");
 		} else {
 			out.println("Railroad is already owned");
 		}
+		
+		if (players.get(currentPlr).getTrainsLeft() <= 2) {
+			out.println("Last turn");
+			lastTurn = true;
+		}
+		repaint();
     }
 
     @Override
@@ -424,7 +488,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	int maxSize = graph.getClickRadius();
     	for (int i = 0; i < cityList.size(); i++) {
     		if (globalX > cityList.get(i).getX() - maxSize && globalX < cityList.get(i).getX() + maxSize && globalY > cityList.get(i).getY() - maxSize && globalY < cityList.get(i).getY() + maxSize) {
-    			out.println("Hover: " + cityList.get(i).getName());
     			currentCityHovered = cityList.get(i);
 //    			out.println(cityList.get(i).getHasStation().getFromCity());
     			break;
