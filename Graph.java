@@ -1,6 +1,9 @@
 package ttreImages;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.ArrayList;
 
 public class Graph {
 	private ArrayList<City> adjacencyList;
@@ -66,24 +69,29 @@ public class Graph {
 		ArrayList<RailRoad> railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(2, "purple", 0, false, false,591, 452, Math.toRadians(74.1)));
 		railRoadList.add(new RailRoad(2, "purple", 0, false, false,592,503, Math.toRadians(-13.2)));
-		frankfurt.addConnection(munchen, railRoadList);	//frankfurt to munchen		
+		frankfurt.addConnection(munchen, railRoadList);	//frankfurt to munchen	
+		munchen.addConnection(frankfurt, railRoadList);	//frankfurt to munchen	
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(2, "green", 0, false, false,578,409, Math.toRadians(-23.1)));
 		railRoadList.add(new RailRoad(2, "green", 0, false, false,622,352, Math.toRadians(68.7)));
 		frankfurt.addConnection(essen, railRoadList);	//frankfurt to essen
+		essen.addConnection(frankfurt, railRoadList);	//frankfurt to essen
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(2, "white", 0, false, false,542,380, Math.toRadians(180-135)));
 		railRoadList.add(new RailRoad(2, "white", 0, false, false,506,344, Math.toRadians(180-135)));
 		frankfurt.addConnection(amsterdam, railRoadList);	//frankfurt to amsterdam
+		amsterdam.addConnection(frankfurt, railRoadList);	//frankfurt to amsterdam
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(2, "blue", 0, false, false,554,433, Math.toRadians(-135)));
 		railRoadList.add(new RailRoad(2, "blue", 0, false, false,515,399, Math.toRadians(166.1)));
 		frankfurt.addConnection(bruxelles, railRoadList);	//frankfurt to bruxelles
+		bruxelles.addConnection(frankfurt, railRoadList);	//frankfurt to bruxelles
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(3, "black", 0, false, false,633,418, Math.toRadians(155.6)));
 		railRoadList.add(new RailRoad(3, "black", 0, false, false,680,399, Math.toRadians(155.6)));
 		railRoadList.add(new RailRoad(3, "black", 0, false, false,728,374, Math.toRadians(155.6)));
 		frankfurt.addConnection(berlin, railRoadList);	//frankfurt to berlin
+		berlin.addConnection(frankfurt, railRoadList);	//frankfurt to berlin
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(3, "red", 0, false, false,641,436, Math.toRadians(155.6)));
 		railRoadList.add(new RailRoad(3, "red", 0, false, false,686,413, Math.toRadians(155.6)));
@@ -631,6 +639,7 @@ public class Graph {
 		railRoadList.add(new RailRoad(3, "red", 0, false, false,1276,396, Math.toRadians(133)));
 		railRoadList.add(new RailRoad(3, "red", 0, false, false,1265,337, Math.toRadians(73)));
 		kyiv.addConnection(smolensk, railRoadList);	//kyiv to smolensk
+		smolensk.addConnection(kyiv, railRoadList);	//kyiv to smolensk
 		
 		railRoadList = new ArrayList<RailRoad>();
 		railRoadList.add(new RailRoad(3, "yellow", 0, false, false,1209,289, Math.toRadians(35)));
@@ -660,42 +669,124 @@ public class Graph {
 	}
 
 	private City addCity(String name, int x, int y) {
-	    	City city = new City(name, null, x, y);
-	        adjacencyList.add(city);
-	    	return city;
-	    }
-	    
-	    public int getRailRoadSizeX() {
-	    	return railRoadSizeX;
-	    }
-	    
-	    public int getRailRoadSizeY() {
-	    	return railRoadSizeY;
-	    }
-	    
-	    public ArrayList<RailRoad> getCityConnection(City city1, City city2) {
-	    	// Get the railroad connection of city to city stuff
-	    	if (!city1.getConnections().containsKey(city2)) {
-	    		return null;
-	    	}
-	    	return city1.getConnections().get(city2);
-	    }
+    	City city = new City(name, null, x, y);
+        adjacencyList.add(city);
+    	return city;
+    }
+    
+    public int getRailRoadSizeX() {
+    	return railRoadSizeX;
+    }
+    
+    public int getRailRoadSizeY() {
+    	return railRoadSizeY;
+    }
+    
+    public ArrayList<RailRoad> getCityConnection(City city1, City city2) {
+    	// Get the railroad connection of city to city stuff
+    	if (!city1.getConnections().containsKey(city2)) {
+    		return null;
+    	}
+    	return city1.getConnections().get(city2);
+    }
+    
+    public ArrayList<RailRoad> getCitySecondConnection(City city1, City city2) {
+    	// Get the railroad connection of city to city stuff
+    	if (!city1.getSecondConnections().containsKey(city2)) {
+    		return null;
+    	}
+    	return city1.getSecondConnections().get(city2);
+    }
 
-	    public ArrayList<City> getCities() {
-	        return adjacencyList;
-	    }
-	    
-	    public int getClickRadius() {
-	    	return clickRadius;
-	    }
+    public ArrayList<City> getCities() {
+        return adjacencyList;
+    }
+    
+    public int getClickRadius() {
+    	return clickRadius;
+    }
 
-	    public void printCities() {
-	        for (City city : adjacencyList) {
-	            System.out.println(city.getName() + " (" + city.getX() + ", " + city.getY() + ")");
-	        }
-	    }
-	    
-	    public void addStation(City city, Station station) {
-	    	city.addStation(station);
-	    }
+    public void printCities() {
+        for (City city : adjacencyList) {
+            System.out.println(city.getName() + " (" + city.getX() + ", " + city.getY() + ")");
+        }
+    }
+    
+    public void addStation(City city, Station station) {
+    	city.addStation(station);
+    }
+    public int getPlayerTrainPoint(Player p) { // Return player point (Through railroad)
+    	int total = 0;
+    	for (int i = 0; i < adjacencyList.size(); i++) {
+    		// Get Current city
+    		City currentCity = adjacencyList.get(i);
+    		// Get the railroad
+    		HashMap<City, ArrayList<RailRoad>> railRoadList = currentCity.getConnections();
+    		HashMap<City, ArrayList<RailRoad>> railRoadListSecondConnection = currentCity.getSecondConnections();
+    		// Get Connection to other railroads
+    		Set<City> cityList = railRoadList.keySet();
+    		// Iterate through other railroads
+    		for (City currentRailRoad: cityList) {
+    			ArrayList<RailRoad> theRailRoad = railRoadList.get(currentRailRoad);
+    			if (theRailRoad.get(0).getPlrBought() == p) {
+    				if (theRailRoad.size() <= 2) {
+    					total += theRailRoad.size();
+    				} else if (theRailRoad.size() == 3) {
+    					total += 4;
+    				} else if (theRailRoad.size() == 4) {
+    					total += 7;
+    				} else if (theRailRoad.size() == 6) {
+    					total += 15;
+    				} else {
+    					total += 21;
+    				}
+    			}
+    		}
+    		
+    		cityList = railRoadListSecondConnection.keySet();
+    		
+    		for (City currentRailRoad: cityList) {
+    			ArrayList<RailRoad> theRailRoad = railRoadListSecondConnection.get(currentRailRoad);
+    			if (theRailRoad.get(0).getPlrBought() == p) {
+    				if (theRailRoad.size() <= 2) {
+    					total += theRailRoad.size();
+    				} else if (theRailRoad.size() == 3) {
+    					total += 4;
+    				} else if (theRailRoad.size() == 4) {
+    					total += 7;
+    				} else if (theRailRoad.size() == 6) {
+    					total += 15;
+    				} else {
+    					total += 21;
+    				}
+    			}
+    		}
+    	}
+    	return total;
+    }
+    
+    // Support function for longest route
+    private int countRailRoads(ArrayList<City> pastCities, int size) {
+    	return -1;
+    }
+    // Longest Route (Unfinished)
+    public Player getLongestPlrRoute() {
+    	Player currentLongestPlr = null;
+    	Integer currentLongestSize = null;
+    	
+    	for (int i = 0; i < adjacencyList.size(); i++) {
+    		HashMap<City, ArrayList<RailRoad>> railRoadList = adjacencyList.get(i).getConnections();
+    		Set<City> cities = railRoadList.keySet();
+    		for (City currentCity: cities) {
+    			ArrayList<City> newArr = new ArrayList<City>();
+    			newArr.add(currentCity);
+    			int currentRailRoadLength = countRailRoads(newArr, 0);
+    			if (currentLongestSize == null || currentLongestSize < currentRailRoadLength) {
+    				currentRailRoadLength = currentLongestSize;
+    			}
+    		}
+    	}
+    	
+    	return null;
+    }
 }
