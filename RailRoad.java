@@ -70,7 +70,7 @@ public class RailRoad
 		return mountains;
 	}
 	
-	public boolean getPlrBought()
+	public boolean getBought()
 	{
 		return bought;
 	}
