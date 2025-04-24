@@ -1,12 +1,14 @@
-package ttreImages;
+package test2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 public class Graph {
 	private ArrayList<City> adjacencyList;
 	private int clickRadius = 25;
- 	private int railRoadSizeX = 50;
-    private int railRoadSizeY = 17;	
+ 	private int railRoadSizeX = 45;
+     private int railRoadSizeY = 15;	
 
 	public Graph() {
 		adjacencyList = new ArrayList<>();
@@ -681,6 +683,14 @@ public class Graph {
 	    	}
 	    	return city1.getConnections().get(city2);
 	    }
+	    
+	    public ArrayList<RailRoad> getCitySecondConnection(City city1, City city2) {
+	    	// Get the railroad connection of city to city stuff
+	    	if (!city1.getSecondConnections().containsKey(city2)) {
+	    		return null;
+	    	}
+	    	return city1.getSecondConnections().get(city2);
+	    }
 
 	    public ArrayList<City> getCities() {
 	        return adjacencyList;
@@ -698,5 +708,79 @@ public class Graph {
 	    
 	    public void addStation(City city, Station station) {
 	    	city.addStation(station);
+	    }
+	    public int getPlayerTrainPoint(Player p) { // Return player point (Through railroad)
+	    	int total = 0;
+	    	for (int i = 0; i < adjacencyList.size(); i++) {
+	    		// Get Current city
+	    		City currentCity = adjacencyList.get(i);
+	    		// Get the railroad
+	    		HashMap<City, ArrayList<RailRoad>> railRoadList = currentCity.getConnections();
+	    		HashMap<City, ArrayList<RailRoad>> railRoadListSecondConnection = currentCity.getSecondConnections();
+	    		// Get Connection to other railroads
+	    		Set<City> cityList = railRoadList.keySet();
+	    		// Iterate through other railroads
+	    		for (City currentRailRoad: cityList) {
+	    			ArrayList<RailRoad> theRailRoad = railRoadList.get(currentRailRoad);
+	    			if (theRailRoad.get(0).getPlrBought() == p) {
+	    				if (theRailRoad.size() <= 2) {
+	    					total += theRailRoad.size();
+	    				} else if (theRailRoad.size() == 3) {
+	    					total += 4;
+	    				} else if (theRailRoad.size() == 4) {
+	    					total += 7;
+	    				} else if (theRailRoad.size() == 6) {
+	    					total += 15;
+	    				} else {
+	    					total += 21;
+	    				}
+	    			}
+	    		}
+	    		
+	    		cityList = railRoadListSecondConnection.keySet();
+	    		
+	    		for (City currentRailRoad: cityList) {
+	    			ArrayList<RailRoad> theRailRoad = railRoadListSecondConnection.get(currentRailRoad);
+	    			if (theRailRoad.get(0).getPlrBought() == p) {
+	    				if (theRailRoad.size() <= 2) {
+	    					total += theRailRoad.size();
+	    				} else if (theRailRoad.size() == 3) {
+	    					total += 4;
+	    				} else if (theRailRoad.size() == 4) {
+	    					total += 7;
+	    				} else if (theRailRoad.size() == 6) {
+	    					total += 15;
+	    				} else {
+	    					total += 21;
+	    				}
+	    			}
+	    		}
+	    	}
+	    	return total;
+	    }
+	    
+	    // Support function for longest route
+	    private int countRailRoads(ArrayList<City> pastCities, int size) {
+	    	return -1;
+	    }
+	    // Longest Route (Unfinished)
+	    public Player getLongestPlrRoute() {
+	    	Player currentLongestPlr = null;
+	    	Integer currentLongestSize = null;
+	    	
+	    	for (int i = 0; i < adjacencyList.size(); i++) {
+	    		HashMap<City, ArrayList<RailRoad>> railRoadList = adjacencyList.get(i).getConnections();
+	    		Set<City> cities = railRoadList.keySet();
+	    		for (City currentCity: cities) {
+	    			ArrayList<City> newArr = new ArrayList<City>();
+	    			newArr.add(currentCity);
+	    			int currentRailRoadLength = countRailRoads(newArr, 0);
+	    			if (currentLongestSize == null || currentLongestSize < currentRailRoadLength) {
+	    				currentRailRoadLength = currentLongestSize;
+	    			}
+	    		}
+	    	}
+	    	
+	    	return null;
 	    }
 }
