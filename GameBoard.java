@@ -38,6 +38,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private int turnUsed = 0;
     private ArrayList<Ticket> ticketsShownList;
     private int ticketsShown = 0;
+    private City currentCityHovered = null;
+    private int globalX = 0;
+	private int globalY = 0;
+	private boolean lastTurn = false;
 
     
     public GameBoard() {
@@ -85,7 +89,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        players.get(currentPlr).addTicket(longRoutes.get(currentPlr));
         
         firstCityClicked = false;
         highlightCity = new ArrayList<Integer>();
@@ -378,6 +381,49 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.setColor(Color.YELLOW);
 	        g2d.drawRect(1541, 600, 300, 150);
         }
+        
+        for (int i = 0; i < players.size(); i++) {
+        	Player currentPlayer = players.get(i);
+        	int pt = currentPlayer.getPoint();
+        	g2d.setPaint(currentPlayer.getPlrColor());
+        	int reset = (pt + players.get(i).getStations() * 4) % 100;
+        	if (reset <= 20) {
+        		g2d.fillOval(32, 960 - (reset * 46), 30, 30);
+            	g2d.setPaint(new Color(0, 0, 0));
+            	g2d.setStroke(new BasicStroke(2));
+            	g2d.drawOval(32, 960 - (reset * 46), 30, 30);
+        	}
+        	else if (reset <= 50) {
+        		g2d.fillOval(32 + ((reset-20) * 47), 48, 30, 30);
+            	g2d.setPaint(new Color(0, 0, 0));
+            	g2d.setStroke(new BasicStroke(2));
+            	g2d.drawOval(32 + ((reset-20) * 47), 48, 30, 30);
+        	}
+        	else if (reset <= 70) {
+        		g2d.fillOval(1447, 61 + ((reset-50) * 46), 30, 30);
+            	g2d.setPaint(new Color(0, 0, 0));
+            	g2d.setStroke(new BasicStroke(2));
+            	g2d.drawOval(1447, 61 + ((reset-50) * 46), 30, 30);
+        	}
+        	else {
+        		g2d.fillOval(1447 - ((reset-70) * 47), 960, 30, 30);
+            	g2d.setPaint(new Color(0, 0, 0));
+            	g2d.setStroke(new BasicStroke(2));
+            	g2d.drawOval(1447 - ((reset-70) * 47), 960, 30, 30);
+        	}
+        }
+        
+        if (currentCityHovered != null)
+        {
+        	g2d.setPaint(new Color(255, 255, 255));
+        	g2d.fillRoundRect(globalX, globalY, 250, 80, 15, 15);
+        	g2d.setPaint(new Color(0, 0, 0));
+        	g2d.setStroke(new BasicStroke(2));
+        	g2d.drawRoundRect(globalX, globalY, 250, 80, 15, 15);
+        	g2d.drawString(currentCityHovered.getName(), globalX + 45, globalY + 45);
+        }
+        
+        
     }
 
    
@@ -407,9 +453,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	//allow for players to draw cards from the pile
 	    	if( x >= 1550 && x <= 1650 && y >= 3 && y <= 163 && panelStuff == 0)
 	    	{
-	            t2 = ticketDeck.draw();
-	            t3 = ticketDeck.draw();
-	            t4 = ticketDeck.draw();
 	    		players.get(currentPlr).addCard(cardDeck.drawCard());
 	    		turnUsed += 1;
 	    	}
@@ -417,6 +460,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	//Allow to click ticket
 	        if( x >= 1795 && x <= 1895 && y >= 3 && y <= 163 && panelStuff == 0)
 	    	{
+	            t2 = ticketDeck.draw();
+	            t3 = ticketDeck.draw();
+	            t4 = ticketDeck.draw();
 	    		panelStuff = 2;
 	    	}
 	        
@@ -795,67 +841,22 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 			else
 				ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
     	}
+    	if (players.get(currentPlr).getLastTurn() == true) {
+    		out.println("End Game");
+    	}
+    	if (lastTurn == true) {
+    		players.get(currentPlr).setLastTurn();
+    	}
     }
     
-    public void initiateCoords()
-    {
-    	//allow for player to click on a 2 cities to buy them
-    	//coordinates for each point
-    	//frankfurt: 568 <= x && x <= 603 && 433 <= y && y <= 462
-    	//brest: 341 <= x && x <= 366 && 313 <= y && y <= 334
-    	//essen: 584 <= x && x <= 609 && 332 <= y && y <= 353
-    	//berlin: 722 <= x && x <= 747 && 350 <= y && y <= 371
-    	//wien: 801 <= x && x <= 826 && 510 <= y && y <= 531
-    	//zurich: 552 <= x && x <= 577 && 573 <= y && y <= 594
-    	//marseille: 513 <= x && x <= 538 && 703 <= y && y <= 724
-    	//roma: 673 <= x && x <= 698 && 747 <= y && y <= 768
-    	//brindisi: 790 <= x && x <= 815 && 781 <= y && y <= 802
-    	//sofia: 987 <= x && x <= 1012 && 729 <= y && y <= 750
-    	//kobenhavn: 678 <= x && x <= 703 && 190 <= y && y <= 211
-    	//amsterdam: 472 <= x && x <= 497 && 319 <= y && y <= 340
-    	//dieppe: 322 <= x && x <= 347 && 438 <= y && y <= 459
-    	//paris: 390 <= x && x <= 415 && 499 <= y && y <= 520
-    	//bruxelles: 439 <= x && x <= 464 && 382 <= y && y <= 403
-    	//munchen: 641 <= x && x <= 666 && 485 <= y && y <= 506
-    	//athina: 967 <= x && x <= 992 && 885 <= y && y <= 906
-    	//madrid: 169 <= x && x <= 194 && 816 <= y && y <= 847
-    	//cadiz: 167 <= x && x <= 192 && 923 <= y && y <= 944
-    	//barcelona: 321 <= x && x <= 346 && 842 <= y && y <= 863
-    	//pamplona: 304 <= x && x <= 329 && 712 <= y && y <= 733
-    	//constantinople: 1143 <= x && x <= 1168 && 815 <= y && y <= 836
-    	//budapest: 860 <= x && x <= 885 && 550 <= y && y <= 571
-    	//bucuresti: 1073 <= x && x <= 1098 && 644 <= y && y <= 665
-    	//sevastopol: 1264 <= x && x <= 1289 && 662 <= y && y <= 683
-    	//kharkov: 1336 <= x && x <= 1361 && 486 <= y && y <= 507
-    	//kyiv: 1153 <= x && x <= 1178 && 416 <= y && y <= 437
-    	//moskva: 1360 <= x && x <= 1385 && 278 <= y && y <= 299
-    	//petrograd: 1227 <= x && x <= 1252 && 112 <= y && y <= 133
-    	//rica: 994 <= x && x <= 1019 && 125 <= y && y <= 146
-    	//danzic: 875 <= x && x <= 900 && 246 <= y && y <= 267
-    	//edinburgh: 248 <= x && x <= 273 && 111 <= y && y <= 132
-    	//lisboa: 73 <= x && x <= 98 && 856 <= y && y <= 877
-    	//zagrab: 784 <= x && x <= 809 && 638 <= y && y <= 659
-    	//sarajevo: 897 <= x && x <= 922 && 717 <= y && y <= 738
-    	//palermo: 730 <= x && x <= 755 && 927 <= y && y <= 948
-    	//smyrna: 1084 <= x && x <= 1109 && 921 <= y && y <= 942
-    	//angora: 1249 <= x && x <= 1274 && 888 <= y && y <= 909
-    	//erzurum: 1357 <= x && x <= 1382 && 855 <= y && y <= 876
-    	//sochi: 1385 <= x && x <= 1410 && 683 <= y && y <= 704
-    	//rostov: 1393 <= x && x <= 1418 && 562 <= y && y <= 583
-    	//stockholm: 822 <= x && x <= 847 && 81 <= y && y <= 102
-    	//wilno: 1098 <= x && x <= 1123 && 308 <= y && y <= 329
-    	//warszawa: 946 <= x && x <= 971 && 344 <= y && y <= 365
-    	//venezia: 667 <= x && x <= 693 && 619 <= y && y <= 640
-    	//
-    	//
-
-    }
+    
     
     public void buyEvent() {
 //    	inAnEvent = true;
 //		repaint();
     	
     	ArrayList<RailRoad> neededRailRoad = graph.getCityConnection(clickedCity[0], clickedCity[1]);
+    	ArrayList<RailRoad> neededRailRoad2 = graph.getCitySecondConnection(clickedCity[0], clickedCity[1]);
 		//Check if the railroad is already bought
 		if (neededRailRoad != null && !neededRailRoad.get(0).getBought()) {
 			//Requirements to build a railroad
@@ -875,27 +876,90 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				}
 			}
 			int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
+			if (railroadColor == null) {
+				plrTotalCard = players.get(currentPlr).getHighestColorNum();
+			}
 			if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded) {
 				//Buy the railroad successfully (Will add it to UI and remove from player card later)
 				for (int i = 0; i < neededRailRoad.size(); i++) {
 					neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
 				}
+				turnUsed = 2;
+				players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+				players.get(currentPlr).removeTrain(amountNeeded);
 				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
 			} else {
 				out.println("Not enough railroads");
 			}
 //			inAnEvent = false;
 //			repaint();
-		} else if (neededRailRoad == null) {
+		} else if (neededRailRoad2 != null && !neededRailRoad2.get(0).getBought()) {
+			//Requirements to build a railroad
+			String railroadColor = neededRailRoad2.get(0).getColor();
+			int amountNeeded = neededRailRoad2.get(0).getCost();
+			boolean isMountain = neededRailRoad2.get(0).getMountains();
+			int wildNeeded = neededRailRoad2.get(0).getWildNum();
+			
+			
+			if (isMountain) {
+				//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
+				for (int i = 0; i < 3; i++) {
+					ColorCard draw = cardDeck.drawCard();
+					if (railroadColor.equals(draw.getColor()) || draw.getColor().equals("wild")) {
+						amountNeeded++;
+					}
+				}
+			}
+			int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
+			if (railroadColor == null) {
+				plrTotalCard = players.get(currentPlr).getHighestColorNum();
+			}
+			if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded) {
+				//Buy the railroad successfully (Will add it to UI and remove from player card later)
+				for (int i = 0; i < neededRailRoad2.size(); i++) {
+					neededRailRoad2.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+				}
+				turnUsed = 2;
+				players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+				players.get(currentPlr).removeTrain(amountNeeded);
+				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
+			} else {
+				out.println("Not enough railroads");
+			}
+//			inAnEvent = false;
+//			repaint();
+		} else if (neededRailRoad == null && neededRailRoad2 == null) {
 			out.println("No connection");
 		} else {
 			out.println("Railroad is already owned");
 		}
+		
+		if (players.get(currentPlr).getTrainsLeft() <= 2) {
+			out.println("Last turn");
+			lastTurn = true;
+		}
+		repaint();
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-      
+    	globalX = e.getX();
+    	globalY = e.getY();
+    	if (globalX > 1500) {
+    		return;
+    	}
+    	ArrayList<City> cityList = graph.getCities();
+    	int maxSize = graph.getClickRadius();
+    	for (int i = 0; i < cityList.size(); i++) {
+    		if (globalX > cityList.get(i).getX() - maxSize && globalX < cityList.get(i).getX() + maxSize && globalY > cityList.get(i).getY() - maxSize && globalY < cityList.get(i).getY() + maxSize) {
+    			currentCityHovered = cityList.get(i);
+//    			out.println(cityList.get(i).getHasStation().getFromCity());
+    			break;
+    		} else {
+    			currentCityHovered = null;
+    		}
+    	}
+		repaint();
     }
 
     @Override
