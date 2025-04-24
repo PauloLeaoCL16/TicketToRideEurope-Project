@@ -320,6 +320,12 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     				g2d.drawImage(ticketsShownList.get(i).getImage(), 1540, 100 + (200*i), 300, 150, null);
     			}
         		g2d.drawImage(okbutton, 1490, 900, null);
+        		g2d.setFont(new Font("Serif", Font.BOLD, 70));
+        		g2d.setColor(Color.WHITE);
+        		g2d.drawString("Page", 1570, 80);
+        		g2d.setFont(new Font("Serif", Font.BOLD, 70));
+        		g2d.setColor(Color.WHITE);
+        		g2d.drawString(ticketPage + "", 1770, 80);
         	}
         }
         //highlights the ticket clicked 
