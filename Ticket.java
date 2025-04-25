@@ -1,3 +1,5 @@
+package ttreImages;
+
 import java.util.*;
 import java.awt.image.*;
 
