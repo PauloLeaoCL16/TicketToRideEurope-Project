@@ -33,7 +33,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private int tClicked;
     private int currentPlr;
     private City[] clickedCity = new City[2];
-    private int panelStuff = 0; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck, 3 = show player ticks, 4 = gambling rahhhh
+    private int panelStuff = 1; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck, 3 = show player ticks, 4 = gambling rahhhh
     private int ticketPage = 1; // 1 = first page, 2 = seconds page, 3 = third page(max)
     private int turnUsed = 0;
     private ArrayList<Ticket> ticketsShownList;
