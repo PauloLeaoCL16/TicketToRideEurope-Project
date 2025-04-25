@@ -815,6 +815,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	repaint();
     }
     public void changeTurn() {
+	if (lastTurn == true) {
+    		players.get(currentPlr).setLastTurn();
+    	}
     	currentPlr += 1;
     	turnUsed = 0;
     	if (currentPlr >= players.size()) {
@@ -846,9 +849,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	}
     	if (players.get(currentPlr).getLastTurn() == true) {
     		out.println("End Game");
-    	}
-    	if (lastTurn == true) {
-    		players.get(currentPlr).setLastTurn();
     	}
     }
     
