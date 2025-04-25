@@ -81,6 +81,10 @@ public class RailRoad
 		this.railRoadColor = railRoadColor;
 	}
 	
+	public Player getPlrBought() {
+		return plrThatBoughtTheRailRoad;
+	}
+	
 	public int getPoints()
 	{
 		if(cost == 1)
