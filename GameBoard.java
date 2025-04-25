@@ -193,10 +193,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         ArrayList<City> cityList = graph.getCities();
     	int maxSize = graph.getClickRadius();
     	for (int i = 0; i < cityList.size(); i++) {
-    		// Draw station
-    		if (cityList.get(i).getHasStation() != null) {
-    			g2d.drawImage(cityList.get(i).getHasStation().getStationImage(), cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
-    		}
     		// Get all connections
     		HashMap<City, ArrayList<RailRoad>> allConnections = cityList.get(i).getConnections();
     		Set<City> cityKeys = allConnections.keySet();
@@ -250,6 +246,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     				g2d.drawRect(currentRailRoad.get(j).getX(), currentRailRoad.get(j).getY(), graph.getRailRoadSizeX(), graph.getRailRoadSizeY());
     				g2d.setTransform(new AffineTransform());
     			}
+    		}
+		// Draw station
+    		if (cityList.get(i).getHasStation() != null) {
+    			g2d.drawImage(cityList.get(i).getHasStation().getStationImage(), cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
     		}
     		
     		
