@@ -387,7 +387,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         
         for (int i = 0; i < players.size(); i++) {
         	Player currentPlayer = players.get(i);
-        	int pt = currentPlayer.getPoint();
+        	int pt = currentPlayer.getPoint()/2;
         	g2d.setPaint(currentPlayer.getPlrColor());
         	int reset = (pt + players.get(i).getStations() * 4) % 100;
         	if (reset <= 20) {
