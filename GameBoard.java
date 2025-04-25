@@ -169,6 +169,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         //white player station and trains
         g2d.drawString(players.get(2).getTrainsLeft()+"", 1798, 504);
         g2d.drawString(players.get(2).getStations()+"", 1814, 462);
+        //blue player station and trains
+        g2d.drawString(players.get(3).getTrainsLeft()+"", 1798, 615);
+        g2d.drawString(players.get(3).getStations()+"", 1814, 570);
         
         //number of trains stuff
         g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
