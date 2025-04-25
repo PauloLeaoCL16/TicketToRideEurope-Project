@@ -1,3 +1,5 @@
+package ttreImages;
+
 import java.awt.image.*;
 
 public class ColorCard {
