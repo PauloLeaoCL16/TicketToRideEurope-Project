@@ -334,6 +334,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
          		g2d.drawImage(sidewaytemplate, 1540, 350, 200, 100, null);
          		g2d.setColor(Color.WHITE);
          		g2d.drawString("Choose color to buy station", 1510, 550);
+         		g2d.drawString("Extra Cost:", maxSize, maxSize)
          		g2d.drawImage(playerGamble, 1510, 630, null);
          		g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
                  g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("wild")), 1580, 762); // Locomotive
@@ -407,6 +408,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.setColor(Color.YELLOW);
 	        g2d.drawRect(1541, 600, 300, 150);
         }
+        
+        
         
         for (int i = 0; i < players.size(); i++) {
         	Player currentPlayer = players.get(i);
