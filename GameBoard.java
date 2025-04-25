@@ -1,3 +1,4 @@
+
 package ttreImages;
 
 import java.awt.*;
@@ -160,18 +161,18 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         //numerical stuff
         g2d.setFont(new Font("Serif", Font.BOLD, 50)); g2d.setColor(Color.WHITE); 
         
-       //red player station and trains
-        g2d.drawString(players.get(0).getTrainsLeft()+"", 1798, 288);
-        g2d.drawString(players.get(0).getStations()+"", 1814, 245); 
-        //orange player station and trains
-        g2d.drawString(players.get(1).getTrainsLeft()+"", 1798, 398);
-        g2d.drawString(players.get(1).getStations()+"", 1814, 353);
-        //white player station and trains
-        g2d.drawString(players.get(2).getTrainsLeft()+"", 1798, 504);
-        g2d.drawString(players.get(2).getStations()+"", 1814, 462);
+        //red player station and trains
+        g2d.drawString(players.get(0).getTrainsLeft()+"", 1820, 275);
+        g2d.drawString(players.get(0).getStations()+"", 1820, 230); 
+        //green player station and trains
+        g2d.drawString(players.get(1).getTrainsLeft()+"", 1820, 375);
+        g2d.drawString(players.get(1).getStations()+"", 1820, 330);
+        //yellow player station and trains
+        g2d.drawString(players.get(2).getTrainsLeft()+"", 1820, 475);
+        g2d.drawString(players.get(2).getStations()+"", 1820, 430);
         //blue player station and trains
-        g2d.drawString(players.get(3).getTrainsLeft()+"", 1798, 615);
-        g2d.drawString(players.get(3).getStations()+"", 1814, 570);
+        g2d.drawString(players.get(3).getTrainsLeft()+"", 1820, 575);
+        g2d.drawString(players.get(3).getStations()+"", 1820, 530);
         
         //number of trains stuff
         g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
@@ -387,7 +388,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         
         for (int i = 0; i < players.size(); i++) {
         	Player currentPlayer = players.get(i);
-        	int pt = currentPlayer.getPoint()/2;
+        	int pt = currentPlayer.getPoint();
         	g2d.setPaint(currentPlayer.getPlrColor());
         	int reset = (pt + players.get(i).getStations() * 4) % 100;
         	if (reset <= 20) {
