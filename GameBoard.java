@@ -16,7 +16,7 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
-    private BufferedImage playerGamble, sidewaytemplate, nextButton, previousButton,table, okbutton, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
+    private BufferedImage sidewaytemplate,playerGamble ,nextButton, previousButton,table, okbutton, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
     private boolean isPlayButtonHovered = false;
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
@@ -33,7 +33,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private int tClicked;
     private int currentPlr;
     private City[] clickedCity = new City[2];
-    private int panelStuff = 4; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck, 3 = show player ticks, 4 = gambling rahhhh
+    private int panelStuff = 0; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck, 3 = show player ticks, 4 = gambling rahhhh
     private int ticketPage = 1; // 1 = first page, 2 = seconds page, 3 = third page(max)
     private int turnUsed = 0;
     private ArrayList<Ticket> ticketsShownList;
@@ -61,8 +61,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             greenplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/greenplayer.png"));
             yellowplayer = ImageIO.read(MainMenu.class.getResource("/ttreImages/yellowplayer.png"));
             playerpointer = ImageIO.read(MainMenu.class.getResource("/ttreImages/currentplayerarrow.png"));
+            playerGamble = ImageIO.read(MainMenu.class.getResource("/ttreImages/playerGambleCards.png"));;
             ticketDeck = new TicketDeck();
-            playerGamble = ImageIO.read(MainMenu.class.getResource("/ttreImages/playerGambleCards.png"));
             sidewaytemplate = ImageIO.read(MainMenu.class.getResource("/ttreImages/blankcardtemp2.png"));
             players = new ArrayList<Player>();
             currentPlr = 0;
@@ -127,30 +127,26 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         {
         	g2d.drawImage(p1bg, 1420, 750, 500, 300, null);
         	g2d.drawImage(playerpointer, 1875, 225, null);
-        	//g2d.drawImage(p1bg, 1546, 809, null);
         }
         else if( currentPlr ==1)
         {
         	g2d.drawImage(p2bg, 1420, 750, 500, 300, null);
         	g2d.drawImage(playerpointer, 1875, 350, null);
-        	//g2d.drawImage(p2bg, 1546, 809, null);
         }
         else if(currentPlr ==2)
         {
         	g2d.drawImage(p3bg, 1420, 750, 500, 300, null);
         	g2d.drawImage(playerpointer, 1875, 450, null);
-        	//g2d.drawImage(p3bg, 1546, 809, null);
         }
         else if(currentPlr ==3)
         {
         	g2d.drawImage(p4bg, 1420, 750, 500, 300, null);
-        	g2d.drawImage(playerpointer, 1875, 560, null);
-        	//g2d.drawImage(p4bg, 1546, 809, null);
+        	g2d.drawImage(playerpointer, 1875, 560, null);   	
         }
         
         //rotate template cardholder and scale it smaller a bit
 //        g2d.scale(0.8, 0.8);
-//        g2d.rotate(Math.toRadians(-90), 1520, 240);
+ //       g2d.rotate(Math.toRadians(-90), 1520, 240);
         for (int i = 0; i < 5; i++) {
         	g2d.drawImage(faceUpCard[i].getImage(), getWidth() - 360, 220 + i*80, 120, 80, null);
         }
@@ -162,17 +158,17 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.setFont(new Font("Serif", Font.BOLD, 50)); g2d.setColor(Color.WHITE); 
         
         //red player station and trains
-        g2d.drawString(players.get(0).getTrainsLeft()+"", 1820, 275);
-        g2d.drawString(players.get(0).getStations()+"", 1820, 230); 
-        //green player station and trains
-        g2d.drawString(players.get(1).getTrainsLeft()+"", 1820, 375);
-        g2d.drawString(players.get(1).getStations()+"", 1820, 330);
-        //yellow player station and trains
-        g2d.drawString(players.get(2).getTrainsLeft()+"", 1820, 475);
-        g2d.drawString(players.get(2).getStations()+"", 1820, 430);
+        g2d.drawString(players.get(0).getTrainsLeft()+"", 1798, 288);
+        g2d.drawString(players.get(0).getStations()+"", 1814, 245); 
+        //orange player station and trains
+        g2d.drawString(players.get(1).getTrainsLeft()+"", 1798, 398);
+        g2d.drawString(players.get(1).getStations()+"", 1814, 353);
+        //white player station and trains
+        g2d.drawString(players.get(2).getTrainsLeft()+"", 1798, 504);
+        g2d.drawString(players.get(2).getStations()+"", 1814, 462);
         //blue player station and trains
-        g2d.drawString(players.get(3).getTrainsLeft()+"", 1820, 575);
-        g2d.drawString(players.get(3).getStations()+"", 1820, 530);
+        g2d.drawString(players.get(3).getTrainsLeft()+"", 1798, 615);
+        g2d.drawString(players.get(3).getStations()+"", 1814, 570);
         
         //number of trains stuff
         g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
@@ -204,8 +200,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     			// Get the railroad color
     			Color railRoadColor = null;
     			if (currentRailRoad.get(0).getRailRoadColor() == null) {
-    				railRoadColor = new Color(255, 255, 255); //temporary color (Delete this later on to not have white)
-//    				continue;
+    				continue;
     			}
     			else {
     				railRoadColor = currentRailRoad.get(0).getRailRoadColor();
@@ -231,8 +226,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     			// Get the railroad color
     			Color railRoadColor = null;
     			if (currentRailRoad.get(0).getRailRoadColor() == null) {
-    				railRoadColor = new Color(255, 255, 255); //temporary color (Delete this later on to not have white)
-//    				continue;
+    				continue;
     			}
     			else {
     				railRoadColor = currentRailRoad.get(0).getRailRoadColor();
@@ -248,11 +242,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     				g2d.setTransform(new AffineTransform());
     			}
     		}
-		// Draw station
+    		// Draw station
     		if (cityList.get(i).getHasStation() != null) {
     			g2d.drawImage(cityList.get(i).getHasStation().getStationImage(), cityList.get(i).getX() - 50, cityList.get(i).getY() - 50, 100, 100, null); //Need to change image
     		}
-    		
     		
     	}
     	g2d.setColor(new Color(255,255,255));
@@ -277,7 +270,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	        //highlight city when clicked
         	g2d.setStroke(new BasicStroke(4));
         	g2d.setColor(Color.YELLOW);
-	        g2d.drawOval(clickedCity[1].getX() - 11, clickedCity[1].getY() - 11, 22, 22);
+	        g2d.drawOval(clickedCity[1].getX(), clickedCity[1].getY(), 22, 22);
 			clickedCity[0] = null;
 			clickedCity[1] = null;
         }
@@ -321,7 +314,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	if (panelStuff == 3) {
         		g2d.drawImage( nextButton, 1700, 870, 50,50,null );
         		g2d.drawImage( previousButton, 1600, 870, 50,50,null );
-        		//g2d.drawImage(player1, 1760, 3, null);
+        		g2d.drawImage(player1, 1760, 3, null);
     			for(int i= 0; i<4;i++)
     			{
     				g2d.drawImage(ticketsShownList.get(i).getImage(), 1540, 100 + (200*i), 300, 150, null);
@@ -335,33 +328,33 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         		g2d.drawString(ticketPage + "", 1770, 80);
         	}
         	if(panelStuff == 4) {
-        		g2d.drawImage(sidewaytemplate, 1540, 50, 200, 100, null);
-        		g2d.drawImage(sidewaytemplate, 1540, 200, 200, 100, null);
-        		g2d.drawImage(sidewaytemplate, 1540, 350, 200, 100, null);
-        		g2d.setColor(Color.WHITE);
-        		g2d.drawString("Choose color to buy station", 1510, 550);
-        		g2d.drawImage(playerGamble, 1510, 630, null);
-        		g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
-                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("wild")), 1580, 762); // Locomotive
-                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("white")), 1645, 762); // White
-                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("red")), 1712, 762); // Red
-                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("purple")), 1777, 762); // Purple
-                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("green")), 1845, 762); // Green
-                //2nd row
-                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("brown")), 1580, 890); // Brown
-                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("blue")), 1645, 890); // Blue
-                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("black")), 1712, 890); // Black
-                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("yellow")), 1777, 890); // Yellow
-        		g2d.setColor(Color.GREEN);
-                g2d.fillRect(1510, 970, 170, 50);
-                g2d.setColor(Color.BLACK);
-                g2d.drawString("Buy", 1520, 1000);
-                
-                g2d.setColor(Color.RED);
-                g2d.fillRect(1710, 970, 170, 50);
-                g2d.setColor(Color.BLACK);
-                g2d.drawString("Decline", 1720, 1000);
-        	}
+         		g2d.drawImage(sidewaytemplate, 1540, 50, 200, 100, null);
+         		g2d.drawImage(sidewaytemplate, 1540, 200, 200, 100, null);
+         		g2d.drawImage(sidewaytemplate, 1540, 350, 200, 100, null);
+         		g2d.setColor(Color.WHITE);
+         		g2d.drawString("Choose color to buy station", 1510, 550);
+         		g2d.drawImage(playerGamble, 1510, 630, null);
+         		g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("wild")), 1580, 762); // Locomotive
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("white")), 1645, 762); // White
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("red")), 1712, 762); // Red
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("purple")), 1777, 762); // Purple
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("green")), 1845, 762); // Green
+                 //2nd row
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("brown")), 1580, 890); // Brown
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("blue")), 1645, 890); // Blue
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("black")), 1712, 890); // Black
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("yellow")), 1777, 890); // Yellow
+         		g2d.setColor(Color.GREEN);
+                 g2d.fillRect(1510, 970, 170, 50);
+                 g2d.setColor(Color.BLACK);
+                 g2d.drawString("Buy", 1520, 1000);
+                 
+                 g2d.setColor(Color.RED);
+                 g2d.fillRect(1710, 970, 170, 50);
+                 g2d.setColor(Color.BLACK);
+                 g2d.drawString("Decline", 1720, 1000);
+         	}
         }
         //highlights the ticket clicked 
         if(firstTicketClicked)
@@ -416,7 +409,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         
         for (int i = 0; i < players.size(); i++) {
         	Player currentPlayer = players.get(i);
-        	int pt = currentPlayer.getPoint();
+        	int pt = currentPlayer.getPoint()/2;
         	g2d.setPaint(currentPlayer.getPlrColor());
         	int reset = (pt + players.get(i).getStations() * 4) % 100;
         	if (reset <= 20) {
@@ -639,7 +632,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	        	secondTicketClicked = false;
 	        	thirdTicketClicked = false;
 	        	fourthTicketClicked = false;
-	        	t1 =ticketDeck.drawLongTicket();
+	        	t1 = ticketDeck.drawLongTicket();
 		        t2 = ticketDeck.draw();
 		        t3 = ticketDeck.draw();
 		        t4 = ticketDeck.draw();
@@ -804,7 +797,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	int maxSize = graph.getClickRadius();
 	    	for (int i = 0; i < cityList.size(); i++) {
 	    		if (x > cityList.get(i).getX() - maxSize && x < cityList.get(i).getX() + maxSize && y > cityList.get(i).getY() - maxSize && y < cityList.get(i).getY() + maxSize && panelStuff == 0) {
-//	    			out.println("Player clicked: " + cityList.get(i).getName());
+	    			out.println("Player clicked: " + cityList.get(i).getName());
 	    			if (clickedCity[0] == null) {
 	    				clickedCity[0] = cityList.get(i);
 	    			} else if (clickedCity[0] != cityList.get(i)) {
@@ -844,7 +837,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	repaint();
     }
     public void changeTurn() {
-	if (lastTurn == true) {
+    	if (lastTurn == true) {
     		players.get(currentPlr).setLastTurn();
     	}
     	currentPlr += 1;
@@ -877,6 +870,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
     	}
     	if (players.get(currentPlr).getLastTurn() == true) {
+    		
     		out.println("End Game");
     	}
     }
