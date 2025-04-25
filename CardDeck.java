@@ -1,7 +1,13 @@
+package ttreImages;
+
+import java.awt.image.BufferedImage;
+import java.awt.image.*;
+import javax.imageio.ImageIO;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.imageio.*;
-import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class CardDeck {
 	
@@ -15,31 +21,31 @@ public class CardDeck {
     private void add() {
     	try {
 	        for (int i = 0; i < 12; i++) {
-	            deck.add(new ColorCard("purple", ImageIO.read(MainMenu.class.getResource("/cards/purplecard.png"))));
+	            deck.add(new ColorCard("purple", ImageIO.read(MainMenu.class.getResource("/ttreImages/purplecard.png"))));
 	        }
 	        for (int i = 0; i < 12; i++) {
-	            deck.add(new ColorCard("white", ImageIO.read(MainMenu.class.getResource("/cards/whitecard.png"))));
+	            deck.add(new ColorCard("white", ImageIO.read(MainMenu.class.getResource("/ttreImages/whitecard.png"))));
 	        }
 	        for (int i = 0; i < 12; i++) {
-	            deck.add(new ColorCard("blue", ImageIO.read(MainMenu.class.getResource("/cards/bluecard.png"))));
+	            deck.add(new ColorCard("blue", ImageIO.read(MainMenu.class.getResource("/ttreImages/bluecard.png"))));
 	        }
 	        for (int i = 0; i < 12; i++) {
-	            deck.add(new ColorCard("yellow", ImageIO.read(MainMenu.class.getResource("/cards/yellowcard.png"))));
+	            deck.add(new ColorCard("yellow", ImageIO.read(MainMenu.class.getResource("/ttreImages/yellowcard.png"))));
 	        }
 	        for (int i = 0; i < 12; i++) {
-	            deck.add(new ColorCard("brown", ImageIO.read(MainMenu.class.getResource("/cards/browncard.png"))));
+	            deck.add(new ColorCard("brown", ImageIO.read(MainMenu.class.getResource("/ttreImages/browncard.png"))));
 	        }
 	        for (int i = 0; i < 12; i++) {
-	            deck.add(new ColorCard("black", ImageIO.read(MainMenu.class.getResource("/cards/blackcard.png"))));
+	            deck.add(new ColorCard("black", ImageIO.read(MainMenu.class.getResource("/ttreImages/blackcard.png"))));
 	        }
 	        for (int i = 0; i < 12; i++) {
-	            deck.add(new ColorCard("red", ImageIO.read(MainMenu.class.getResource("/cards/redcard.png"))));
+	            deck.add(new ColorCard("red", ImageIO.read(MainMenu.class.getResource("/ttreImages/redcard.png"))));
 	        }
 	        for (int i = 0; i < 12; i++) {
-	            deck.add(new ColorCard("green", ImageIO.read(MainMenu.class.getResource("/cards/greencard.png"))));
+	            deck.add(new ColorCard("green", ImageIO.read(MainMenu.class.getResource("/ttreImages/greencard.png"))));
 	        }
 	        for (int i = 0; i < 14; i++) {
-	            deck.add(new ColorCard("wild", ImageIO.read(MainMenu.class.getResource("/cards/wildcard.png"))));
+	            deck.add(new ColorCard("wild", ImageIO.read(MainMenu.class.getResource("/ttreImages/wildcard.png"))));
 	        }
 	        shuffle();
 	    } catch (IOException e) {
