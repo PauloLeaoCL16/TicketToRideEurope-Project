@@ -1,6 +1,8 @@
 package ttreImages;
 
 import java.util.*;
+import java.awt.Color;
+import java.awt.image.*;
 
 public class Player {
 	
@@ -12,19 +14,22 @@ public class Player {
     private ArrayList<Station> unusedStationList;
     private int trainsLeft;
     private String color;
-    private int actions = 2;
+    private Color plrColor;
+    private boolean lastTurn;
     
-    public Player(String color) {
+    public Player(String color, BufferedImage stationImage, Color plrColor) {
         points = 0;
         trainsLeft = 45;
         tickets = new ArrayList<Ticket>();
         card = new ArrayList<ColorCard>();
         unusedStationList = new ArrayList<Station>();
         usedStationList = new ArrayList<Station>();
-        unusedStationList.add(new Station(color));
-        unusedStationList.add(new Station(color));
-        unusedStationList.add(new Station(color));
+        unusedStationList.add(new Station(color, stationImage));
+        unusedStationList.add(new Station(color, stationImage));
+        unusedStationList.add(new Station(color, stationImage));
         this.color = color;
+        this.plrColor = plrColor;
+        lastTurn = false;
     }
     
     public int getStations()
@@ -34,13 +39,10 @@ public class Player {
     	return size;
     }
     
-    public Station useStation()
+    public void useStation()
     {
-    	Station station = new Station(color);
     	if(unusedStationList.size()>=1)
-    		station = (unusedStationList.remove(unusedStationList.size()-1));
-    	usedStationList.add(station);
-    	return station;
+    		usedStationList.add(unusedStationList.remove(unusedStationList.size()-1));
     }
 
     public void addTicket(Ticket ticket) {
@@ -62,16 +64,6 @@ public class Player {
     public int getPoint() {
         return points;
     }
-    
-    public int getActions()
-    {
-    	return actions;
-    }
-    
-    public void setActions(int x)
-    {
-    	actions = x;
-    }
 
     public void addCard(ColorCard card) {
         this.card.add(card);
@@ -89,6 +81,62 @@ public class Player {
     		}
     	}
     	return total;
+    }
+    
+    public String getHighestColorNumStr() {
+    	Integer highest = null;
+    	String highestColor = null;
+    	String[] arr = new String[9];
+    	arr[0] = "purple";
+    	arr[1] = "white";
+    	arr[2] = "blue";
+    	arr[3] = "yellow";
+    	arr[4] = "brown";
+    	arr[5] = "black";
+    	arr[6] = "red";
+    	arr[7] = "green";
+    	arr[8] = "wild";
+    	
+    	for (int j = 0; j < arr.length; j++) {
+    		int temp = 0;
+    		for (int i = 0; i< card.size(); i++) {
+        		if (card.get(i).getColor().equals(arr[j])) {
+        			temp += 1;
+        		}
+        	}
+    		if (highest == null || highest < temp) {
+    			highest = temp;
+    			highestColor = arr[j];
+    		}
+    	}
+    	return highestColor;
+    }
+    
+    public int getHighestColorNum() {
+    	Integer highest = null;
+    	String[] arr = new String[9];
+    	arr[0] = "purple";
+    	arr[1] = "white";
+    	arr[2] = "blue";
+    	arr[3] = "yellow";
+    	arr[4] = "brown";
+    	arr[5] = "black";
+    	arr[6] = "red";
+    	arr[7] = "green";
+    	arr[8] = "wild";
+    	
+    	for (int j = 0; j < arr.length; j++) {
+    		int temp = 0;
+    		for (int i = 0; i< card.size(); i++) {
+        		if (card.get(i).getColor().equals(arr[j])) {
+        			temp += 1;
+        		}
+        	}
+    		if (highest == null || highest < temp) {
+    			highest = temp;
+    		}
+    	}
+    	return highest;
     }
     
     public void removeCards(String color, int num)
@@ -120,5 +168,17 @@ public class Player {
 
     public String getPlayerColor() {
     	return color;
+    }
+    
+    public Color getPlrColor() {
+    	return plrColor;
+    }
+    
+    public void setLastTurn() {
+    	lastTurn = true;
+    }
+    
+    public boolean getLastTurn() {
+    	return lastTurn;
     }
 }
