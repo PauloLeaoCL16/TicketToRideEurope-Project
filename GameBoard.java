@@ -249,7 +249,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     		
     	}
     	g2d.setColor(new Color(255,255,255));
-        
+        /*
         if(firstCityClicked)
         {
 	        //highlight city when clicked
@@ -257,6 +257,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	g2d.setColor(Color.YELLOW);
 	        g2d.drawOval(highlightCity.get(0), highlightCity.get(1), 23, 23);
         }
+        */
         
         if(clickedCity[0] != null)
         {
