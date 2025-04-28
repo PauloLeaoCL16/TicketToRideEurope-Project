@@ -1,3 +1,4 @@
+
 package ttreImages;
 
 import java.awt.*;
@@ -316,9 +317,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	
         	
         	if (panelStuff == 3) {
-        		g2d.drawImage( nextButton, 1700, 870, 50,50,null );
-        		g2d.drawImage( previousButton, 1600, 870, 50,50,null );
-        		g2d.drawImage(player1, 1760, 3, null);
+        		g2d.drawImage( nextButton, 1700, 850, 50,50,null );
+        		g2d.drawImage( previousButton, 1600, 850, 50,50,null );
     			for(int i= 0; i<4;i++)
     			{
     				g2d.drawImage(ticketsShownList.get(i).getImage(), 1540, 100 + (200*i), 300, 150, null);
@@ -706,7 +706,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    	
 	    	// allows for player to go through their ticket pages
 	    	// previous button
-	    	if (x >=1600 && x <= 1650 && y >=870 && y <= 920 && panelStuff == 3)
+	    	if (x >=1600 && x <= 1650 && y >=850 && y <= 920 && panelStuff == 3)
 	    	{
 	    		if( ticketPage == 2 )
 	    		{
@@ -761,7 +761,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    		
 	    	}
 	    	// next button
-	    	if (x >=1700 && x <= 1750 && y >=870 && y <= 920 && panelStuff == 3)
+	    	if (x >=1700 && x <= 1750 && y >=850 && y <= 920 && panelStuff == 3)
 	    	{
 	    		if( ticketPage == 1)
 	    		{
