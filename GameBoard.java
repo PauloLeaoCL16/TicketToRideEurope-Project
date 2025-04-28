@@ -21,6 +21,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private boolean isRulesScrollHovered = false;
     private ColorCard[] faceUpCard;
     private CardDeck cardDeck;
+    private Stack<ColorCard> discardDeck;
     private TicketDeck ticketDeck;
     private ArrayList<Player> players;
     private City[] citiesToBuy; //Stores 2 cities for buying routes purposes
@@ -67,6 +68,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             players = new ArrayList<Player>();
             currentPlr = 0;
             cardDeck = new CardDeck();
+	    discardDeck = new Stack<>();
             ticketDeck = new TicketDeck();
             faceUpCard = new ColorCard[5];
             clickedCity[0] = null;
@@ -472,11 +474,26 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    		}
     		}
 	    	//alow for players to draw cards from the face-up card options
-	    	for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) {
 	    		if (x > getWidth()-360 && x < getWidth()-240 && y> 220+i*80 && y<300+i*80 && turnUsed + faceUpCard[i].getCostToDraw() <= 2 && panelStuff == 0) {
 	    			players.get(currentPlr).addCard(faceUpCard[i]);
 	    			turnUsed += faceUpCard[i].getCostToDraw();
 	    			faceUpCard[i] = cardDeck.drawCard();
+	    			for (int z = 0; z < faceUpCard.length; z++) {
+ 		    			out.println(faceUpCard[z].getColor());
+ 	    			}
+ 	    			out.println("-------");
+ 
+ 	    		}
+ 	    		int wildNum = 0;
+ 	    		for (int j = 0; j < faceUpCard.length; j++) {
+ 	    			if (faceUpCard[j].getColor().equals("wild")) wildNum++;
+ 	    		}
+ 	    		if (wildNum >= 3) {
+ 	    			for (int j = 0; j < faceUpCard.length; j++) {
+ 	    				discardDeck.add(faceUpCard[j]);
+ 		    			faceUpCard[j] = cardDeck.drawCard();
+ 		    		}
 	    		}
 	        }
 	    	
