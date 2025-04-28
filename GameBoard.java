@@ -82,7 +82,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             players.add(new Player("yellow", yellowplayer, new Color(255,255,0)));
             p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p1bg.png"));
             p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p2bg.png"));
-            p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/White PFP.png"));
+            p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p3bg.png"));
             p4bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p4bg.png"));
             startticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticketchoose.png"));
             nextButton = ImageIO.read(MainMenu.class.getResource("/ttreImages/nextButton.png"));
