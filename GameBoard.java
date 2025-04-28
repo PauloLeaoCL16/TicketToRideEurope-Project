@@ -887,6 +887,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	
     	ArrayList<RailRoad> neededRailRoad = graph.getCityConnection(clickedCity[0], clickedCity[1]);
     	ArrayList<RailRoad> neededRailRoad2 = graph.getCitySecondConnection(clickedCity[0], clickedCity[1]);
+	if (neededRailRoad != null && neededRailRoad.get(0).getBought() && neededRailRoad.get(0).getPlrBought() == players.get(currentPlr)) {
+		return;
+	}
+	    
 		//Check if the railroad is already bought
 		if (neededRailRoad != null && !neededRailRoad.get(0).getBought()) {
 			//Requirements to build a railroad
