@@ -82,7 +82,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             players.add(new Player("yellow", yellowplayer, new Color(255,255,0)));
             p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p1bg.png"));
             p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p2bg.png"));
-            p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p3bg.png"));
+            p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/White PFP.png"));
             p4bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p4bg.png"));
             startticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticketchoose.png"));
             nextButton = ImageIO.read(MainMenu.class.getResource("/ttreImages/nextButton.png"));
@@ -123,22 +123,23 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawImage(cardBack, 1560, 3, null);
         g2d.drawImage(template, 1675, 3, null);
         g2d.drawImage(ticket, 1795, 3, null);
-        if( currentPlr ==0 )
+        if( currentPlr ==0&& panelStuff == 0 )
         {
         	g2d.drawImage(p1bg, 1420, 750, 500, 300, null);
         	g2d.drawImage(playerpointer, 1875, 225, null);
         }
-        else if( currentPlr ==1)
+        else if( currentPlr ==1 && panelStuff == 0)
         {
         	g2d.drawImage(p2bg, 1420, 750, 500, 300, null);
         	g2d.drawImage(playerpointer, 1875, 350, null);
         }
-        else if(currentPlr ==2)
+        else if(currentPlr ==2&& panelStuff == 0)
         {
         	g2d.drawImage(p3bg, 1420, 750, 500, 300, null);
         	g2d.drawImage(playerpointer, 1875, 450, null);
         }
-        else if(currentPlr ==3)
+        else if(currentPlr ==3&& panelStuff == 0
+        		)
         {
         	g2d.drawImage(p4bg, 1420, 750, 500, 300, null);
         	g2d.drawImage(playerpointer, 1875, 560, null);   	
@@ -415,7 +416,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	Player currentPlayer = players.get(i);
         	int pt = currentPlayer.getPoint()/2;
         	g2d.setPaint(currentPlayer.getPlrColor());
-        	int reset = (pt + players.get(i).getStations() * 4) % 100;
+        	int reset = (pt + players.get(i).getStations() * 4) % 100 -12;
         	if (reset <= 20) {
         		g2d.fillOval(32, 960 - (reset * 46), 30, 30);
             	g2d.setPaint(new Color(0, 0, 0));
