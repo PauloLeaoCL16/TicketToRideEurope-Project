@@ -1,8 +1,8 @@
 package ttreImages;
-
 import java.awt.image.BufferedImage;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class CardDeck {
 	            deck.add(new ColorCard("yellow", ImageIO.read(MainMenu.class.getResource("/ttreImages/yellowcard.png"))));
 	        }
 	        for (int i = 0; i < 12; i++) {
-	            deck.add(new ColorCard("brown", ImageIO.read(MainMenu.class.getResource("/ttreImages/browncard.png"))));
+	            deck.add(new ColorCard("orange", ImageIO.read(MainMenu.class.getResource("/ttreImages/browncard.png"))));
 	        }
 	        for (int i = 0; i < 12; i++) {
 	            deck.add(new ColorCard("black", ImageIO.read(MainMenu.class.getResource("/ttreImages/blackcard.png"))));
