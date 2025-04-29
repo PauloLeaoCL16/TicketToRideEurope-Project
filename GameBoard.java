@@ -1,3 +1,18 @@
+/*
+///////////////////////////TO DO LIST//////////////////////////////////////  
+gambling logic
+buying grey route
+showing back of card on discard pile
+if buying gamble route with all wilds must choose a color first
+show and score each complete and incomplete ticket
+show each players longest route and award the EU express
+pop up to ask which railroad to buy if its a double railroad
+fix orange player railroad color being blue
+fix not discounting cards when buying railroads
+fix cirlce highlight coords
+ 
+ */
+
 
 package ttreImages;
 
