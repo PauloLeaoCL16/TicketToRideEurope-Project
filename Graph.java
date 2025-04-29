@@ -777,6 +777,59 @@ public class Graph {
     public int getRailRoadSizeY() {
     	return railRoadSizeY;
     }
+
+	private boolean foundCity(Player targetPlr, City target, ArrayList<City> pastCities, City currentCity) {
+	    	if (currentCity == target) {
+	    		return true;
+	    	}
+	    	if (pastCities.contains(currentCity)) {
+	    		return false;
+	    	}
+	    	
+	    	HashMap<City, ArrayList<RailRoad>> connections = currentCity.getConnections();
+    		Set<City> citySet = connections.keySet();
+    		
+    		for (City city: citySet) {
+    			if (connections.get(city).get(0).getThePlayerRailroad() == targetPlr) {
+    				ArrayList<City> temp = pastCities;
+    				temp.add(currentCity);
+    				if (foundCity(targetPlr, target, temp, city)) {
+    					return true;
+    				}
+    			}
+    		}
+    		
+    		return false;
+	    }
+	    
+	    public int calculateTicket(Player plr) {
+	    	int total = 0;
+	    	ArrayList<Ticket> tickets = plr.getTicket();
+	    	for (int i = 0; i < tickets.size(); i++) {
+	    		for (int j = 0; j < adjacencyList.size(); j++) {
+	    			if (adjacencyList.get(j) == findCity(tickets.get(i).getFromCity())) {
+	    				String target = tickets.get(i).getToCity();
+	    				ArrayList<City> pastCities = new ArrayList<City>();
+	    				if (foundCity(plr, findCity(target), pastCities, adjacencyList.get(j))) {
+	    					total += tickets.get(i).getPoints();
+
+	    				}
+	    				continue;
+	    			}
+	    		}
+	    	}
+	    	return total;
+	    }
+	    
+	    private City findCity(String cityName) {
+	    	for (int i = 0; i < adjacencyList.size(); i++) {
+	    		if (adjacencyList.get(i).getName().toLowerCase().equals(cityName.toLowerCase())) {
+	    			return adjacencyList.get(i);
+	    		}
+	    	}
+	    	
+	    	return null;
+	    }
     
     public ArrayList<RailRoad> getCityConnection(City city1, City city2) {
     	// Get the railroad connection of city to city stuff
