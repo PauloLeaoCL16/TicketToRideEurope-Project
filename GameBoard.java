@@ -504,6 +504,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	int x = e.getX();
     	int y = e.getY();
     	System.out.println(x + " " + y);
+   
     	
     	if(e.getButton() == MouseEvent.BUTTON1)// checks if the player left clicked	
     	{
@@ -518,10 +519,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    			players.get(currentPlr).addCard(faceUpCard[i]);
 	    			turnUsed += faceUpCard[i].getCostToDraw();
 	    			faceUpCard[i] = cardDeck.drawCard();
-	    			for (int z = 0; z < faceUpCard.length; z++) {
- 		    			out.println(faceUpCard[z].getColor());
- 	    			}
- 	    			out.println("-------");
+	    			
+ 	    			
  
  	    		}
  	    		int wildNumber = 0;
@@ -766,7 +765,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 			{
 				if( greyRequiredMet )
 				{
-					out.println("This is what is is before it calls buyEvent()" + greyRequiredMet);
+				
+					buyEvent();
 					panelStuff = 0;
 					wildNum = 0;
 					whiteNum = 0;
@@ -777,9 +777,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 					blueNum = 0;
 					blackNum = 0;
 					yellowNum = 0;
-					
+					greyRequiredMet = false;
 				}
-				buyEvent();
+				
 			}
 			
 			//checks if player clicked declined on panelStuff = 5 
@@ -1213,6 +1213,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     public void buyEvent() {
 //    	inAnEvent = true;
 //		repaint();
+
     	
     	ArrayList<RailRoad> neededRailRoad = graph.getCityConnection(clickedCity[0], clickedCity[1]);
     	ArrayList<RailRoad> neededRailRoad2 = graph.getCitySecondConnection(clickedCity[0], clickedCity[1]);
@@ -1247,10 +1248,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 					}
 				}
 			}
-			else if( isGreyRoad && players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded)
+			else if( isGreyRoad && (players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded || cardsRemoved >= amountNeeded) )
 			{
 				panelStuff = 5;
-				out.println("This is what is is after it calls buyEvent()" + greyRequiredMet);
 				if( greyRequiredMet )
 				{
 					out.println("Cards Removed Num" + cardsRemoved);
@@ -1311,10 +1311,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 					}
 				}
 			}
-			else if( isGreyRoad && players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded )
+			else if( isGreyRoad && (players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded || cardsRemoved >= amountNeeded) )
 			{
 				panelStuff = 5;
-				out.println("This is what is is after it calls buyEvent()" + greyRequiredMet);
 				if( greyRequiredMet )
 				{
 					if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && cardsRemoved >= amountNeeded) {
@@ -1372,7 +1371,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	for (int i = 0; i < cityList.size(); i++) {
     		if (globalX > cityList.get(i).getX() - maxSize && globalX < cityList.get(i).getX() + maxSize && globalY > cityList.get(i).getY() - maxSize && globalY < cityList.get(i).getY() + maxSize) {
     			currentCityHovered = cityList.get(i);
-//    			out.println(cityList.get(i).getHasStation().getFromCity());
     			break;
     		} else {
     			currentCityHovered = null;
