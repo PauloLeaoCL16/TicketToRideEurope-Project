@@ -9,7 +9,7 @@ show each players longest route and award the EU express
 pop up to ask which railroad to buy if its a double railroad
 fix orange player railroad color being blue
 fix not discounting cards when buying railroads
-fix cirlce highlight coords
+fix circle highlight coords
  
  */
 
@@ -283,14 +283,14 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	        //highlight city when clicked
         	g2d.setStroke(new BasicStroke(4));
         	g2d.setColor(Color.YELLOW);
-	        g2d.drawOval(clickedCity[0].getX(), clickedCity[0].getY(), 22, 22);
+	        g2d.drawOval(clickedCity[0].getX() - 10, clickedCity[0].getY() - 10, 22, 22);
         }
         if(clickedCity[1] != null)
         {
 	        //highlight city when clicked
         	g2d.setStroke(new BasicStroke(4));
         	g2d.setColor(Color.YELLOW);
-	        g2d.drawOval(clickedCity[1].getX(), clickedCity[1].getY(), 22, 22);
+	        g2d.drawOval(clickedCity[1].getX() - 10, clickedCity[1].getY() - 10, 22, 22);
 			clickedCity[0] = null;
 			clickedCity[1] = null;
         }
