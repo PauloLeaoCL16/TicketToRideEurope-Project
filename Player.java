@@ -1,4 +1,4 @@
-package test2;
+package ttreImages;
 
 import java.util.*;
 import java.awt.Color;
@@ -68,7 +68,13 @@ public class Player {
     public void addCard(ColorCard card) {
         this.card.add(card);
     }
-
+	
+	public void addCard(String color, int num)
+	{
+		for(int i = 0; i<num;i++)
+			card.add(new ColorCard(color));
+	}
+	
     public ArrayList<ColorCard> getCard() {
         return card;
     }
@@ -141,11 +147,11 @@ public class Player {
     
     public void removeCards(String color, int num)
     {
-    	for(ColorCard cardRemove : card)
+    	for(int i = 0; i<card.size();i++)
     	{
-	    	if(cardRemove.getColor().equals(color) && num>0)
+	    	if(card.get(i).getColor().equals(color) && num>0)
 	    	{
-	    		card.remove(cardRemove);
+	    		card.remove(card.get(i));
 	    		num--;
 	    	}
     	}
