@@ -567,46 +567,131 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 			{
 				for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
 				{
-					if( players.get(currentPlr).getCard().get(i).getColor().equals("wild)")   )
+					if( players.get(currentPlr).getCard().get(i).getColor().equals("white)")   )
 					{
-						wildNum++;
+						whiteNum++;
 					}
 				}
 				
-				if( wildNum > 0 && colorsChosen < amountNeeded)
+				if( whiteNum > 0 && colorsChosen < amountNeeded)
 				{
-					players.get(currentPlr).removeCards("wild", 1);
+					players.get(currentPlr).removeCards("white", 1);
 					colorsChosen++;
 				}
 			}
 			if( x>=1550 && x<=1618 && y>=773 && y<=876 && panelStuff == 5 )//red card
 			{
+				for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+				{
+					if( players.get(currentPlr).getCard().get(i).getColor().equals("red)")   )
+					{
+						redNum++;
+					}
+				}
 				
+				if( redNum > 0 && colorsChosen < amountNeeded)
+				{
+					players.get(currentPlr).removeCards("red", 1);
+					colorsChosen++;
+				}
 			}
 			if( x>=1550 && x<=1618 && y>=773 && y<=876 && panelStuff == 5 )//purple card
 			{
+				for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+				{
+					if( players.get(currentPlr).getCard().get(i).getColor().equals("purple)")   )
+					{
+						purpleNum++;
+					}
+				}
+				
+				if( purpleNum > 0 && colorsChosen < amountNeeded)
+				{
+					players.get(currentPlr).removeCards("purple", 1);
+					colorsChosen++;
+				}
 				
 			}
 			if( x>=1550 && x<=1618 && y>=773 && y<=876 && panelStuff == 5 )//green card
 			{
+				for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+				{
+					if( players.get(currentPlr).getCard().get(i).getColor().equals("green)")   )
+					{
+						greenNum++;
+					}
+				}
 				
+				if( greenNum > 0 && colorsChosen < amountNeeded)
+				{
+					players.get(currentPlr).removeCards("green", 1);
+					colorsChosen++;
+				}
 			}
 			//2nd half of cards	
 			if( x>=1550 && x<=1618 && y>=773 && y<=876 && panelStuff == 5 )//orange card
 			{
+				for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+				{
+					if( players.get(currentPlr).getCard().get(i).getColor().equals("orange)")   )
+					{
+						orangeNum++;
+					}
+				}
 				
+				if( orangeNum > 0 && colorsChosen < amountNeeded)
+				{
+					players.get(currentPlr).removeCards("orange", 1);
+					colorsChosen++;
+				}
 			}
 			if( x>=1550 && x<=1618 && y>=773 && y<=876 && panelStuff == 5 )//blue card
 			{
+				for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+				{
+					if( players.get(currentPlr).getCard().get(i).getColor().equals("blue)")   )
+					{
+						blueNum++;
+					}
+				}
 				
+				if( blueNum > 0 && colorsChosen < amountNeeded)
+				{
+					players.get(currentPlr).removeCards("blue", 1);
+					colorsChosen++;
+				}
 			}
 			if( x>=1550 && x<=1618 && y>=773 && y<=876 && panelStuff == 5 )//black card
 			{
+				for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+				{
+					if( players.get(currentPlr).getCard().get(i).getColor().equals("black)")   )
+					{
+						blackNum++;
+					}
+				}
 				
+				if( blackNum > 0 && colorsChosen < amountNeeded)
+				{
+					players.get(currentPlr).removeCards("black", 1);
+					colorsChosen++;
+				}
 			}
 			if( x>=1550 && x<=1618 && y>=773 && y<=876 && panelStuff == 5 )//yellow card
 			{
+				for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+				{
+					if( players.get(currentPlr).getCard().get(i).getColor().equals("yellow)")   )
+					{
+						yellowNum++;
+					}
+				}
 				
+				if( yellowNum > 0 && colorsChosen < amountNeeded)
+				{
+					players.get(currentPlr).removeCards("yellow", 1);
+					colorsChosen++;
+				}
 			}
 	    	
 			//checks if player clicked confirm on panelStuff = 5
@@ -616,14 +701,43 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				{
 					buyEvent();
 					panelStuff = 0;
+					wildNum = 0;
+					whiteNum = 0;
+					redNum = 0;
+					purpleNum = 0;
+					greenNum = 0;
+					brownNum = 0;
+					blueNum = 0;
+					blackNum = 0;
+					yellowNum = 0;
 				}
 			}
 			
 			//checks if player clicked declined on panelStuff = 5 
 			if( x>=1708 && x<=1879 && y>=970 && y<=1019 && panelStuff == 5)
 			{
-				
-
+				if( resetGreyRequired )
+				{
+					players.get(currentPlr).addCard("wild",wildNum);
+					wildNum = 0;
+					players.get(currentPlr).addCard("white",whiteNum);
+					whiteNum = 0;
+					players.get(currentPlr).addCard("red",redNum);
+					redNum = 0;
+					players.get(currentPlr).addCard("purple",purpleNum);
+					purpleNum = 0;
+					players.get(currentPlr).addCard("green",greenNum);
+					greenNum = 0;
+					players.get(currentPlr).addCard("brown",brownNum);
+					brownNum = 0;
+					players.get(currentPlr).addCard("blue",blueNum);
+					blueNum = 0;
+					players.get(currentPlr).addCard("black",blackNum);
+					blackNum = 0;
+					players.get(currentPlr).addCard("yellow",yellowNum);
+					yellowNum = 0;
+					
+				}
 			}
 		
 		
