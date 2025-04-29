@@ -68,7 +68,13 @@ public class Player {
     public void addCard(ColorCard card) {
         this.card.add(card);
     }
-
+	
+	public void addCard(String color, int num)
+	{
+		for( int i: num)
+			card.add(new ColorCard(color)
+	}
+	
     public ArrayList<ColorCard> getCard() {
         return card;
     }
