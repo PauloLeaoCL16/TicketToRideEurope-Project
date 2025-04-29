@@ -59,6 +59,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private int globalX = 0;
 	private int globalY = 0;
 	private boolean lastTurn = false;
+	private Stack<ColorCard> discardDeck;
 
     
     public GameBoard() {
@@ -105,6 +106,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             startticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticketchoose.png"));
             nextButton = ImageIO.read(MainMenu.class.getResource("/ttreImages/nextButton.png"));
             previousButton = ImageIO.read(MainMenu.class.getResource("/ttreImages/previousButton.png"));
+	discardDeck = new Stack<ColorCard>();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -139,7 +141,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawImage(table, 0, 0, getWidth(), getHeight(), null);
         g2d.drawImage(board, 0, 0, 1500, 1040, null);
         g2d.drawImage(cardBack, 1560, 3, null);
-        g2d.drawImage(template, 1675, 3, null);
+        if (!discardDeck.isEmpty() && discardDeck.getLast() != null) {
+        	g2d.drawImage(discardDeck.getLast().getImage(), 1675, 3, 100, 150, null);
+        } else {
+            g2d.drawImage(template, 1675, 3, null);
+        }
         g2d.drawImage(ticket, 1795, 3, null);
         if( currentPlr ==0&& panelStuff == 0 )
         {
@@ -954,6 +960,18 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				turnUsed = 2;
 				players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
 				players.get(currentPlr).removeTrain(amountNeeded);
+				if (players.get(currentPlr).getCardColor(railroadColor) < amountNeeded) {
+					if (railroadColor == null || railroadColor.equals("wild")) {
+						discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded));
+					} else {
+						discardDeck.add(players.get(currentPlr).removeCards(railroadColor, amountNeeded));
+					}
+				} else {
+					int amount = players.get(currentPlr).getCardColor(railroadColor);
+					int leftOver = amountNeeded - amount;
+					discardDeck.add(players.get(currentPlr).removeCards(railroadColor, amount));
+					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
+				}
 				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
 			} else {
 				out.println("Not enough railroads");
@@ -989,6 +1007,18 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				turnUsed = 2;
 				players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
 				players.get(currentPlr).removeTrain(amountNeeded);
+				if (players.get(currentPlr).getCardColor(railroadColor) < amountNeeded) {
+					if (railroadColor == null || railroadColor.equals("wild")) {
+						discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded));
+					} else {
+						discardDeck.add(players.get(currentPlr).removeCards(railroadColor, amountNeeded));
+					}
+				} else {
+					int amount = players.get(currentPlr).getCardColor(railroadColor);
+					int leftOver = amountNeeded - amount;
+					discardDeck.add(players.get(currentPlr).removeCards(railroadColor, amount));
+					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
+				}
 				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
 			} else {
 				out.println("Not enough railroads");
