@@ -71,8 +71,8 @@ public class Player {
 	
 	public void addCard(String color, int num)
 	{
-		for( int i: num)
-			card.add(new ColorCard(color)
+		for(int i = 0; i<num;i++)
+			card.add(new ColorCard(color));
 	}
 	
     public ArrayList<ColorCard> getCard() {
