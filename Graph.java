@@ -22,7 +22,7 @@ public class Graph {
 		City berlin = addCity("berlin", 737, 364);
 		City wien = addCity("wien", 815, 522);
 		City zurich = addCity("zurich", 565, 588);
-		City marseille = addCity("marseille", 513, 703);
+		City marseille = addCity("marseille", 529, 716);
 		City roma = addCity("roma", 693, 755);
 		City brindisi = addCity("brindisi", 809, 790);
 		City sofia = addCity("sofia", 1005, 741);
