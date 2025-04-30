@@ -1425,6 +1425,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				boolean isMountain = railRoadChosen.get(0).getMountains();
 				boolean isGreyRoad = railroadColor.equals("any");
 				int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
+				
+				out.println("This is plrTotal: " + plrTotalCard + " vs the amountNeeded: " + amountNeeded);
+				out.println("This is wildNumber: " + players.get(currentPlr).getCardColor("wild") + " vs the wildNeeded: " + wildNeeded);
+				out.println("This is isMountain: " + isMountain + " vs the isGreyRoad: " + isGreyRoad);
+				
 				//creates objects based on the railroad chosen by the player on the pop-up
 				if( isMountain && railroadColor.equals("any") )
 				{
@@ -1456,7 +1461,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 						
 					}
 				}
-				else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded && !isMountain && !isGreyRoad) {
+				else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded && !isMountain && !isGreyRoad && railRoadChosen ) {
 					//Buy the railroad successfully (Will add it to UI and remove from player card later)
 					for (int i = 0; i < railRoadChosen.size(); i++) {
 						railRoadChosen.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
