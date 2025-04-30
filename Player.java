@@ -145,16 +145,19 @@ public class Player {
     	return highest;
     }
     
-    public void removeCards(String color, int num)
+    public ColorCard removeCards(String color, int num)
     {
-    	for(ColorCard cardRemove : card)
+    	ColorCard temp = null;
+    	for(int i = 0; i<card.size();i++)
     	{
-	    	if(cardRemove.getColor().equals(color) && num>0)
+	    	if(card.get(i).getColor().equals(color) && num>0)
 	    	{
-	    		card.remove(cardRemove);
+	    		temp = card.get(i);
+	    		card.remove(temp);
 	    		num--;
 	    	}
     	}
+    	return temp;
     }
 
     public void removeTrain(int numberToRemove)
