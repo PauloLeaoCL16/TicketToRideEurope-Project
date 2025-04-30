@@ -1,4 +1,4 @@
-package ttreImages;
+package test2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -788,6 +788,19 @@ public class Graph {
 	    	
 	    	HashMap<City, ArrayList<RailRoad>> connections = currentCity.getConnections();
     		Set<City> citySet = connections.keySet();
+    		
+    		for (City city: citySet) {
+    			if (connections.get(city).get(0).getThePlayerRailroad() == targetPlr) {
+    				ArrayList<City> temp = pastCities;
+    				temp.add(currentCity);
+    				if (foundCity(targetPlr, target, temp, city)) {
+    					return true;
+    				}
+    			}
+    		}
+    		
+    		connections = currentCity.getSecondConnections();
+    		citySet = connections.keySet();
     		
     		for (City city: citySet) {
     			if (connections.get(city).get(0).getThePlayerRailroad() == targetPlr) {
