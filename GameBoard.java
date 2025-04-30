@@ -1389,7 +1389,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 						
 					}
 				}
-				else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard1 >= amountNeeded && !isMountain1 && !isGreyRoad1) {
+				else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard1 >= amountNeeded && !isMountain1 && !isGreyRoad1 && !railroadBought1) {
 					out.println("Bought it using this greyRoad not	 being met");
 					//Buy the railroad successfully (Will add it to UI and remove from player card later)
 					for (int i = 0; i < neededRailRoad.size(); i++) {
