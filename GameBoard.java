@@ -1,7 +1,7 @@
-
 /*
 ///////////////////////////TO DO LIST//////////////////////////////////////  
 gambling logic
+showing back of card on discard pile
 if buying gamble route with all wilds must choose a color first
 show and score each complete and incomplete ticket
 show each players longest route and award the EU express
@@ -914,6 +914,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				yellowNum = 0;
 				colorsChosen = 0;
 				cardsRemoved = 0;
+				greyRequiredMet = false;
 				whiteClicked= false;redClicked= false;purpleClicked= false;greenClicked= false;brownClicked= false;blueClicked= false;blackClicked= false;yellowClicked = false;
 				panelStuff = 0;
 			}
@@ -1375,7 +1376,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 					panelStuff = 5;
 					if( greyRequiredMet )
 					{
-						
+						out.println("Bought it using this greyRoad being met");
 							//Buy the railroad successfully (Will add it to UI and remove from player card later)
 							for (int i = 0; i < neededRailRoad.size(); i++) {
 								neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
@@ -1389,6 +1390,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 					}
 				}
 				else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard1 >= amountNeeded && !isMountain1 && !isGreyRoad1) {
+					out.println("Bought it using this greyRoad not	 being met");
 					//Buy the railroad successfully (Will add it to UI and remove from player card later)
 					for (int i = 0; i < neededRailRoad.size(); i++) {
 						neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
