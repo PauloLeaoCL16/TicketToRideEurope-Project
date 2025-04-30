@@ -1,7 +1,7 @@
+
 /*
 ///////////////////////////TO DO LIST//////////////////////////////////////  
 gambling logic
-showing back of card on discard pile
 if buying gamble route with all wilds must choose a color first
 show and score each complete and incomplete ticket
 show each players longest route and award the EU express
@@ -915,6 +915,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				colorsChosen = 0;
 				cardsRemoved = 0;
 				whiteClicked= false;redClicked= false;purpleClicked= false;greenClicked= false;brownClicked= false;blueClicked= false;blackClicked= false;yellowClicked = false;
+				panelStuff = 0;
 			}
 		
 		
