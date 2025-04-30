@@ -1,18 +1,12 @@
 /*
 ///////////////////////////TO DO LIST//////////////////////////////////////  
 gambling logic
-buying grey route
 showing back of card on discard pile
 if buying gamble route with all wilds must choose a color first
 show and score each complete and incomplete ticket
 show each players longest route and award the EU express
-pop up to ask which railroad to buy if its a double railroad
-fix orange player railroad color being blue
-fix not discounting cards when buying railroads
-fix circle highlight coords
  
  */
-
 
 package ttreImages;
 
@@ -32,17 +26,12 @@ import java.util.*;
 import static java.lang.System.*;
 
 public class GameBoard extends JPanel implements Runnable, MouseListener, MouseMotionListener {
-    private BufferedImage sidewaytemplate,playerGamble ,nextButton, previousButton,table, okbutton, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
-    private boolean isPlayButtonHovered = false;
-    private boolean isRulesScrollHovered = false;
+    private BufferedImage sidewaytemplate, dbPayment,playerGamble ,nextButton, previousButton,table, okbutton, board, player1, player2, player3, player4, cardBack, ticket, template, p1bg, p2bg, p3bg, p4bg, startticket, redplayer, blueplayer, greenplayer, yellowplayer, playerpointer;
     private ColorCard[] faceUpCard;
     private CardDeck cardDeck;
     private Stack<ColorCard> discardDeck;
     private TicketDeck ticketDeck;
     private ArrayList<Player> players;
-    private City[] citiesToBuy; //Stores 2 cities for buying routes purposes
-    private boolean firstCityClicked; // highlighting purposes
-    private ArrayList<Integer> highlightCity; // takes in 2 locations for highlighting purposes
     private Graph graph;// stores all the coordinates of the cities in a map
     private boolean firstTicketClicked, secondTicketClicked, thirdTicketClicked, fourthTicketClicked, t1Clicked, t2Clicked, t3Clicked;
     private Ticket t1, t2, t3, t4; 
@@ -50,18 +39,28 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private int tClicked;
     private int currentPlr;
     private City[] clickedCity = new City[2];
-    private int panelStuff = 1; // 0 = nothing, 1 = start of game ticket, 2 = when click ticket deck, 3 = show player ticks, 4 = gambling rahhhh
+    private int panelStuff = 0;// 0 = nothing,1 = Start of game,2 = draw tickets,3 = Inventory,4 = Gambling,5 = Grey route payment,6 = Double route payment
     private int ticketPage = 1; // 1 = first page, 2 = seconds page, 3 = third page(max)
     private int turnUsed = 0;
     private ArrayList<Ticket> ticketsShownList;
-    private int ticketsShown = 0;
     private City currentCityHovered = null;
     private int globalX = 0;
 	private int globalY = 0;
 	private boolean lastTurn = false;
-	private Stack<ColorCard> discardDeck;
+	private boolean greyRequiredMet;
+	private int colorsChosen;
+	private int amountNeeded;
+	private String railroadColor1;
+	private String railroadColor2;
+	private boolean railroadBought1;
+	private boolean railroadBought2;
+	private int cardsRemoved;
+	private boolean roadChosen;
+	private int wildNeeded;
+	private ArrayList<RailRoad> railRoadChosen;
+	private int wildNum = 0,whiteNum = 0,redNum = 0,purpleNum = 0,greenNum = 0,brownNum = 0,blueNum = 0,blackNum=0,yellowNum = 0;
+	private boolean whiteClicked= false,redClicked= false,purpleClicked= false,greenClicked= false,brownClicked= false,blueClicked= false,blackClicked= false,yellowClicked = false;
 
-    
     public GameBoard() {
         try {
             table = ImageIO.read(MainMenu.class.getResource("/ttreImages/gamebg.png"));
@@ -82,10 +81,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             playerGamble = ImageIO.read(MainMenu.class.getResource("/ttreImages/playerGambleCards.png"));;
             ticketDeck = new TicketDeck();
             sidewaytemplate = ImageIO.read(MainMenu.class.getResource("/ttreImages/blankcardtemp2.png"));
+            dbPayment = ImageIO.read(MainMenu.class.getResource("/ttreImages/dbpayment.png"));;
             players = new ArrayList<Player>();
             currentPlr = 0;
             cardDeck = new CardDeck();
-	    discardDeck = new Stack<>();
+            discardDeck = new Stack<>();
             ticketDeck = new TicketDeck();
             faceUpCard = new ColorCard[5];
             clickedCity[0] = null;
@@ -96,24 +96,20 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             faceUpCard[3] = cardDeck.drawCard();
             faceUpCard[4] = cardDeck.drawCard();
             players.add(new Player("red", redplayer, new Color(255,0,0)));
-            players.add(new Player("blue", blueplayer, new Color(0,0,255)));
-            players.add(new Player("green", greenplayer, new Color(0,255,0)));
-            players.add(new Player("yellow", yellowplayer, new Color(255,255,0)));
+            players.add(new Player("orange", blueplayer, new Color(255,165,0)));
+            players.add(new Player("white", greenplayer, new Color(0,0,0)));
+            players.add(new Player("blue", yellowplayer, new Color(0,0,255)));
             p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p1bg.png"));
             p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p2bg.png"));
-            p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p3bg.png"));
+            p3bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p3.png"));
             p4bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p4bg.png"));
             startticket = ImageIO.read(MainMenu.class.getResource("/ttreImages/ticketchoose.png"));
             nextButton = ImageIO.read(MainMenu.class.getResource("/ttreImages/nextButton.png"));
             previousButton = ImageIO.read(MainMenu.class.getResource("/ttreImages/previousButton.png"));
-	discardDeck = new Stack<ColorCard>();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        firstCityClicked = false;
-        highlightCity = new ArrayList<Integer>();
-        citiesToBuy = new City[2];
+
         graph = new Graph();
         graph.printCities();
         firstTicketClicked = false;
@@ -126,6 +122,17 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         t4 = ticketDeck.draw();
         ticketsClicked = 0;
         ticketsShownList = new ArrayList<>();
+        greyRequiredMet = false;
+        colorsChosen = 0;
+        amountNeeded = 0;
+        railroadColor1 = "";
+        railroadColor2 = "";
+        railroadBought1 = false;
+        railroadBought2 = false;
+        roadChosen = false;
+        railRoadChosen = new ArrayList<>();
+        wildNeeded = 0;
+        players.get(currentPlr).addCard("wild",50);
         
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -142,10 +149,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         g2d.drawImage(board, 0, 0, 1500, 1040, null);
         g2d.drawImage(cardBack, 1560, 3, null);
         if (!discardDeck.isEmpty() && discardDeck.getLast() != null) {
-        	g2d.drawImage(discardDeck.getLast().getImage(), 1675, 3, 100, 150, null);
-        } else {
-            g2d.drawImage(template, 1675, 3, null);
-        }
+         	g2d.drawImage(discardDeck.getLast().getImage(), 1675, 3, 100, 150, null);
+         } else {
+             g2d.drawImage(template, 1675, 3, null);
+         }
         g2d.drawImage(ticket, 1795, 3, null);
         if( currentPlr ==0&& panelStuff == 0 )
         {
@@ -254,7 +261,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     				continue;
     			}
     			else {
-    				railRoadColor = currentRailRoad.get(0).getRailRoadColor();
+    				railRoadColor = currentRailRoad.get(0).getPlrBought().getPlrColor();
     			}
     			// Draw all the railroads
     			for (int j = 0; j < currentRailRoad.size(); j++) {
@@ -274,29 +281,20 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     		
     	}
     	g2d.setColor(new Color(255,255,255));
-        /*
-        if(firstCityClicked)
+
+        if(clickedCity[0] != null && panelStuff == 0)
         {
 	        //highlight city when clicked
         	g2d.setStroke(new BasicStroke(4));
         	g2d.setColor(Color.YELLOW);
-	        g2d.drawOval(highlightCity.get(0), highlightCity.get(1), 23, 23);
+	        g2d.drawOval(clickedCity[0].getX()-10, clickedCity[0].getY()-10, 22, 22);
         }
-        */
-        
-        if(clickedCity[0] != null)
+        if(clickedCity[1] != null && panelStuff == 0)
         {
 	        //highlight city when clicked
         	g2d.setStroke(new BasicStroke(4));
         	g2d.setColor(Color.YELLOW);
-	        g2d.drawOval(clickedCity[0].getX() - 10, clickedCity[0].getY() - 10, 22, 22);
-        }
-        if(clickedCity[1] != null)
-        {
-	        //highlight city when clicked
-        	g2d.setStroke(new BasicStroke(4));
-        	g2d.setColor(Color.YELLOW);
-	        g2d.drawOval(clickedCity[1].getX() - 10, clickedCity[1].getY() - 10, 22, 22);
+	        g2d.drawOval(clickedCity[1].getX()-10, clickedCity[1].getY()-10, 22, 22);
 			clickedCity[0] = null;
 			clickedCity[1] = null;
         }
@@ -357,7 +355,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
          		g2d.drawImage(sidewaytemplate, 1540, 200, 200, 100, null);
          		g2d.drawImage(sidewaytemplate, 1540, 350, 200, 100, null);
          		g2d.setColor(Color.WHITE);
-         		g2d.drawString("Choose color to buy station", 1510, 550);
+         		g2d.drawString("Choose color to buy route", 1510, 550);
          		g2d.drawString("Extra Cost:", maxSize, maxSize);
          		g2d.drawImage(playerGamble, 1510, 630, null);
          		g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
@@ -381,6 +379,67 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
                  g2d.setColor(Color.BLACK);
                  g2d.drawString("Decline", 1720, 1000);
          	}
+        	if(panelStuff == 5)
+        	{
+         		g2d.setColor(Color.WHITE);
+         		g2d.drawString("Choose color to buy route", 1510, 450);
+         		g2d.drawString("Price of the RailRoad: " + amountNeeded , 1510, 500);
+         		g2d.drawString("Colors chosen: " + colorsChosen, 1510, 550);
+         		g2d.drawString("Wild cards required " + wildNeeded, 1510, 600);
+         		
+         		g2d.drawImage(playerGamble, 1510, 630, null);
+         		g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("wild")), 1580, 762); // Locomotive
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("white")), 1645, 762); // White
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("red")), 1712, 762); // Red
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("purple")), 1777, 762); // Purple
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("green")), 1845, 762); // Green
+                 //2nd row
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("brown")), 1580, 890); // Brown
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("blue")), 1645, 890); // Blue
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("black")), 1712, 890); // Black
+                 g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("yellow")), 1777, 890); // Yellow
+         		g2d.setColor(Color.GREEN);
+                 g2d.fillRect(1510, 970, 170, 50);
+                 g2d.setColor(Color.BLACK);
+                 g2d.drawString("Buy", 1520, 1000);
+                 
+                 g2d.setColor(Color.RED);
+                 g2d.fillRect(1710, 970, 170, 50);
+                 g2d.setColor(Color.BLACK);
+                 g2d.drawString("Decline", 1720, 1000);
+        	}
+        	if(panelStuff == 6)
+        	{
+        		g2d.drawImage(dbPayment,0,0,1880,1070,null);
+        		g2d.setColor(Color.WHITE);
+        		g2d.drawString(railroadColor1 + " RailRoad", 1650, 515 );
+        		g2d.drawString(amountNeeded + "", 1620, 565 );
+        		if( railroadBought1 )
+        			g2d.drawString("owned", 1650, 600 );
+        		else
+        			g2d.drawString("not owned", 1650, 600 );
+        		
+        		g2d.drawString(railroadColor2 + " RailRoad", 1650, 695 );
+        		g2d.drawString(amountNeeded + "", 1620, 745 );
+        		if( railroadBought2 )
+        			g2d.drawString("owned", 1650, 780 );
+        		else
+        			g2d.drawString("not owned", 1650, 780 );
+        		g2d.setFont(new Font("Serif", Font.BOLD, 23));
+        		g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("wild")), 1560, 762+150); // Locomotive
+                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("white")), 1625, 762+150); // White
+                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("red")), 1692, 762+150); // Red
+                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("purple")), 1757, 762+150); // Purple
+                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("green")), 1825, 762+150); // Green
+                //2nd row
+                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("brown")), 1560, 890+140); // Brown
+                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("blue")), 1625, 890+140); // Blue
+                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("black")), 1692, 890+140); // Black
+                g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("yellow")), 1757, 890+140); // Yellow
+        		
+        	}
+        	
         }
         //highlights the ticket clicked 
         if(firstTicketClicked)
@@ -486,6 +545,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	int x = e.getX();
     	int y = e.getY();
     	System.out.println(x + " " + y);
+   
     	
     	if(e.getButton() == MouseEvent.BUTTON1)// checks if the player left clicked	
     	{
@@ -500,24 +560,364 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    			players.get(currentPlr).addCard(faceUpCard[i]);
 	    			turnUsed += faceUpCard[i].getCostToDraw();
 	    			faceUpCard[i] = cardDeck.drawCard();
-	    			for (int z = 0; z < faceUpCard.length; z++) {
- 		    			out.println(faceUpCard[z].getColor());
- 	    			}
- 	    			out.println("-------");
- 
  	    		}
- 	    		int wildNum = 0;
+ 	    		int wildNumber = 0;
  	    		for (int j = 0; j < faceUpCard.length; j++) {
- 	    			if (faceUpCard[j].getColor().equals("wild")) wildNum++;
+ 	    			
+ 	    			if (faceUpCard[j].getColor().equals("wild")) wildNumber++;
  	    		}
- 	    		if (wildNum >= 3) {
+ 	    		if (wildNumber >= 3) {
  	    			for (int j = 0; j < faceUpCard.length; j++) {
  	    				discardDeck.add(faceUpCard[j]);
  		    			faceUpCard[j] = cardDeck.drawCard();
  		    		}
 	    		}
 	        }
+		
+			//allows for player to click on first road option
+			if( x>=1499 && x<=1878 && y>=474 && y<=539 && panelStuff == 6 )
+			{
+				if(!railroadBought1)
+				{
+					roadChosen = true;
+					railRoadChosen = graph.getCityConnection(clickedCity[0], clickedCity[1]);
+					if( railroadColor1.equals("any") )
+						panelStuff = 5;
+					else
+					{
+						buyEvent();
+						panelStuff = 0;
+					}
+				}
+			}
+			
+			//allows for player to click on second road option
+			if( x>=1499 && x<=1878 && y>=652 && y<=717 && panelStuff == 6 )
+			{
+				if(!railroadBought2)
+				{
+					roadChosen = true;
+					railRoadChosen = graph.getCitySecondConnection(clickedCity[0], clickedCity[1]);
+					
+					if( railroadColor1.equals("any") )
+						panelStuff = 5;
+					else
+					{
+						buyEvent();
+						panelStuff = 0;
+					}
+				}
+					
+			}
+		
+			if( x>=1550 && x<=1618 && y>=631 && y<=731 && panelStuff == 5 )//wild card
+			{
+				int wildsFound = 0;
+				for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+				{
+					if( players.get(currentPlr).getCard().get(i).getColor().equals("wild")   )
+					{
+						wildsFound++;
+					}
+				}
+				
+				if( wildsFound > 0 && colorsChosen < amountNeeded)
+				{
+					wildsFound--;
+					wildNum++;
+					players.get(currentPlr).removeCards("wild", 1);
+					colorsChosen++;
+					cardsRemoved++;
+				}
+				if(colorsChosen == amountNeeded)
+				{
+					greyRequiredMet=true;
+				}
+				
+			}
+			if(x>=1618 && x<=1686 && y>=631 && y<=731 && panelStuff == 5 )//white card
+			{
+				if( (whiteClicked || !whiteClicked)&& !redClicked && !redClicked && !purpleClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
+				{
+					whiteClicked = true;
+					int whiteFound = 0;
+					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+					{
+						if( players.get(currentPlr).getCard().get(i).getColor().equals("white")   )
+						{
+							whiteFound++;
+						}
+					}
+					
+					if( whiteFound > 0 && colorsChosen < amountNeeded)
+					{
+						whiteFound--;
+						whiteNum++;
+						players.get(currentPlr).removeCards("white", 1);
+						colorsChosen++;
+						cardsRemoved++;
+					}
+					if(colorsChosen == amountNeeded)
+					{
+						greyRequiredMet=true;
+					}
+				}
+			}
+			if(x>=1686 && x<=1754 && y>=631 && y<=731 && panelStuff == 5 )//red card
+			{
+				if( (redClicked || !redClicked)&& !whiteClicked && !brownClicked && !purpleClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
+				{
+					redClicked = true;
+					int redFound = 0;
+					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+					{
+						if( players.get(currentPlr).getCard().get(i).getColor().equals("red")   )
+						{
+							redFound++;
+						}
+					}
+					
+					if( redFound > 0 && colorsChosen < amountNeeded)
+					{
+						redFound--;
+						redNum++;
+						players.get(currentPlr).removeCards("red", 1);
+						colorsChosen++;
+						cardsRemoved++;
+					}
+					if(colorsChosen == amountNeeded)
+					{
+						greyRequiredMet=true;
+					}
+				}
+			}
+			if(x>=1754 && x<=1822 && y>=631 && y<=731 && panelStuff == 5 )//purple card
+			{
+				if( (purpleClicked || !purpleClicked)&& !whiteClicked && !redClicked && !brownClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
+				{
+					purpleClicked = true;
+					int purpleFound = 0;
+					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+					{
+						if( players.get(currentPlr).getCard().get(i).getColor().equals("purple")   )
+						{
+							purpleFound++;
+						}
+					}
+					
+					if( purpleFound > 0 && colorsChosen < amountNeeded)
+					{
+						purpleFound--;
+						purpleNum++;
+						players.get(currentPlr).removeCards("purple", 1);
+						colorsChosen++;
+						cardsRemoved++;
+					}
+					if(colorsChosen == amountNeeded)
+					{
+						greyRequiredMet=true;
+					}
+				}
+			}
+			if( x >=1820 && x <= 1885 && y >=631 && y <= 731 && panelStuff == 5)//green card
+			{
+				if( (greenClicked || !greenClicked)&& !whiteClicked && !redClicked && !purpleClicked && !brownClicked && !blueClicked && !yellowClicked && !yellowClicked )
+				{
+					greenClicked = true;
+					int greenFound = 0;
+					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+					{
+						if( players.get(currentPlr).getCard().get(i).getColor().equals("green")   )
+						{
+							greenFound++;
+						}
+					}
+					
+					if( greenFound > 0 && colorsChosen < amountNeeded)
+					{
+						greenFound--;
+						greenNum++;
+						players.get(currentPlr).removeCards("green", 1);
+						colorsChosen++;
+						cardsRemoved++;
+					}
+					if(colorsChosen == amountNeeded)
+					{
+						greyRequiredMet=true;
+					}
+				}
+			}
+			//2nd half of cards	
+			if( x>=1550 && x<=1618 && y>=773 && y<=876 && panelStuff == 5 )//orange card
+			{
+				if( (brownClicked || !brownClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
+				{
+					brownClicked = true;
+					out.println("Brown Card clicked");
+					int brownFound = 0;
+					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+					{
+						if( players.get(currentPlr).getCard().get(i).getColor().equals("brown")   )
+						{
+							brownFound++;
+						}
+					}
+					
+					if( brownFound > 0 && colorsChosen < amountNeeded)
+					{
+						brownFound++;
+						brownNum++;
+						players.get(currentPlr).removeCards("brown", 1);
+						colorsChosen++;
+						cardsRemoved++;
+					}
+					if(colorsChosen == amountNeeded)
+					{
+						greyRequiredMet=true;
+					}
+				}
+			}
+			if( x>=1618 && x<=1686 && y>=773 && y<=876 && panelStuff == 5 )//blue card
+			{
+				if( (blueClicked || !blueClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !brownClicked && !yellowClicked && !yellowClicked )
+				{
+					blueClicked = true;
+					out.println("Blue Card clicked");
+					int blueFound = 0;
+					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+					{
+						if( players.get(currentPlr).getCard().get(i).getColor().equals("blue")   )
+						{
+							blueFound++;
+						}
+					}
+					
+					if( blueFound > 0 && colorsChosen < amountNeeded)
+					{
+						blueFound--;
+						blueNum++;
+						players.get(currentPlr).removeCards("blue", 1);
+						colorsChosen++;
+						cardsRemoved++;
+					}
+					if(colorsChosen == amountNeeded)
+					{
+						greyRequiredMet=true;
+					}
+				}
+			}
+			if( x>=1686 && x<=1754 && y>=773 && y<=876 && panelStuff == 5 )//black card
+			{
+				if( (blackClicked || !blackClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !brownClicked && !blueClicked && !yellowClicked )
+				{
+					blackClicked = true;
+					out.println("black Card clicked");
+					int blackFound = 0;
+					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+					{
+						if( players.get(currentPlr).getCard().get(i).getColor().equals("black")   )
+						{
+							blackFound++;
+						}
+					}
+					
+					if( blackFound > 0 && colorsChosen < amountNeeded)
+					{
+						blackFound--;
+						blackNum++;
+						players.get(currentPlr).removeCards("black", 1);
+						colorsChosen++;
+						cardsRemoved++;
+					}
+					if(colorsChosen == amountNeeded)
+					{
+						greyRequiredMet=true;
+					}
+				}
+			}
+			if( x>=1754 && x<=1822 && y>=773 && y<=876 && panelStuff == 5 )//yellow card
+			{
+				if( (yellowClicked || !yellowClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !brownClicked && !blueClicked && !blackClicked )
+				{
+					yellowClicked = true;
+					out.println("Yellow Card clicked");
+					int yellowFound = 0;
+					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+					{
+						if( players.get(currentPlr).getCard().get(i).getColor().equals("yellow")   )
+						{
+							yellowFound++;
+						}
+					}
+					
+					
+					if( yellowFound > 0 && colorsChosen < amountNeeded)
+					{
+						yellowFound--;
+						yellowNum++;
+						players.get(currentPlr).removeCards("yellow", 1);
+						colorsChosen++;
+						cardsRemoved++;
+					}
+					if(colorsChosen == amountNeeded)
+					{
+						greyRequiredMet=true;
+					}
+				}
+			}
 	    	
+			//checks if player clicked confirm on panelStuff = 5
+			if( x>=1510 && x<=1679 && y>=969 && y<=1019 && panelStuff == 5)
+			{
+				if( greyRequiredMet && wildNum >= wildNeeded )
+				{
+					out.println("It at least calls the buy method");
+					buyEvent();
+					panelStuff = 0;
+					wildNum = 0;
+					whiteNum = 0;
+					redNum = 0;
+					purpleNum = 0;
+					greenNum = 0;
+					brownNum = 0;
+					blueNum = 0;
+					blackNum = 0;
+					yellowNum = 0;
+					greyRequiredMet = false;
+					colorsChosen = 0;
+					cardsRemoved = 0;
+					whiteClicked= false;redClicked= false;purpleClicked= false;greenClicked= false;brownClicked= false;blueClicked= false;blackClicked= false;yellowClicked = false;
+				}
+				
+			}
+			
+			//checks if player clicked declined on panelStuff = 5 
+			if( x>=1708 && x<=1879 && y>=970 && y<=1019 && panelStuff == 5)
+			{
+				players.get(currentPlr).addCard("wild",wildNum);
+				wildNum = 0;
+				players.get(currentPlr).addCard("white",whiteNum);
+				whiteNum = 0;
+				players.get(currentPlr).addCard("red",redNum);
+				redNum = 0;
+				players.get(currentPlr).addCard("purple",purpleNum);
+				purpleNum = 0;
+				players.get(currentPlr).addCard("green",greenNum);
+				greenNum = 0;
+				players.get(currentPlr).addCard("brown",brownNum);
+				brownNum = 0;
+				players.get(currentPlr).addCard("blue",blueNum);
+				blueNum = 0;
+				players.get(currentPlr).addCard("black",blackNum);
+				blackNum = 0;
+				players.get(currentPlr).addCard("yellow",yellowNum);
+				yellowNum = 0;
+				colorsChosen = 0;
+				cardsRemoved = 0;
+				whiteClicked= false;redClicked= false;purpleClicked= false;greenClicked= false;brownClicked= false;blueClicked= false;blackClicked= false;yellowClicked = false;
+			}
+		
+		
 	    	//allow for players to draw cards from the pile
 	    	if( x >= 1550 && x <= 1650 && y >= 3 && y <= 163 && panelStuff == 0)
 	    	{
@@ -920,123 +1320,171 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     
     
     
-    public void buyEvent() {
-//    	inAnEvent = true;
-//		repaint();
-    	
+    
+	public void buyEvent() {
     	ArrayList<RailRoad> neededRailRoad = graph.getCityConnection(clickedCity[0], clickedCity[1]);
     	ArrayList<RailRoad> neededRailRoad2 = graph.getCitySecondConnection(clickedCity[0], clickedCity[1]);
-	if (neededRailRoad != null && neededRailRoad.get(0).getBought() && neededRailRoad.get(0).getPlrBought() == players.get(currentPlr)) {
-		return;
-	}
-	    
-		//Check if the railroad is already bought
-		if (neededRailRoad != null && !neededRailRoad.get(0).getBought()) {
-			//Requirements to build a railroad
-			String railroadColor = neededRailRoad.get(0).getColor();
-			int amountNeeded = neededRailRoad.get(0).getCost();
-			boolean isMountain = neededRailRoad.get(0).getMountains();
-			int wildNeeded = neededRailRoad.get(0).getWildNum();
-			
-			
-			if (isMountain) {
-				//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
-				for (int i = 0; i < 3; i++) {
-					ColorCard draw = cardDeck.drawCard();
-					if (railroadColor.equals(draw.getColor()) || draw.getColor().equals("wild")) {
-						amountNeeded++;
-					}
-				}
-			}
-			int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
-			if (railroadColor == null) {
-				plrTotalCard = players.get(currentPlr).getHighestColorNum();
-			}
-			if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded) {
-				//Buy the railroad successfully (Will add it to UI and remove from player card later)
-				for (int i = 0; i < neededRailRoad.size(); i++) {
-					neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
-				}
-				turnUsed = 2;
-				players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
-				players.get(currentPlr).removeTrain(amountNeeded);
-				if (players.get(currentPlr).getCardColor(railroadColor) < amountNeeded) {
-					if (railroadColor == null || railroadColor.equals("wild")) {
-						discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded));
-					} else {
-						discardDeck.add(players.get(currentPlr).removeCards(railroadColor, amountNeeded));
-					}
-				} else {
-					int amount = players.get(currentPlr).getCardColor(railroadColor);
-					int leftOver = amountNeeded - amount;
-					discardDeck.add(players.get(currentPlr).removeCards(railroadColor, amount));
-					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
-				}
-				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
-			} else {
-				out.println("Not enough railroads");
-			}
-//			inAnEvent = false;
-//			repaint();
-		} else if (neededRailRoad2 != null && !neededRailRoad2.get(0).getBought()) {
-			//Requirements to build a railroad
-			String railroadColor = neededRailRoad2.get(0).getColor();
-			int amountNeeded = neededRailRoad2.get(0).getCost();
-			boolean isMountain = neededRailRoad2.get(0).getMountains();
-			int wildNeeded = neededRailRoad2.get(0).getWildNum();
-			
-			
-			if (isMountain) {
-				//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
-				for (int i = 0; i < 3; i++) {
-					ColorCard draw = cardDeck.drawCard();
-					if (railroadColor.equals(draw.getColor()) || draw.getColor().equals("wild")) {
-						amountNeeded++;
-					}
-				}
-			}
-			int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
-			if (railroadColor == null) {
-				plrTotalCard = players.get(currentPlr).getHighestColorNum();
-			}
-			if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded) {
-				//Buy the railroad successfully (Will add it to UI and remove from player card later)
-				for (int i = 0; i < neededRailRoad2.size(); i++) {
-					neededRailRoad2.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
-				}
-				turnUsed = 2;
-				players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
-				players.get(currentPlr).removeTrain(amountNeeded);
-				if (players.get(currentPlr).getCardColor(railroadColor) < amountNeeded) {
-					if (railroadColor == null || railroadColor.equals("wild")) {
-						discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded));
-					} else {
-						discardDeck.add(players.get(currentPlr).removeCards(railroadColor, amountNeeded));
-					}
-				} else {
-					int amount = players.get(currentPlr).getCardColor(railroadColor);
-					int leftOver = amountNeeded - amount;
-					discardDeck.add(players.get(currentPlr).removeCards(railroadColor, amount));
-					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
-				}
-				out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
-			} else {
-				out.println("Not enough railroads");
-			}
-//			inAnEvent = false;
-//			repaint();
-		} else if (neededRailRoad == null && neededRailRoad2 == null) {
-			out.println("No connection");
-		} else {
-			out.println("Railroad is already owned");
+    	wildNeeded = neededRailRoad.get(0).getWildNum();
+    	
+		if ( neededRailRoad.get(0).getPlrBought() == players.get(currentPlr)) {
+			return;
 		}
-		
+		if (neededRailRoad2 != null && neededRailRoad2.get(0).getBought() && neededRailRoad2.get(0).getPlrBought() == players.get(currentPlr)) {
+			return;
+		}
+	    railroadBought1 = neededRailRoad.get(0).getBought();
+	    railroadColor1 = neededRailRoad.get(0).getColor();
+	    amountNeeded = neededRailRoad.get(0).getCost();
+	    if( neededRailRoad2 != null )
+	    {
+	    	railroadColor2 = neededRailRoad2.get(0).getColor();
+	    	railroadBought2 = neededRailRoad2.get(0).getBought();
+	    }
+	    
+	    out.println("Is the railRoad2 null?" + neededRailRoad2 == null);
+	    //so if there is 1 single road only, runs normal code
+	    //else if theres 2 roads, it looks at the one chosen by the player in pop-up
+		if( neededRailRoad2 == null )
+		{
+			//Requirements to build a railroad
+			boolean isMountain1 = neededRailRoad.get(0).getMountains();
+			boolean isGreyRoad1 = railroadColor1.equals("any");
+			int plrTotalCard1 = players.get(currentPlr).getCardColor(railroadColor1) + players.get(currentPlr).getCardColor("wild");
+			
+			if (railroadColor1 == null) {
+				plrTotalCard1 = players.get(currentPlr).getHighestColorNum();
+			}
+			
+			
+				if( isMountain1 && railroadColor1.equals("any") )
+				{
+					
+				}
+				else if (isMountain1) {
+					//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
+					for (int i = 0; i < 3; i++) {
+						ColorCard draw = cardDeck.drawCard();
+						if (railroadColor1.equals(draw.getColor()) || draw.getColor().equals("wild")) {
+							amountNeeded++;
+						}
+					}
+				}
+				else if( isGreyRoad1 && (players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded || cardsRemoved >= amountNeeded|| players.get(currentPlr).getHighestColorNum() + players.get(currentPlr).getCardColor("wild") >= amountNeeded) )
+				{
+					panelStuff = 5;
+					if( greyRequiredMet )
+					{
+						
+							//Buy the railroad successfully (Will add it to UI and remove from player card later)
+							for (int i = 0; i < neededRailRoad.size(); i++) {
+								neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+							}
+							turnUsed = 2;
+							players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+							players.get(currentPlr).removeTrain(amountNeeded);
+							out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
+						
+						
+					}
+				}
+				else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard1 >= amountNeeded && !isMountain1 && !isGreyRoad1) {
+					//Buy the railroad successfully (Will add it to UI and remove from player card later)
+					for (int i = 0; i < neededRailRoad.size(); i++) {
+						neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+					}
+					turnUsed = 2;
+					players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+					players.get(currentPlr).removeTrain(amountNeeded);
+					if (players.get(currentPlr).getCardColor(railroadColor1) < amountNeeded) {
+	 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded-players.get(currentPlr).getCardColor(railroadColor1)));
+	 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor1, amountNeeded));
+	 				} else {
+	 					int amount = players.get(currentPlr).getCardColor(railroadColor1);
+	 					int leftOver = amountNeeded - amount;
+	 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor1, amount));
+	 					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
+	 				}
+					out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
+				} else {
+					out.println("Not enough railroads");
+				}
+		}
+		else
+		{
+			
+			if( ( !railroadBought1 || !railroadBought2 ) &&!roadChosen && ( players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded || players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded ) )
+			{
+				panelStuff = 6;
+			}
+			else
+			{
+				String railroadColor = railRoadChosen.get(0).getColor();
+				boolean isMountain = railRoadChosen.get(0).getMountains();
+				boolean isGreyRoad = railroadColor.equals("any");
+				int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
+				//creates objects based on the railroad chosen by the player on the pop-up
+				if( isMountain && railroadColor.equals("any") )
+				{
+					
+				}
+				else if (isMountain) {
+					//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
+					for (int i = 0; i < 3; i++) {
+						ColorCard draw = cardDeck.drawCard();
+						if (railroadColor.equals(draw.getColor()) || draw.getColor().equals("wild")) {
+							amountNeeded++;
+						}
+					}
+				}
+				else if( isGreyRoad && (players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded || cardsRemoved >= amountNeeded|| players.get(currentPlr).getHighestColorNum() + players.get(currentPlr).getCardColor("wild") >= amountNeeded) )
+				{
+					panelStuff = 5;
+					if( greyRequiredMet )
+					{
+						
+							//Buy the railroad successfully (Will add it to UI and remove from player card later)
+							for (int i = 0; i < railRoadChosen.size(); i++) {
+								railRoadChosen.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+							}
+							turnUsed = 2;
+							players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+							players.get(currentPlr).removeTrain(amountNeeded);
+							out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
+						
+					}
+				}
+				else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded && !isMountain && !isGreyRoad) {
+					//Buy the railroad successfully (Will add it to UI and remove from player card later)
+					for (int i = 0; i < railRoadChosen.size(); i++) {
+						railRoadChosen.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+					}
+					turnUsed = 2;
+					players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+					players.get(currentPlr).removeTrain(amountNeeded);
+					if (players.get(currentPlr).getCardColor(railroadColor2) < amountNeeded) {
+	 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded - players.get(currentPlr).getCardColor(railroadColor2)));
+	 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, amountNeeded));
+	 				} else {
+	 					int amount = players.get(currentPlr).getCardColor(railroadColor2);
+	 					int leftOver = amountNeeded - amount;
+	 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, amount));
+	 					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
+	 				}
+					out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
+				} else {
+					out.println("Not enough railroads");
+				}
+				roadChosen = false;
+			}
+		}
+	    
 		if (players.get(currentPlr).getTrainsLeft() <= 2) {
 			out.println("Last turn");
 			lastTurn = true;
 		}
 		repaint();
-    }
+		}
+    
 
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -1050,7 +1498,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	for (int i = 0; i < cityList.size(); i++) {
     		if (globalX > cityList.get(i).getX() - maxSize && globalX < cityList.get(i).getX() + maxSize && globalY > cityList.get(i).getY() - maxSize && globalY < cityList.get(i).getY() + maxSize) {
     			currentCityHovered = cityList.get(i);
-//    			out.println(cityList.get(i).getHasStation().getFromCity());
     			break;
     		} else {
     			currentCityHovered = null;
