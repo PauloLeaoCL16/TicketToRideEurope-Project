@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
 public class EndGame extends JPanel implements Runnable, MouseListener, MouseMotionListener  {
-	public EndGame(Player plr1, Player plr2, Player plr3, Player plr4) {
+	public EndGame(int plr1, int plr2, int plr3, int plr4) {
 		
 	}
 	
