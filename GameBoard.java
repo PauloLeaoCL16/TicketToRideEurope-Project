@@ -1285,6 +1285,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	if (lastTurn == true) {
     		players.get(currentPlr).setLastTurn();
     	}
+	clickedCity[0] = null;
+	clickedCity[1] = null;
     	currentPlr += 1;
     	turnUsed = 0;
     	if (currentPlr >= players.size()) {
