@@ -1315,8 +1315,22 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
     	}
     	if (players.get(currentPlr).getLastTurn() == true) {
-    		
-    		out.println("End Game");
+    		Player plr1 = players.get(0);
+        	int pt1 = plr1.getPoint()/2;
+        	int totalPt1 = pt1 + players.get(0).getStations() * 4;
+        	
+        	Player plr2 = players.get(1);
+        	int pt2 = plr2.getPoint()/2;
+        	int totalPt2 = pt2 + players.get(1).getStations() * 4;
+        	
+        	Player plr3 = players.get(2);
+        	int pt3 = plr3.getPoint()/2;
+        	int totalPt3 = pt3 + players.get(2).getStations() * 4;
+        	
+        	Player plr4 = players.get(3);
+        	int pt4 = plr4.getPoint()/2;
+        	int totalPt4 = pt1 + players.get(3).getStations() * 4;
+//    		EndGame newEndgame = new EndGame(totalPt1, totalPt2, totalPt3, totalPt4);
     	}
     }
     
