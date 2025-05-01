@@ -499,6 +499,12 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	int pt = currentPlayer.getPoint()/2;
         	g2d.setPaint(currentPlayer.getPlrColor());
         	int reset = (pt + players.get(i).getStations() * 4) % 100 -12;
+		if (reset < 0) {
+        		g2d.fillOval(32 - (reset * 47), 960, 30, 30);
+	            	g2d.setPaint(new Color(0, 0, 0));
+	            	g2d.setStroke(new BasicStroke(2));
+	            	g2d.drawOval(32 - (reset * 47), 960, 30, 30);
+        	}
         	if (reset <= 20) {
         		g2d.fillOval(32, 960 - (reset * 46), 30, 30);
             	g2d.setPaint(new Color(0, 0, 0));
