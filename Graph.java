@@ -59,7 +59,7 @@ public class Graph {
 		City rostov = addCity("rostov", 1393, 562);
 		City stockholm = addCity("stockholm", 822, 81);
 		City wilno = addCity("wilno", 1098, 308);
-		City venezia = addCity("venezia", 695, 666);
+		City venezia = addCity("venezia", 680, 640);
 		City warszawa = addCity("warszawa", 962, 352);
 		City smolensk = addCity("smolensk", 1254, 322);
 
