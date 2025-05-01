@@ -1,4 +1,4 @@
-package test2;
+package ttreImages;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,53 +15,53 @@ public class Graph {
 		adjacencyList = new ArrayList<>();
 
 		//declaring the cities
-		City frankfurt = addCity("frankfurt", 577, 440);
-		City brest = addCity("brest", 216, 489);
-		City london = addCity("london", 352, 326);
-		City essen = addCity("essen", 598, 343);
-		City berlin = addCity("berlin", 737, 364);
-		City wien = addCity("wien", 815, 522);
-		City zurich = addCity("zurich", 565, 588);
-		City marseille = addCity("marseille", 529, 716);
-		City roma = addCity("roma", 693, 755);
-		City brindisi = addCity("brindisi", 809, 790);
-		City sofia = addCity("sofia", 1005, 741);
-		City kobenhavn = addCity("kobenhavn", 700, 198);
-		City amsterdam = addCity("amsterdam", 489, 331);
-		City dieppe = addCity("dieppe", 338, 450);
-		City paris = addCity("paris", 408, 513);
-		City bruxelles = addCity("bruxelles", 456, 397);
-		City munchen = addCity("munchen", 658, 500);
-		City athina = addCity("athina", 980, 898);
-		City madrid = addCity("madrid", 183, 834);
-		City cadiz = addCity("cadiz", 183, 934);
-		City barcelona = addCity("barcelona", 337, 848);
-		City pamplona = addCity("pamplona", 319, 723);
-		City constantinople = addCity("constantinople", 1158, 824);
-		City budapest = addCity("budapest", 881, 558);
-		City bucuresti = addCity("bucuresti", 1089, 654);
-		City sevastopol = addCity("sevastopol", 1278, 674);
-		City kharkov = addCity("kharkov", 1353, 497);
-		City kyiv = addCity("kyiv", 1168, 425);
-		City moskva = addCity("moskva", 1371, 291);
-		City petrograd = addCity("petrograd", 1240, 126);
-		City riga = addCity("riga", 1006, 132);
-		City danzig = addCity("danzig", 891, 257);
-		City edinburgh = addCity("edinburgh", 266, 121);
-		City lisboa = addCity("lisboa", 92, 864);
-		City zagrab = addCity("zagrab", 798, 651);
-		City sarajevo = addCity("sarajevo", 913, 728);
-		City palermo = addCity("palermo", 743, 935);
-		City smryna = addCity("smryna", 1096, 933);
-		City angora = addCity("angora", 1266, 899);
-		City erzurum = addCity("erzurum", 1377, 866);
-		City sochi = addCity("sochi", 1400, 695);
-		City rostov = addCity("rostov", 1410, 569);
-		City stockholm = addCity("stockholm", 841, 95);
-		City wilno = addCity("wilno", 1116, 319);
-		City venezia = addCity("venezia", 680, 632);
+		City frankfurt = addCity("frankfurt", 568, 433);
+		City brest = addCity("brest", 215, 489);
+		City london = addCity("london", 341, 313);
+		City essen = addCity("essen", 584, 332);
+		City berlin = addCity("berlin", 722, 350);
+		City wien = addCity("wien", 801, 510);
+		City zurich = addCity("zurich", 552, 573);
+		City marseille = addCity("marseille", 513, 703);
+		City roma = addCity("roma", 673, 747);
+		City brindisi = addCity("brindisi", 790, 781);
+		City sofia = addCity("sofia", 987, 729);
+		City kobenhavn = addCity("kobenhavn", 678, 190);
+		City amsterdam = addCity("amsterdam", 472, 319);
+		City dieppe = addCity("dieppe", 322, 438);
+		City paris = addCity("paris", 390, 499);
+		City bruxelles = addCity("bruxelles", 439, 382);
+		City munchen = addCity("munchen", 641, 485);
+		City athina = addCity("athina", 967, 885);
+		City madrid = addCity("madrid", 169, 816);
+		City cadiz = addCity("cadiz", 167, 923);
+		City barcelona = addCity("barcelona", 321, 842);
+		City pamplona = addCity("pamplona", 304, 712);
+		City constantinople = addCity("constantinople", 1143, 815);
+		City budapest = addCity("budapest", 860, 550);
+		City bucuresti = addCity("bucuresti", 1073, 644);
+		City sevastopol = addCity("sevastopol", 1264, 662);
+		City kharkov = addCity("kharkov", 1336, 486);
+		City kyiv = addCity("kyiv", 1153, 416);
+		City moskva = addCity("moskva", 1360, 278);
+		City petrograd = addCity("petrograd", 1227, 112);
+		City riga = addCity("riga", 994, 125);
+		City danzig = addCity("danzig", 875, 246);
+		City edinburgh = addCity("edinburgh", 248, 111);
+		City lisboa = addCity("lisboa", 73, 856);
+		City zagrab = addCity("zagrab", 784, 638);
+		City sarajevo = addCity("sarajevo", 897, 717);
+		City palermo = addCity("palermo", 730, 927);
+		City smryna = addCity("smryna", 1084, 921);
+		City angora = addCity("angora", 1249, 888);
+		City erzurum = addCity("erzurum", 1357, 855);
+		City sochi = addCity("sochi", 1385, 683);
+		City rostov = addCity("rostov", 1393, 562);
+		City stockholm = addCity("stockholm", 822, 81);
+		City wilno = addCity("wilno", 1098, 308);
+		City venezia = addCity("venezia", 695, 666);
 		City warszawa = addCity("warszawa", 962, 352);
-		City smolensk = addCity("smolensk", 1255, 325);
+		City smolensk = addCity("smolensk", 1254, 322);
 
 		//if the railroad is facing upwards, get point from top right
 		//if the railroad is facing sideways, get the point from top left
@@ -485,11 +485,11 @@ public class Graph {
 		wien.addConnection(warszawa, railRoadList);	//warszawa to wien
 
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(1, "white", 0, false, false,833,521, Math.toRadians(31)));
+		railRoadList.add(new RailRoad(1, "white", 0, false, false,822,538, Math.toRadians(31)));
 		wien.addConnection(budapest, railRoadList);	//wien to budapest
 		budapest.addConnection(wien, railRoadList);	//wien to budapest
 		railRoadList = new ArrayList<RailRoad>();
-		railRoadList.add(new RailRoad(1, "red", 0, false, false,822,538, Math.toRadians(31)));
+		railRoadList.add(new RailRoad(1, "red", 0, false, false,833,521, Math.toRadians(31)));
 		wien.addSecondConnection(budapest, railRoadList);	//wien to budapest
 		budapest.addSecondConnection(wien, railRoadList);	//wien to budapest
 		
@@ -777,72 +777,6 @@ public class Graph {
     public int getRailRoadSizeY() {
     	return railRoadSizeY;
     }
-
-	private boolean foundCity(Player targetPlr, City target, ArrayList<City> pastCities, City currentCity) {
-	    	if (currentCity == target) {
-	    		return true;
-	    	}
-	    	if (pastCities.contains(currentCity)) {
-	    		return false;
-	    	}
-	    	
-	    	HashMap<City, ArrayList<RailRoad>> connections = currentCity.getConnections();
-    		Set<City> citySet = connections.keySet();
-    		
-    		for (City city: citySet) {
-    			if (connections.get(city).get(0).getThePlayerRailroad() == targetPlr) {
-    				ArrayList<City> temp = pastCities;
-    				temp.add(currentCity);
-    				if (foundCity(targetPlr, target, temp, city)) {
-    					return true;
-    				}
-    			}
-    		}
-    		
-    		connections = currentCity.getSecondConnections();
-    		citySet = connections.keySet();
-    		
-    		for (City city: citySet) {
-    			if (connections.get(city).get(0).getThePlayerRailroad() == targetPlr) {
-    				ArrayList<City> temp = pastCities;
-    				temp.add(currentCity);
-    				if (foundCity(targetPlr, target, temp, city)) {
-    					return true;
-    				}
-    			}
-    		}
-    		
-    		return false;
-	    }
-	    
-	    public int calculateTicket(Player plr) {
-	    	int total = 0;
-	    	ArrayList<Ticket> tickets = plr.getTicket();
-	    	for (int i = 0; i < tickets.size(); i++) {
-	    		for (int j = 0; j < adjacencyList.size(); j++) {
-	    			if (adjacencyList.get(j) == findCity(tickets.get(i).getFromCity())) {
-	    				String target = tickets.get(i).getToCity();
-	    				ArrayList<City> pastCities = new ArrayList<City>();
-	    				if (foundCity(plr, findCity(target), pastCities, adjacencyList.get(j))) {
-	    					total += tickets.get(i).getPoints();
-
-	    				}
-	    				continue;
-	    			}
-	    		}
-	    	}
-	    	return total;
-	    }
-	    
-	    private City findCity(String cityName) {
-	    	for (int i = 0; i < adjacencyList.size(); i++) {
-	    		if (adjacencyList.get(i).getName().toLowerCase().equals(cityName.toLowerCase())) {
-	    			return adjacencyList.get(i);
-	    		}
-	    	}
-	    	
-	    	return null;
-	    }
     
     public ArrayList<RailRoad> getCityConnection(City city1, City city2) {
     	// Get the railroad connection of city to city stuff
