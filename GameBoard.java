@@ -196,7 +196,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         
         //reset those transformations
         g2d.setTransform(new AffineTransform());
-        
+        //Right click text
+        g2d.setFont(new Font("Serif", Font.BOLD, 22)); g2d.setColor(Color.WHITE); 
+        g2d.drawString("Right click on a city to build station", 15, 25);
+	    
         //numerical stuff
         g2d.setFont(new Font("Serif", Font.BOLD, 50)); g2d.setColor(Color.WHITE); 
         
