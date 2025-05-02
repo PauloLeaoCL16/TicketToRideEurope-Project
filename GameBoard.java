@@ -1,7 +1,6 @@
 /*
 ///////////////////////////TO DO LIST//////////////////////////////////////  
 gambling logic
-showing back of card on discard pile
 if buying gamble route with all wilds must choose a color first
 show and score each complete and incomplete ticket
 show each players longest route and award the EU express
@@ -60,6 +59,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	private ArrayList<RailRoad> railRoadChosen;
 	private int wildNum = 0,whiteNum = 0,redNum = 0,purpleNum = 0,greenNum = 0,brownNum = 0,blueNum = 0,blackNum=0,yellowNum = 0;
 	private boolean whiteClicked= false,redClicked= false,purpleClicked= false,greenClicked= false,brownClicked= false,blueClicked= false,blackClicked= false,yellowClicked = false;
+	private ArrayList<ColorCard> gamblingDraw;
+	private int gamblingExtraCost;
+	private boolean gamblingConfirm;
+	private boolean gamblingRequiredMet;
 
     public GameBoard() {
         try {
@@ -97,7 +100,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             faceUpCard[4] = cardDeck.drawCard();
             players.add(new Player("red", redplayer, new Color(255,0,0)));
             players.add(new Player("orange", blueplayer, new Color(255,165,0)));
-            players.add(new Player("white", greenplayer, new Color(0,0,0)));
+            players.add(new Player("white", greenplayer, new Color(255,255,255)));
             players.add(new Player("blue", yellowplayer, new Color(0,0,255)));
             p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p1bg.png"));
             p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p2bg.png"));
@@ -132,7 +135,15 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         roadChosen = false;
         railRoadChosen = new ArrayList<>();
         wildNeeded = 0;
-        players.get(currentPlr).addCard("wild",50);
+        players.get(0).addCard("wild",50);
+        players.get(1).addCard("wild",50);
+        players.get(2).addCard("wild",50);
+        players.get(3).addCard("wild",50);
+        gamblingDraw= new ArrayList<>();
+        gamblingExtraCost = 0;
+        gamblingRequiredMet = false;
+        gamblingConfirm = false;
+
         
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -356,8 +367,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
          		g2d.drawImage(sidewaytemplate, 1540, 350, 200, 100, null);
          		g2d.setColor(Color.WHITE);
          		g2d.drawString("Choose color to buy route", 1510, 550);
-         		g2d.drawString("Extra Cost:", maxSize, maxSize);
+         		g2d.drawString("Extra Cost: " + gamblingExtraCost, 1510, 600);
          		g2d.drawImage(playerGamble, 1510, 630, null);
+         		g2d.drawImage( gamblingDraw.get(0).getImage()  ,1545,54,186,88,null );
+         		g2d.drawImage( gamblingDraw.get(1).getImage()  ,1545,204,186,88,null );
+         		g2d.drawImage( gamblingDraw.get(2).getImage()  ,1545,354,186,88,null );
          		g2d.setFont(new Font("Serif", Font.BOLD, 30)); g2d.setColor(Color.WHITE); 
                  g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("wild")), 1580, 762); // Locomotive
                  g2d.drawString(String.valueOf(players.get(currentPlr).getCardColor("white")), 1645, 762); // White
@@ -499,12 +513,12 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	int pt = currentPlayer.getPoint()/2;
         	g2d.setPaint(currentPlayer.getPlrColor());
         	int reset = (pt + players.get(i).getStations() * 4) % 100 -12;
-		if (reset < 0) {
-        		g2d.fillOval(32 - (reset * 47), 960, 30, 30);
-	            	g2d.setPaint(new Color(0, 0, 0));
-	            	g2d.setStroke(new BasicStroke(2));
-	            	g2d.drawOval(32 - (reset * 47), 960, 30, 30);
-        	}
+        	if (reset < 0) {
+         		g2d.fillOval(32 - (reset * 47), 960, 30, 30);
+ 	            	g2d.setPaint(new Color(0, 0, 0));
+ 	            	g2d.setStroke(new BasicStroke(2));
+ 	            	g2d.drawOval(32 - (reset * 47), 960, 30, 30);
+         	}
         	if (reset <= 20) {
         		g2d.fillOval(32, 960 - (reset * 46), 30, 30);
             	g2d.setPaint(new Color(0, 0, 0));
@@ -592,7 +606,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 					else
 					{
 						buyEvent();
-						panelStuff = 0;
+						if( railRoadChosen.get(0).getMountains() )
+							panelStuff = 4;
+						else
+								panelStuff = 0;
 					}
 				}
 			}
@@ -610,319 +627,673 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 					else
 					{
 						buyEvent();
-						panelStuff = 0;
+						if( railRoadChosen.get(0).getMountains() )
+							panelStuff = 4;
+						else
+							panelStuff = 0;
 					}
 				}
 					
 			}
 		
-			if( x>=1550 && x<=1618 && y>=631 && y<=731 && panelStuff == 5 )//wild card
+			if( x>=1550 && x<=1618 && y>=631 && y<=731 && (panelStuff == 5 || panelStuff == 4) )//wild card
 			{
-				int wildsFound = 0;
-				for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+				if( panelStuff == 5)
 				{
-					if( players.get(currentPlr).getCard().get(i).getColor().equals("wild")   )
+					int wildsFound = 0;
+					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
 					{
-						wildsFound++;
+						if( players.get(currentPlr).getCard().get(i).getColor().equals("wild")   )
+						{
+							wildsFound++;
+						}
+					}
+					
+					if( wildsFound > 0 && colorsChosen < amountNeeded)
+					{
+						wildsFound--;
+						wildNum++;
+						players.get(currentPlr).removeCards("wild", 1);
+						colorsChosen++;
+						cardsRemoved++;
+					}
+					if(colorsChosen == amountNeeded)
+					{
+						greyRequiredMet=true;
+					}
+				}
+				else
+				{
+					int wildsFound = 0;
+					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+					{
+						if( players.get(currentPlr).getCard().get(i).getColor().equals("wild")   )
+						{
+							wildsFound++;
+						}
+					}
+					if( wildsFound > 0 && colorsChosen < gamblingExtraCost)
+					{
+						wildsFound--;
+						wildNum++;
+						players.get(currentPlr).removeCards("wild", 1);
+						colorsChosen++;
+						cardsRemoved++;
+					}
+					if(colorsChosen == gamblingExtraCost)
+					{
+						gamblingRequiredMet=true;
+					}
+					
+					
+				}
+				
+			}
+			if(x>=1618 && x<=1686 && y>=631 && y<=731 && (panelStuff == 5 || panelStuff == 4))//white card
+			{
+				if( panelStuff == 5 )
+				{
+					if( (whiteClicked || !whiteClicked)&& !redClicked && !redClicked && !purpleClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
+					{
+						whiteClicked = true;
+						int whiteFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("white")   )
+							{
+								whiteFound++;
+							}
+						}
+						
+						if( whiteFound > 0 && colorsChosen < amountNeeded)
+						{
+							whiteFound--;
+							whiteNum++;
+							players.get(currentPlr).removeCards("white", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == amountNeeded)
+						{
+							greyRequiredMet=true;
+						}
+					}
+				}
+				else
+				{
+					if( (whiteClicked || !whiteClicked)&& !redClicked && !redClicked && !purpleClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
+					{
+						whiteClicked = true;
+						int whiteFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("white")   )
+							{
+								whiteFound++;
+							}
+						}
+						
+						if( whiteFound > 0 && colorsChosen < gamblingExtraCost)
+						{
+							whiteFound--;
+							whiteNum++;
+							players.get(currentPlr).removeCards("white", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == gamblingExtraCost)
+						{
+							gamblingRequiredMet=true;
+						}
+					}
+					
+					
+					
+				}
+				
+			}
+			if(x>=1686 && x<=1754 && y>=631 && y<=731 && (panelStuff == 5 || panelStuff == 4) )//red card
+			{
+				if( panelStuff==5 )
+				{
+					if( (redClicked || !redClicked)&& !whiteClicked && !brownClicked && !purpleClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
+					{
+						redClicked = true;
+						int redFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("red")   )
+							{
+								redFound++;
+							}
+						}
+						
+						if( redFound > 0 && colorsChosen < amountNeeded)
+						{
+							redFound--;
+							redNum++;
+							players.get(currentPlr).removeCards("red", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == amountNeeded)
+						{
+							greyRequiredMet=true;
+						}
+					}
+				}
+				else
+				{
+					if( (redClicked || !redClicked)&& !whiteClicked && !brownClicked && !purpleClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
+					{
+						redClicked = true;
+						int redFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("red")   )
+							{
+								redFound++;
+							}
+						}
+						
+						if( redFound > 0 && colorsChosen < gamblingExtraCost)
+						{
+							redFound--;
+							redNum++;
+							players.get(currentPlr).removeCards("red", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == gamblingExtraCost)
+						{
+							gamblingRequiredMet=true;
+						}
 					}
 				}
 				
-				if( wildsFound > 0 && colorsChosen < amountNeeded)
+			}
+			if(x>=1754 && x<=1822 && y>=631 && y<=731 && (panelStuff == 5 || panelStuff == 4) )//purple card
+			{
+				if( panelStuff == 5)
 				{
-					wildsFound--;
-					wildNum++;
-					players.get(currentPlr).removeCards("wild", 1);
-					colorsChosen++;
-					cardsRemoved++;
+					if( (purpleClicked || !purpleClicked)&& !whiteClicked && !redClicked && !brownClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
+					{
+						purpleClicked = true;
+						int purpleFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("purple")   )
+							{
+								purpleFound++;
+							}
+						}
+						
+						if( purpleFound > 0 && colorsChosen < amountNeeded)
+						{
+							purpleFound--;
+							purpleNum++;
+							players.get(currentPlr).removeCards("purple", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == amountNeeded)
+						{
+							greyRequiredMet=true;
+						}
+					}
 				}
-				if(colorsChosen == amountNeeded)
+				else
 				{
-					greyRequiredMet=true;
+					if( (purpleClicked || !purpleClicked)&& !whiteClicked && !redClicked && !brownClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
+					{
+						purpleClicked = true;
+						int purpleFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("purple")   )
+							{
+								purpleFound++;
+							}
+						}
+						
+						if( purpleFound > 0 && colorsChosen < gamblingExtraCost)
+						{
+							purpleFound--;
+							purpleNum++;
+							players.get(currentPlr).removeCards("purple", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == gamblingExtraCost)
+						{
+							gamblingRequiredMet=true;
+						}
+					}
+				}
+			}
+			if( x >=1820 && x <= 1885 && y >=631 && y <= 731 && (panelStuff == 5 || panelStuff == 4))//green card
+			{
+				if( panelStuff == 5)
+				{
+					if( (greenClicked || !greenClicked)&& !whiteClicked && !redClicked && !purpleClicked && !brownClicked && !blueClicked && !yellowClicked && !yellowClicked )
+					{
+						greenClicked = true;
+						int greenFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("green")   )
+							{
+								greenFound++;
+							}
+						}
+						
+						if( greenFound > 0 && colorsChosen < amountNeeded)
+						{
+							greenFound--;
+							greenNum++;
+							players.get(currentPlr).removeCards("green", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == amountNeeded)
+						{
+							greyRequiredMet=true;
+						}
+					}
+				}
+				else
+				{
+					if( (greenClicked || !greenClicked)&& !whiteClicked && !redClicked && !purpleClicked && !brownClicked && !blueClicked && !yellowClicked && !yellowClicked )
+					{
+						greenClicked = true;
+						int greenFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("green")   )
+							{
+								greenFound++;
+							}
+						}
+						
+						if( greenFound > 0 && colorsChosen < gamblingExtraCost)
+						{
+							greenFound--;
+							greenNum++;
+							players.get(currentPlr).removeCards("green", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == gamblingExtraCost)
+						{
+							gamblingRequiredMet=true;
+						}
+					}
 				}
 				
-			}
-			if(x>=1618 && x<=1686 && y>=631 && y<=731 && panelStuff == 5 )//white card
-			{
-				if( (whiteClicked || !whiteClicked)&& !redClicked && !redClicked && !purpleClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
-				{
-					whiteClicked = true;
-					int whiteFound = 0;
-					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
-					{
-						if( players.get(currentPlr).getCard().get(i).getColor().equals("white")   )
-						{
-							whiteFound++;
-						}
-					}
-					
-					if( whiteFound > 0 && colorsChosen < amountNeeded)
-					{
-						whiteFound--;
-						whiteNum++;
-						players.get(currentPlr).removeCards("white", 1);
-						colorsChosen++;
-						cardsRemoved++;
-					}
-					if(colorsChosen == amountNeeded)
-					{
-						greyRequiredMet=true;
-					}
-				}
-			}
-			if(x>=1686 && x<=1754 && y>=631 && y<=731 && panelStuff == 5 )//red card
-			{
-				if( (redClicked || !redClicked)&& !whiteClicked && !brownClicked && !purpleClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
-				{
-					redClicked = true;
-					int redFound = 0;
-					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
-					{
-						if( players.get(currentPlr).getCard().get(i).getColor().equals("red")   )
-						{
-							redFound++;
-						}
-					}
-					
-					if( redFound > 0 && colorsChosen < amountNeeded)
-					{
-						redFound--;
-						redNum++;
-						players.get(currentPlr).removeCards("red", 1);
-						colorsChosen++;
-						cardsRemoved++;
-					}
-					if(colorsChosen == amountNeeded)
-					{
-						greyRequiredMet=true;
-					}
-				}
-			}
-			if(x>=1754 && x<=1822 && y>=631 && y<=731 && panelStuff == 5 )//purple card
-			{
-				if( (purpleClicked || !purpleClicked)&& !whiteClicked && !redClicked && !brownClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
-				{
-					purpleClicked = true;
-					int purpleFound = 0;
-					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
-					{
-						if( players.get(currentPlr).getCard().get(i).getColor().equals("purple")   )
-						{
-							purpleFound++;
-						}
-					}
-					
-					if( purpleFound > 0 && colorsChosen < amountNeeded)
-					{
-						purpleFound--;
-						purpleNum++;
-						players.get(currentPlr).removeCards("purple", 1);
-						colorsChosen++;
-						cardsRemoved++;
-					}
-					if(colorsChosen == amountNeeded)
-					{
-						greyRequiredMet=true;
-					}
-				}
-			}
-			if( x >=1820 && x <= 1885 && y >=631 && y <= 731 && panelStuff == 5)//green card
-			{
-				if( (greenClicked || !greenClicked)&& !whiteClicked && !redClicked && !purpleClicked && !brownClicked && !blueClicked && !yellowClicked && !yellowClicked )
-				{
-					greenClicked = true;
-					int greenFound = 0;
-					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
-					{
-						if( players.get(currentPlr).getCard().get(i).getColor().equals("green")   )
-						{
-							greenFound++;
-						}
-					}
-					
-					if( greenFound > 0 && colorsChosen < amountNeeded)
-					{
-						greenFound--;
-						greenNum++;
-						players.get(currentPlr).removeCards("green", 1);
-						colorsChosen++;
-						cardsRemoved++;
-					}
-					if(colorsChosen == amountNeeded)
-					{
-						greyRequiredMet=true;
-					}
-				}
 			}
 			//2nd half of cards	
-			if( x>=1550 && x<=1618 && y>=773 && y<=876 && panelStuff == 5 )//orange card
+			if( x>=1550 && x<=1618 && y>=773 && y<=876 && (panelStuff == 5 || panelStuff == 4) )//orange card
 			{
-				if( (brownClicked || !brownClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
+				if( panelStuff == 5)
 				{
-					brownClicked = true;
-					out.println("Brown Card clicked");
-					int brownFound = 0;
-					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+					if( (brownClicked || !brownClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
 					{
-						if( players.get(currentPlr).getCard().get(i).getColor().equals("brown")   )
+						brownClicked = true;
+						out.println("Brown Card clicked");
+						int brownFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("brown")   )
+							{
+								brownFound++;
+							}
+						}
+						
+						if( brownFound > 0 && colorsChosen < amountNeeded)
 						{
 							brownFound++;
+							brownNum++;
+							players.get(currentPlr).removeCards("brown", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == amountNeeded)
+						{
+							greyRequiredMet=true;
 						}
 					}
-					
-					if( brownFound > 0 && colorsChosen < amountNeeded)
+				}
+				else
+				{
+					if( (brownClicked || !brownClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !blueClicked && !yellowClicked && !yellowClicked )
 					{
-						brownFound++;
-						brownNum++;
-						players.get(currentPlr).removeCards("brown", 1);
-						colorsChosen++;
-						cardsRemoved++;
+						brownClicked = true;
+						out.println("Brown Card clicked");
+						int brownFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("brown")   )
+							{
+								brownFound++;
+							}
+						}
+						
+						if( brownFound > 0 && colorsChosen < gamblingExtraCost)
+						{
+							brownFound++;
+							brownNum++;
+							players.get(currentPlr).removeCards("brown", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == gamblingExtraCost)
+						{
+							gamblingRequiredMet=true;
+						}
 					}
-					if(colorsChosen == amountNeeded)
+				}
+				
+			}
+			if( x>=1618 && x<=1686 && y>=773 && y<=876 && (panelStuff == 5 || panelStuff == 4) )//blue card
+			{
+				if( panelStuff == 5 )
+				{
+					if( (blueClicked || !blueClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !brownClicked && !yellowClicked && !yellowClicked )
 					{
-						greyRequiredMet=true;
+						blueClicked = true;
+						out.println("Blue Card clicked");
+						int blueFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("blue")   )
+							{
+								blueFound++;
+							}
+						}
+						
+						if( blueFound > 0 && colorsChosen < amountNeeded)
+						{
+							blueFound--;
+							blueNum++;
+							players.get(currentPlr).removeCards("blue", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == amountNeeded)
+						{
+							greyRequiredMet=true;
+						}
+					}
+				}
+				else
+				{
+					if( (blueClicked || !blueClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !brownClicked && !yellowClicked && !yellowClicked )
+					{
+						blueClicked = true;
+						out.println("Blue Card clicked");
+						int blueFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("blue")   )
+							{
+								blueFound++;
+							}
+						}
+						
+						if( blueFound > 0 && colorsChosen < gamblingExtraCost)
+						{
+							blueFound--;
+							blueNum++;
+							players.get(currentPlr).removeCards("blue", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == gamblingExtraCost)
+						{
+							gamblingRequiredMet=true;
+						}
+					}
+				}
+				
+			}
+			if( x>=1686 && x<=1754 && y>=773 && y<=876 && (panelStuff == 5 || panelStuff == 4) )//black card
+			{
+				if( panelStuff == 5 )
+				{
+					if( (blackClicked || !blackClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !brownClicked && !blueClicked && !yellowClicked )
+					{
+						blackClicked = true;
+						out.println("black Card clicked");
+						int blackFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("black")   )
+							{
+								blackFound++;
+							}
+						}
+						
+						if( blackFound > 0 && colorsChosen < amountNeeded)
+						{
+							blackFound--;
+							blackNum++;
+							players.get(currentPlr).removeCards("black", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == amountNeeded)
+						{
+							greyRequiredMet=true;
+						}
+					}
+				}
+				else
+				{
+					if( (blackClicked || !blackClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !brownClicked && !blueClicked && !yellowClicked )
+					{
+						blackClicked = true;
+						out.println("black Card clicked");
+						int blackFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+						{
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("black")   )
+							{
+								blackFound++;
+							}
+						}
+						
+						if( blackFound > 0 && colorsChosen < gamblingExtraCost)
+						{
+							blackFound--;
+							blackNum++;
+							players.get(currentPlr).removeCards("black", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == gamblingExtraCost)
+						{
+							gamblingRequiredMet=true;
+						}
 					}
 				}
 			}
-			if( x>=1618 && x<=1686 && y>=773 && y<=876 && panelStuff == 5 )//blue card
+			if( x>=1754 && x<=1822 && y>=773 && y<=876 && (panelStuff == 5 || panelStuff == 4) )//yellow card
 			{
-				if( (blueClicked || !blueClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !brownClicked && !yellowClicked && !yellowClicked )
+				if( panelStuff == 5 )
 				{
-					blueClicked = true;
-					out.println("Blue Card clicked");
-					int blueFound = 0;
-					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+					if( (yellowClicked || !yellowClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !brownClicked && !blueClicked && !blackClicked )
 					{
-						if( players.get(currentPlr).getCard().get(i).getColor().equals("blue")   )
+						yellowClicked = true;
+						out.println("Yellow Card clicked");
+						int yellowFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
 						{
-							blueFound++;
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("yellow")   )
+							{
+								yellowFound++;
+							}
+						}
+						
+						
+						if( yellowFound > 0 && colorsChosen < amountNeeded)
+						{
+							yellowFound--;
+							yellowNum++;
+							players.get(currentPlr).removeCards("yellow", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == amountNeeded)
+						{
+							greyRequiredMet=true;
 						}
 					}
-					
-					if( blueFound > 0 && colorsChosen < amountNeeded)
-					{
-						blueFound--;
-						blueNum++;
-						players.get(currentPlr).removeCards("blue", 1);
-						colorsChosen++;
-						cardsRemoved++;
-					}
-					if(colorsChosen == amountNeeded)
-					{
-						greyRequiredMet=true;
-					}
 				}
-			}
-			if( x>=1686 && x<=1754 && y>=773 && y<=876 && panelStuff == 5 )//black card
-			{
-				if( (blackClicked || !blackClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !brownClicked && !blueClicked && !yellowClicked )
+				else
 				{
-					blackClicked = true;
-					out.println("black Card clicked");
-					int blackFound = 0;
-					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
+					if( (yellowClicked || !yellowClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !brownClicked && !blueClicked && !blackClicked )
 					{
-						if( players.get(currentPlr).getCard().get(i).getColor().equals("black")   )
+						yellowClicked = true;
+						out.println("Yellow Card clicked");
+						int yellowFound = 0;
+						for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
 						{
-							blackFound++;
+							if( players.get(currentPlr).getCard().get(i).getColor().equals("yellow")   )
+							{
+								yellowFound++;
+							}
+						}
+						
+						
+						if( yellowFound > 0 && colorsChosen < gamblingExtraCost)
+						{
+							yellowFound--;
+							yellowNum++;
+							players.get(currentPlr).removeCards("yellow", 1);
+							colorsChosen++;
+							cardsRemoved++;
+						}
+						if(colorsChosen == gamblingExtraCost)
+						{
+							gamblingRequiredMet=true;
 						}
 					}
-					
-					if( blackFound > 0 && colorsChosen < amountNeeded)
-					{
-						blackFound--;
-						blackNum++;
-						players.get(currentPlr).removeCards("black", 1);
-						colorsChosen++;
-						cardsRemoved++;
-					}
-					if(colorsChosen == amountNeeded)
-					{
-						greyRequiredMet=true;
-					}
 				}
-			}
-			if( x>=1754 && x<=1822 && y>=773 && y<=876 && panelStuff == 5 )//yellow card
-			{
-				if( (yellowClicked || !yellowClicked)&& !whiteClicked && !redClicked && !purpleClicked && !greenClicked && !brownClicked && !blueClicked && !blackClicked )
-				{
-					yellowClicked = true;
-					out.println("Yellow Card clicked");
-					int yellowFound = 0;
-					for(int i = 0; i<players.get(currentPlr).getCard().size();i++)
-					{
-						if( players.get(currentPlr).getCard().get(i).getColor().equals("yellow")   )
-						{
-							yellowFound++;
-						}
-					}
-					
-					
-					if( yellowFound > 0 && colorsChosen < amountNeeded)
-					{
-						yellowFound--;
-						yellowNum++;
-						players.get(currentPlr).removeCards("yellow", 1);
-						colorsChosen++;
-						cardsRemoved++;
-					}
-					if(colorsChosen == amountNeeded)
-					{
-						greyRequiredMet=true;
-					}
-				}
+				
 			}
 	    	
 			//checks if player clicked confirm on panelStuff = 5
-			if( x>=1510 && x<=1679 && y>=969 && y<=1019 && panelStuff == 5)
+			if( x>=1510 && x<=1679 && y>=969 && y<=1019 && (panelStuff == 5 || panelStuff == 4))
 			{
-				if( greyRequiredMet && wildNum >= wildNeeded )
+				if( panelStuff == 5 )
 				{
-					out.println("It at least calls the buy method");
-					buyEvent();
-					panelStuff = 0;
-					wildNum = 0;
-					whiteNum = 0;
-					redNum = 0;
-					purpleNum = 0;
-					greenNum = 0;
-					brownNum = 0;
-					blueNum = 0;
-					blackNum = 0;
-					yellowNum = 0;
-					greyRequiredMet = false;
-					colorsChosen = 0;
-					cardsRemoved = 0;
-					whiteClicked= false;redClicked= false;purpleClicked= false;greenClicked= false;brownClicked= false;blueClicked= false;blackClicked= false;yellowClicked = false;
+					if( greyRequiredMet && wildNum >= wildNeeded )
+					{
+						out.println("It at least calls the buy method");
+						buyEvent();
+						panelStuff = 0;
+						wildNum = 0;
+						whiteNum = 0;
+						redNum = 0;
+						purpleNum = 0;
+						greenNum = 0;
+						brownNum = 0;
+						blueNum = 0;
+						blackNum = 0;
+						yellowNum = 0;
+						greyRequiredMet = false;
+						colorsChosen = 0;
+						cardsRemoved = 0;
+						whiteClicked= false;redClicked= false;purpleClicked= false;greenClicked= false;brownClicked= false;blueClicked= false;blackClicked= false;yellowClicked = false;
+					}
+				}
+				else
+				{
+					if( ( gamblingExtraCost == 0 || gamblingRequiredMet) && wildNum >= wildNeeded )
+					{
+						out.println("Confirm button is clicked");
+						gamblingConfirm = true;
+						buyEvent();
+						panelStuff = 0;
+						wildNum = 0;
+						whiteNum = 0;
+						redNum = 0;
+						purpleNum = 0;
+						greenNum = 0;
+						brownNum = 0;
+						blueNum = 0;
+						blackNum = 0;
+						yellowNum = 0;
+						gamblingExtraCost = 0;
+						gamblingRequiredMet = false;
+						colorsChosen = 0;
+						cardsRemoved = 0;
+						whiteClicked= false;redClicked= false;purpleClicked= false;greenClicked= false;brownClicked= false;blueClicked= false;blackClicked= false;yellowClicked = false;
+
+						
+					}
+					
 				}
 				
 			}
 			
 			//checks if player clicked declined on panelStuff = 5 
-			if( x>=1708 && x<=1879 && y>=970 && y<=1019 && panelStuff == 5)
+			if( x>=1708 && x<=1879 && y>=970 && y<=1019 && (panelStuff == 5 || panelStuff == 4))
 			{
-				players.get(currentPlr).addCard("wild",wildNum);
-				wildNum = 0;
-				players.get(currentPlr).addCard("white",whiteNum);
-				whiteNum = 0;
-				players.get(currentPlr).addCard("red",redNum);
-				redNum = 0;
-				players.get(currentPlr).addCard("purple",purpleNum);
-				purpleNum = 0;
-				players.get(currentPlr).addCard("green",greenNum);
-				greenNum = 0;
-				players.get(currentPlr).addCard("brown",brownNum);
-				brownNum = 0;
-				players.get(currentPlr).addCard("blue",blueNum);
-				blueNum = 0;
-				players.get(currentPlr).addCard("black",blackNum);
-				blackNum = 0;
-				players.get(currentPlr).addCard("yellow",yellowNum);
-				yellowNum = 0;
-				colorsChosen = 0;
-				cardsRemoved = 0;
-				greyRequiredMet = false;
-				whiteClicked= false;redClicked= false;purpleClicked= false;greenClicked= false;brownClicked= false;blueClicked= false;blackClicked= false;yellowClicked = false;
-				panelStuff = 0;
+				if( panelStuff == 5 )
+				{
+					players.get(currentPlr).addCard("wild",wildNum);
+					wildNum = 0;
+					players.get(currentPlr).addCard("white",whiteNum);
+					whiteNum = 0;
+					players.get(currentPlr).addCard("red",redNum);
+					redNum = 0;
+					players.get(currentPlr).addCard("purple",purpleNum);
+					purpleNum = 0;
+					players.get(currentPlr).addCard("green",greenNum);
+					greenNum = 0;
+					players.get(currentPlr).addCard("brown",brownNum);
+					brownNum = 0;
+					players.get(currentPlr).addCard("blue",blueNum);
+					blueNum = 0;
+					players.get(currentPlr).addCard("black",blackNum);
+					blackNum = 0;
+					players.get(currentPlr).addCard("yellow",yellowNum);
+					yellowNum = 0;
+					colorsChosen = 0;
+					cardsRemoved = 0;
+					greyRequiredMet = false;
+					whiteClicked= false;redClicked= false;purpleClicked= false;greenClicked= false;brownClicked= false;blueClicked= false;blackClicked= false;yellowClicked = false;
+					panelStuff = 0;
+				}
+				else
+				{
+					players.get(currentPlr).addCard("wild",wildNum);
+					wildNum = 0;
+					players.get(currentPlr).addCard("white",whiteNum);
+					whiteNum = 0;
+					players.get(currentPlr).addCard("red",redNum);
+					redNum = 0;
+					players.get(currentPlr).addCard("purple",purpleNum);
+					purpleNum = 0;
+					players.get(currentPlr).addCard("green",greenNum);
+					greenNum = 0;
+					players.get(currentPlr).addCard("brown",brownNum);
+					brownNum = 0;
+					players.get(currentPlr).addCard("blue",blueNum);
+					blueNum = 0;
+					players.get(currentPlr).addCard("black",blackNum);
+					blackNum = 0;
+					players.get(currentPlr).addCard("yellow",yellowNum);
+					yellowNum = 0;
+					gamblingDraw = new ArrayList<>();
+					gamblingExtraCost = 0;
+					colorsChosen = 0;
+					cardsRemoved = 0;
+					gamblingRequiredMet = false;
+					whiteClicked= false;redClicked= false;purpleClicked= false;greenClicked= false;brownClicked= false;blueClicked= false;blackClicked= false;yellowClicked = false;
+					panelStuff = 0;
+				}
 			}
 		
 		
@@ -1291,8 +1662,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     	if (lastTurn == true) {
     		players.get(currentPlr).setLastTurn();
     	}
-	clickedCity[0] = null;
-	clickedCity[1] = null;
+    	clickedCity[0] = null;
+     	clickedCity[1] = null;
     	currentPlr += 1;
     	turnUsed = 0;
     	if (currentPlr >= players.size()) {
@@ -1323,22 +1694,23 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				ticketsShownList.add( new Ticket( "", "", 0, new BufferedImage(1,1,1)) );
     	}
     	if (players.get(currentPlr).getLastTurn() == true) {
+    		
     		Player plr1 = players.get(0);
-        	int pt1 = plr1.getPoint()/2;
-        	int totalPt1 = pt1 + players.get(0).getStations() * 4;
-        	
-        	Player plr2 = players.get(1);
-        	int pt2 = plr2.getPoint()/2;
-        	int totalPt2 = pt2 + players.get(1).getStations() * 4;
-        	
-        	Player plr3 = players.get(2);
-        	int pt3 = plr3.getPoint()/2;
-        	int totalPt3 = pt3 + players.get(2).getStations() * 4;
-        	
-        	Player plr4 = players.get(3);
-        	int pt4 = plr4.getPoint()/2;
-        	int totalPt4 = pt1 + players.get(3).getStations() * 4;
-//    		EndGame newEndgame = new EndGame(totalPt1, totalPt2, totalPt3, totalPt4);
+         	int pt1 = plr1.getPoint()/2;
+         	int totalPt1 = pt1 + players.get(0).getStations() * 4;
+         	
+         	Player plr2 = players.get(1);
+         	int pt2 = plr2.getPoint()/2;
+         	int totalPt2 = pt2 + players.get(1).getStations() * 4;
+         	
+         	Player plr3 = players.get(2);
+         	int pt3 = plr3.getPoint()/2;
+         	int totalPt3 = pt3 + players.get(2).getStations() * 4;
+         	
+         	Player plr4 = players.get(3);
+         	int pt4 = plr4.getPoint()/2;
+         	int totalPt4 = pt1 + players.get(3).getStations() * 4;
+    		EndGame newEndgame = new EndGame(totalPt1, totalPt2, totalPt3, totalPt4);
     	}
     }
     
@@ -1384,13 +1756,62 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				{
 					
 				}
-				else if (isMountain1) {
-					//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
-					for (int i = 0; i < 3; i++) {
-						ColorCard draw = cardDeck.drawCard();
-						if (railroadColor1.equals(draw.getColor()) || draw.getColor().equals("wild")) {
-							amountNeeded++;
+				else if (isMountain1) 
+				{
+					if( !gamblingConfirm && !neededRailRoad.get(0).getBought() )
+					{
+						for (int i = 0; i < 3; i++) {
+							
+								ColorCard draw = cardDeck.drawCard();
+								gamblingDraw.add(draw);
+							
+							if (railroadColor1.equals(draw.getColor()) || draw.getColor().equals("wild")) 
+							{
+								gamblingExtraCost++;
+							}
+						
+					}
+						panelStuff = 4;
+					}
+					else
+					{
+						//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
+						
+							for (int i = 0; i < 3; i++) {
+								if( gamblingDraw.size() ==0 )
+								{
+									ColorCard draw = cardDeck.drawCard();
+									gamblingDraw.add(draw);
+								}
+								if (railroadColor1.equals(gamblingDraw.get(i).getColor()) || gamblingDraw.get(i).getColor().equals("wild")) 
+								{
+									gamblingExtraCost++;
+								}
+							
 						}
+						out.println("This is gamblingExtraCost: " + gamblingExtraCost + " This is gamblingConfirm: " + gamblingConfirm);
+						out.println("This is what gamblingRequiredMet is: " + gamblingRequiredMet);
+						if( gamblingRequiredMet || (gamblingExtraCost == 0 && gamblingConfirm))
+						{
+							gamblingConfirm = false;
+							//Buy the railroad successfully (Will add it to UI and remove from player card later)
+							for (int i = 0; i < neededRailRoad.size(); i++) {
+								neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+							}
+							turnUsed = 2;
+							players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+							players.get(currentPlr).removeTrain(amountNeeded);
+							if (players.get(currentPlr).getCardColor(railroadColor1) < amountNeeded) {
+			 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded - players.get(currentPlr).getCardColor(railroadColor1)));
+			 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, gamblingExtraCost));
+			 				} else {
+			 					int amount = players.get(currentPlr).getCardColor(railroadColor2);
+			 					int leftOver = amountNeeded - amount;
+			 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, amount));
+			 					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
+			 				}
+						}
+						panelStuff = 0;
 					}
 				}
 				else if( isGreyRoad1 && (players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded || cardsRemoved >= amountNeeded|| players.get(currentPlr).getHighestColorNum() + players.get(currentPlr).getCardColor("wild") >= amountNeeded) )
@@ -1436,8 +1857,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 		}
 		else
 		{
-			
-			if( ( !railroadBought1 || !railroadBought2 ) &&!roadChosen && ( players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded || players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded ) )
+			out.println("Does the code get here 2 times " + gamblingConfirm);
+			out.println(( !railroadBought1 || !railroadBought2 ) && !roadChosen && ( players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded || players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded ) );
+			if( ( !railroadBought1 || !railroadBought2 ) &&  !gamblingConfirm && !roadChosen && ( players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded || players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded ) )
 			{
 				panelStuff = 6;
 			}
@@ -1452,6 +1874,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				out.println("This is wildNumber: " + players.get(currentPlr).getCardColor("wild") + " vs the wildNeeded: " + wildNeeded);
 				out.println("This is isMountain: " + isMountain + " vs the isGreyRoad: " + isGreyRoad);
 				
+				
 				//creates objects based on the railroad chosen by the player on the pop-up
 				if( isMountain && railroadColor.equals("any") )
 				{
@@ -1460,11 +1883,39 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				else if (isMountain) {
 					//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
 					for (int i = 0; i < 3; i++) {
-						ColorCard draw = cardDeck.drawCard();
-						if (railroadColor.equals(draw.getColor()) || draw.getColor().equals("wild")) {
-							amountNeeded++;
+						if( gamblingDraw.size() ==0 )
+						{
+							ColorCard draw = cardDeck.drawCard();
+							gamblingDraw.add(draw);
 						}
+						if (railroadColor.equals(gamblingDraw.get(i).getColor()) || gamblingDraw.get(i).getColor().equals("wild")) 
+						{
+							gamblingExtraCost++;
+						}
+					
+				}
+					if( gamblingRequiredMet || (gamblingExtraCost == 0 && gamblingConfirm))
+					{
+						gamblingConfirm = false;
+						//Buy the railroad successfully (Will add it to UI and remove from player card later)
+						for (int i = 0; i < railRoadChosen.size(); i++) {
+							railRoadChosen.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+						}
+						turnUsed = 2;
+						players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+						players.get(currentPlr).removeTrain(amountNeeded);
+						if (players.get(currentPlr).getCardColor(railroadColor) < amountNeeded) {
+		 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded - players.get(currentPlr).getCardColor(railroadColor)));
+		 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, gamblingExtraCost));
+		 				} else {
+		 					int amount = players.get(currentPlr).getCardColor(railroadColor2);
+		 					int leftOver = amountNeeded - amount;
+		 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, amount));
+		 					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
+		 				}
 					}
+					panelStuff = 0;
+					
 				}
 				else if( isGreyRoad && (players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded || cardsRemoved >= amountNeeded|| players.get(currentPlr).getHighestColorNum() + players.get(currentPlr).getCardColor("wild") >= amountNeeded) )
 				{
@@ -1483,7 +1934,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 						
 					}
 				}
-				else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded && !isMountain && !isGreyRoad && railRoadChosen ) {
+				else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded && !isMountain && !isGreyRoad && !railRoadChosen.get(0).getBought()) {
 					//Buy the railroad successfully (Will add it to UI and remove from player card later)
 					for (int i = 0; i < railRoadChosen.size(); i++) {
 						railRoadChosen.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
