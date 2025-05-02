@@ -1723,6 +1723,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	public void buyEvent() {
     	ArrayList<RailRoad> neededRailRoad = graph.getCityConnection(clickedCity[0], clickedCity[1]);
     	ArrayList<RailRoad> neededRailRoad2 = graph.getCitySecondConnection(clickedCity[0], clickedCity[1]);
+	wildNeeded = 0;
     	if (neededRailRoad == null) {
     		wildNeeded = neededRailRoad.get(0).getWildNum();
     	}
