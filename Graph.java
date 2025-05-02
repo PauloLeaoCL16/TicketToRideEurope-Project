@@ -908,9 +908,11 @@ public class Graph {
     				ArrayList<City> pastCities = new ArrayList<City>();
     				if (foundCity(plr, findCity(target), pastCities, adjacencyList.get(j))) {
     					total += tickets.get(i).getPoints();
+					continue;
 
-    				}
-    				continue;
+    				} else {
+					total -= tickets.get(i).getPoints();
+				}
     			}
     		}
     	}
