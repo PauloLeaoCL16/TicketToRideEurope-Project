@@ -13,27 +13,36 @@ import javax.swing.Timer;
 
 
 public class EndGame extends JPanel implements Runnable, MouseListener, MouseMotionListener  {
-	private BufferedImage endBack, redPfp, bluePfp, whitePfp, orangePfp, circle, trofee;
+	private BufferedImage endBack, winner, trofee;
 	private ArrayList<Integer> scores;
 	private ArrayList<Confetti> confettiList;
-	public EndGame(int plr1, int plr2, int plr3, int plr4, int ticketPt1, int ticketPt2, int ticketPt3, int ticketPt4) {
+	private int a, b, c, d, w, x, y, z;
+    
+	public EndGame(int plr1, int plr2, int plr3, int plr4, int t1, int t2, int t3, int t4) {
 	    try {
 	    	endBack = ImageIO.read(MainMenu.class.getResource("/ttreImages/endScreen.png"));
-	    	redPfp = ImageIO.read(MainMenu.class.getResource("/ttreImages/redPfp.png"));
-	    	bluePfp = ImageIO.read(MainMenu.class.getResource("/ttreImages/bluePfp.png"));
-	    	whitePfp = ImageIO.read(MainMenu.class.getResource("/ttreImages/whitePfp.png"));
-	    	orangePfp = ImageIO.read(MainMenu.class.getResource("/ttreImages/orangePfp.png"));
-	    	circle = ImageIO.read(MainMenu.class.getResource("/ttreImages/circle.png"));
-	    	trofee = ImageIO.read(MainMenu.class.getResource("/ttreImages/trofee.png"));
+	    	winner = ImageIO.read(MainMenu.class.getResource("/ttreImages/winnerPic.png"));
+	    	trofee = ImageIO.read(MainMenu.class.getResource("/ttreImages/trophee.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-	    scores = new ArrayList<>();
-	    scores.add(plr1);
-	    scores.add(plr2);
-	    scores.add(plr3);
-	    scores.add(plr4);
-	    Collections.sort(scores);
+	    //
+	    //scores = new ArrayList<>();
+	    //scores.add(plr1);
+	    //scores.add(plr2);
+	    //scores.add(plr3);
+	   // scores.add(plr4);
+	    //Collections.sort(scores);
+	    w = plr1;
+	    x = plr2;
+	    y = plr3;
+	    z = plr4;
+	    
+	    a = t1;
+	    b = t2;
+	    c = t3;
+	    d = t4;
+	    
         // Initialize confetti
         confettiList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
@@ -53,7 +62,29 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(endBack, 0, 0, null);
+        //cords for the images
+        // need an if statement to see which player won, cords are below
+        g.drawImage(winner, 1390, 670, null);
+        // or 620, 1025, 1390, 1410
         
+        //player points
+        g.drawString(w,510, 650);
+        g.drawString("02",870, 650);
+        g.drawString("02",1280, 650);
+        g.drawString("02",1660, 650);
+        
+        //ticket points
+        g.drawString("02",310, 650);
+        g.drawString("02",670, 650);
+        g.drawString("02",1060, 650);
+        g.drawString("02",1460, 650);
+        
+       
+        //if statement for this too
+        //longest route winner cords lol
+        g.drawImage(trofee, 280, 380, null);
+        // 280, 640, 1040, 1440
+
         
 
         // Draw confetti
