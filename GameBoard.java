@@ -61,6 +61,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	private boolean whiteClicked= false,redClicked= false,purpleClicked= false,greenClicked= false,brownClicked= false,blueClicked= false,blackClicked= false,yellowClicked = false;
 	private ArrayList<ColorCard> gamblingDraw;
 	private int gamblingExtraCost;
+	private boolean gamblingConfirm;
 	private boolean gamblingRequiredMet;
 
     public GameBoard() {
@@ -99,7 +100,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
             faceUpCard[4] = cardDeck.drawCard();
             players.add(new Player("red", redplayer, new Color(255,0,0)));
             players.add(new Player("orange", blueplayer, new Color(255,165,0)));
-            players.add(new Player("white", greenplayer, new Color(0,0,0)));
+            players.add(new Player("white", greenplayer, new Color(255,255,255)));
             players.add(new Player("blue", yellowplayer, new Color(0,0,255)));
             p1bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p1bg.png"));
             p2bg = ImageIO.read(MainMenu.class.getResource("/ttreImages/p2bg.png"));
@@ -134,11 +135,15 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         roadChosen = false;
         railRoadChosen = new ArrayList<>();
         wildNeeded = 0;
-        players.get(currentPlr).addCard("wild",50);
+        players.get(0).addCard("wild",50);
+        players.get(1).addCard("wild",50);
+        players.get(2).addCard("wild",50);
+        players.get(3).addCard("wild",50);
         gamblingDraw= new ArrayList<>();
         gamblingExtraCost = 0;
-        gamblingConfirm = false;
         gamblingRequiredMet = false;
+        gamblingConfirm = false;
+
         
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -595,7 +600,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 					else
 					{
 						buyEvent();
-						panelStuff = 4;
+						if( railRoadChosen.get(0).getMountains() )
+							panelStuff = 4;
+						else
+								panelStuff = 0;
 					}
 				}
 			}
@@ -613,7 +621,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 					else
 					{
 						buyEvent();
-						panelStuff = 4;
+						if( railRoadChosen.get(0).getMountains() )
+							panelStuff = 4;
+						else
+							panelStuff = 0;
 					}
 				}
 					
@@ -1192,8 +1203,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				}
 				else
 				{
-					if( gamblingRequiredMet && wildNum >= wildNeeded )
+					if( ( gamblingExtraCost == 0 || gamblingRequiredMet) && wildNum >= wildNeeded )
 					{
+						out.println("Confirm button is clicked");
+						gamblingConfirm = true;
 						buyEvent();
 						panelStuff = 0;
 						wildNum = 0;
@@ -1205,11 +1218,15 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 						blueNum = 0;
 						blackNum = 0;
 						yellowNum = 0;
+						gamblingExtraCost = 0;
 						gamblingRequiredMet = false;
 						colorsChosen = 0;
 						cardsRemoved = 0;
 						whiteClicked= false;redClicked= false;purpleClicked= false;greenClicked= false;brownClicked= false;blueClicked= false;blackClicked= false;yellowClicked = false;
+
+						
 					}
+					
 				}
 				
 			}
@@ -1263,6 +1280,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 					blackNum = 0;
 					players.get(currentPlr).addCard("yellow",yellowNum);
 					yellowNum = 0;
+					gamblingDraw = new ArrayList<>();
+					gamblingExtraCost = 0;
 					colorsChosen = 0;
 					cardsRemoved = 0;
 					gamblingRequiredMet = false;
@@ -1716,17 +1735,61 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				}
 				else if (isMountain1) 
 				{
-					//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
-					for (int i = 0; i < 3; i++) {
-						ColorCard draw = cardDeck.drawCard();
-						gamblingDraw.add(draw);
-						if (railroadColor1.equals(draw.getColor()) || draw.getColor().equals("wild")) 
-						{
+					if( !gamblingConfirm && !neededRailRoad.get(0).getBought() )
+					{
+						for (int i = 0; i < 3; i++) {
 							
-							gamblingExtraCost++;
-						}
+								ColorCard draw = cardDeck.drawCard();
+								gamblingDraw.add(draw);
+							
+							if (railroadColor1.equals(draw.getColor()) || draw.getColor().equals("wild")) 
+							{
+								gamblingExtraCost++;
+							}
+						
 					}
-					panelStuff = 0;
+						panelStuff = 4;
+					}
+					else
+					{
+						//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
+						
+							for (int i = 0; i < 3; i++) {
+								if( gamblingDraw.size() ==0 )
+								{
+									ColorCard draw = cardDeck.drawCard();
+									gamblingDraw.add(draw);
+								}
+								if (railroadColor1.equals(gamblingDraw.get(i).getColor()) || gamblingDraw.get(i).getColor().equals("wild")) 
+								{
+									gamblingExtraCost++;
+								}
+							
+						}
+						out.println("This is gamblingExtraCost: " + gamblingExtraCost + " This is gamblingConfirm: " + gamblingConfirm);
+						out.println("This is what gamblingRequiredMet is: " + gamblingRequiredMet);
+						if( gamblingRequiredMet || (gamblingExtraCost == 0 && gamblingConfirm))
+						{
+							gamblingConfirm = false;
+							//Buy the railroad successfully (Will add it to UI and remove from player card later)
+							for (int i = 0; i < neededRailRoad.size(); i++) {
+								neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+							}
+							turnUsed = 2;
+							players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+							players.get(currentPlr).removeTrain(amountNeeded);
+							if (players.get(currentPlr).getCardColor(railroadColor1) < amountNeeded) {
+			 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded - players.get(currentPlr).getCardColor(railroadColor1)));
+			 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, gamblingExtraCost));
+			 				} else {
+			 					int amount = players.get(currentPlr).getCardColor(railroadColor2);
+			 					int leftOver = amountNeeded - amount;
+			 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, amount));
+			 					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
+			 				}
+						}
+						panelStuff = 0;
+					}
 				}
 				else if( isGreyRoad1 && (players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded || cardsRemoved >= amountNeeded|| players.get(currentPlr).getHighestColorNum() + players.get(currentPlr).getCardColor("wild") >= amountNeeded) )
 				{
@@ -1771,8 +1834,9 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 		}
 		else
 		{
-			
-			if( ( !railroadBought1 || !railroadBought2 ) &&!roadChosen && ( players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded || players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded ) )
+			out.println("Does the code get here 2 times " + gamblingConfirm);
+			out.println(( !railroadBought1 || !railroadBought2 ) && !roadChosen && ( players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded || players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded ) );
+			if( ( !railroadBought1 || !railroadBought2 ) &&  !gamblingConfirm && !roadChosen && ( players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded || players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded ) )
 			{
 				panelStuff = 6;
 			}
@@ -1787,6 +1851,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				out.println("This is wildNumber: " + players.get(currentPlr).getCardColor("wild") + " vs the wildNeeded: " + wildNeeded);
 				out.println("This is isMountain: " + isMountain + " vs the isGreyRoad: " + isGreyRoad);
 				
+				
 				//creates objects based on the railroad chosen by the player on the pop-up
 				if( isMountain && railroadColor.equals("any") )
 				{
@@ -1795,16 +1860,20 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 				else if (isMountain) {
 					//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
 					for (int i = 0; i < 3; i++) {
-						ColorCard draw = cardDeck.drawCard();
-						gamblingDraw.add(draw);
-						if (railroadColor.equals(draw.getColor()) || draw.getColor().equals("wild")) 
+						if( gamblingDraw.size() ==0 )
+						{
+							ColorCard draw = cardDeck.drawCard();
+							gamblingDraw.add(draw);
+						}
+						if (railroadColor.equals(gamblingDraw.get(i).getColor()) || gamblingDraw.get(i).getColor().equals("wild")) 
 						{
 							gamblingExtraCost++;
 						}
-					}
 					
-					if( gamblingRequiredMet)
+				}
+					if( gamblingRequiredMet || (gamblingExtraCost == 0 && gamblingConfirm))
 					{
+						gamblingConfirm = false;
 						//Buy the railroad successfully (Will add it to UI and remove from player card later)
 						for (int i = 0; i < railRoadChosen.size(); i++) {
 							railRoadChosen.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
@@ -1823,6 +1892,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 		 				}
 					}
 					panelStuff = 0;
+					
 				}
 				else if( isGreyRoad && (players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded || cardsRemoved >= amountNeeded|| players.get(currentPlr).getHighestColorNum() + players.get(currentPlr).getCardColor("wild") >= amountNeeded) )
 				{
