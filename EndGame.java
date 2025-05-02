@@ -16,7 +16,7 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
 	private BufferedImage endBack, redPfp, bluePfp, whitePfp, orangePfp, circle, trofee;
 	private ArrayList<Integer> scores;
 	private ArrayList<Confetti> confettiList;
-	public EndGame(int plr1, int plr2, int plr3, int plr4) {
+	public EndGame(int plr1, int plr2, int plr3, int plr4, int ticketPt1, int ticketPt2, int ticketPt3, int ticketPt4) {
 	    try {
 	    	endBack = ImageIO.read(MainMenu.class.getResource("/ttreImages/endScreen.png"));
 	    	redPfp = ImageIO.read(MainMenu.class.getResource("/ttreImages/redPfp.png"));
