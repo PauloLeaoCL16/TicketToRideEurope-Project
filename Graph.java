@@ -929,11 +929,43 @@ public class Graph {
     	return null;
     }
     
-    // Support function for longest route
-    private int countRailRoads(ArrayList<City> pastCities, int size) {
-    	return -1;
+       // Support function for longest route
+    private longetRailRoadHelper countRailRoads(ArrayList<City> pastCities, int size, City currentCity, Player currentPlr) {
+		if (pastCities.contains(currentCity)) {
+			return new longestRailRoadHelper(size, currentPlr);
+		}
+		longestRailRoadHelper currentSizeTemp = new longestRailRoadHelper(size, currentPlr);
+		HashMap<City, ArrayList<RailRoad>> connections = currentCity.getConnections();
+		Set<City> citySet = connections.keySet();
+		
+		for (City city: citySet) {
+			if (connections.get(city).get(0).getThePlayerRailroad() == targetPlr) {
+				ArrayList<City> temp = pastCities;
+				temp.add(currentCity);
+				longestRailRoadHelper nextSize = countRailRoads(temp, size + 1, city);
+				if (currentSizeTemp.getSize() < nextSize.getSize()) {
+					currentSizeTemp.setSize(nextSize);
+				}
+			}
+		}
+		
+		connections = currentCity.getSecondConnections();
+		citySet = connections.keySet();
+		
+		for (City city: citySet) {
+			if (connections.get(city).get(0).getThePlayerRailroad() == targetPlr) {
+				ArrayList<City> temp = pastCities;
+				temp.add(currentCity);
+				longestRailRoadHelper nextSize = countRailRoads(temp, size + 1, city);
+				if (currentSizeTemp.getSize() < nextSize.getSize()) {
+					currentSizeTemp.setSize(nextSize);
+				}
+			}
+		}
+
+    	return currentSizeTemp;
     }
-    // Longest Route (Unfinished)
+
     public Player getLongestPlrRoute() {
     	Player currentLongestPlr = null;
     	Integer currentLongestSize = null;
@@ -943,14 +975,14 @@ public class Graph {
     		Set<City> cities = railRoadList.keySet();
     		for (City currentCity: cities) {
     			ArrayList<City> newArr = new ArrayList<City>();
-    			newArr.add(currentCity);
-    			int currentRailRoadLength = countRailRoads(newArr, 0);
-    			if (currentLongestSize == null || currentLongestSize < currentRailRoadLength) {
-    				currentRailRoadLength = currentLongestSize;
+    			longetRailRoadHelper currentRailRoadLength = countRailRoads(newArr, 0, currentCity, railRoadList.get(currentCity).get(0).getPlrBought());
+    			if (currentLongestSize == null || longetRailRoadHelper.getSize() < currentRailRoadLength) {
+    				currentLongestSize = currentRailRoadLength.getSize();
+					currentLongestPlr = currentRailRoadLength.getPlr();
     			}
     		}
     	}
     	
-    	return null;
+    	return currentLongestPlr;
     }
 }
