@@ -1838,8 +1838,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	} else if (graph.getLongestPlrRoute() == players.get(3)) {
         		longestRouteNum = 4;
         	}
-        	
-//    		EndGame newEndgame = new EndGame(totalPt1, totalPt2, totalPt3, totalPt4, ticketPt1, ticketPt2, ticketPt3, ticketPt4, longestRouteNum);
+        	JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(GameBoard.this);
+        	topFrame.getContentPane().removeAll();
+        	topFrame.add(new EndGame(totalPt1, totalPt2, totalPt3, totalPt4, ticketPt1, ticketPt2, ticketPt3, ticketPt4, longestRouteNum));
+        	topFrame.revalidate();
+        	topFrame.repaint();
     	}
     	}
     }
