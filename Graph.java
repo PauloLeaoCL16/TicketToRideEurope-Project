@@ -929,8 +929,7 @@ public class Graph {
     	return null;
     }
     
-       // Support function for longest route
-    private longetRailRoadHelper countRailRoads(ArrayList<City> pastCities, int size, City currentCity, Player currentPlr) {
+    private longestRailRoadHelper countRailRoads(ArrayList<City> pastCities, int size, City currentCity, Player currentPlr) {
 		if (pastCities.contains(currentCity)) {
 			return new longestRailRoadHelper(size, currentPlr);
 		}
@@ -975,8 +974,8 @@ public class Graph {
     		Set<City> cities = railRoadList.keySet();
     		for (City currentCity: cities) {
     			ArrayList<City> newArr = new ArrayList<City>();
-    			longetRailRoadHelper currentRailRoadLength = countRailRoads(newArr, 0, currentCity, railRoadList.get(currentCity).get(0).getPlrBought());
-    			if (currentLongestSize == null || longetRailRoadHelper.getSize() < currentRailRoadLength) {
+    			longestRailRoadHelper currentRailRoadLength = countRailRoads(newArr, 0, currentCity, railRoadList.get(currentCity).get(0).getPlrBought());
+    			if (currentLongestSize == null || currentRailRoadLength.getSize() < currentLongestSize) {
     				currentLongestSize = currentRailRoadLength.getSize();
 					currentLongestPlr = currentRailRoadLength.getPlr();
     			}
