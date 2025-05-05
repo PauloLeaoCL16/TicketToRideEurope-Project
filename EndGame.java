@@ -74,6 +74,7 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
 		g.drawImage(winner, 1025, 670, null);
 	}
 	else if(scores.get(scores.size()-1) == y) 
+	{
 		g.drawImage(winner, 1390, 670, null);
         } 
 	else{
@@ -82,16 +83,16 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
 	// or 620, 1025, 1390, 1410
         
         //player points
-        g.drawString(w,510, 650);
-        g.drawString(x,870, 650);
-        g.drawString(y,1280, 650);
-        g.drawString(z,1660, 650);
+        g.drawString(w+"",510, 650);
+        g.drawString(x+"",870, 650);
+        g.drawString(y+"",1280, 650);
+        g.drawString(z+"",1660, 650);
         
         //ticket points
-        g.drawString(a,310, 650);
-        g.drawString(b,670, 650);
-        g.drawString(c,1060, 650);
-        g.drawString(d,1460, 650);
+        g.drawString(a+"",310, 650);
+        g.drawString(b+"",670, 650);
+        g.drawString(c+"",1060, 650);
+        g.drawString(d+"",1460, 650);
         
        
         //if statement for this too
