@@ -17,9 +17,9 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
 	private BufferedImage endBack, winner, trofee;
 	private ArrayList<Integer> scores;
 	private ArrayList<Confetti> confettiList;
-	private int a, b, c, d, w, x, y, z;
+	private int a, b, c, d, w, x, y, z, lol;
     
-	public EndGame(int plr1, int plr2, int plr3, int plr4, int t1, int t2, int t3, int t4) {
+	public EndGame(int plr1, int plr2, int plr3, int plr4, int t1, int t2, int t3, int t4, int longestRoute) {
 	    try {
 	    	endBack = ImageIO.read(MainMenu.class.getResource("/ttreImages/endScreen.png"));
 	    	winner = ImageIO.read(MainMenu.class.getResource("/ttreImages/winnerPic.png"));
@@ -44,6 +44,7 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
 	    b = t2;
 	    c = t3;
 	    d = t4;
+	    lol = longestRoute;
 	    
         // Initialize confetti
         confettiList = new ArrayList<>();
@@ -69,7 +70,7 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
 
 	if(scores.get(scores.size()-1) == w)
 	{
-        	g.drawImage(winner, 620, 670, null);
+        g.drawImage(winner, 620, 670, null);
 	}
 	else if(scores.get(scores.size()-1) == x){
 		g.drawImage(winner, 1025, 670, null);
@@ -82,6 +83,7 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
 	}
 	// or 620, 1025, 1390, 1410
         
+	
         //player points
         g.drawString(w + "",510, 650);
         g.drawString(x + "",870, 650);
@@ -96,8 +98,19 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
         
        
         //if statement for this too
-        //longest route winner cords lol
-        g.drawImage(trofee, 280, 380, null);
+        
+        if(lol == 1) {
+        	g.drawImage(trofee, 280, 380, null);
+        }
+        else if(lol == 2) {
+        	g.drawImage(trofee, 640, 380, null);
+        }
+        else if(lol == 3) {
+        	g.drawImage(trofee, 1040, 380, null);
+        }
+        else {
+        	g.drawImage(trofee, 1440, 380, null);
+        }
         // 280, 640, 1040, 1440
 
         
