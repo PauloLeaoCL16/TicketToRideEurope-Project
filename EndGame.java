@@ -26,17 +26,18 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
         } catch (IOException e) {
             e.printStackTrace();
         }
-	    //
-	    //scores = new ArrayList<>();
-	    //scores.add(plr1);
-	    //scores.add(plr2);
-	    //scores.add(plr3);
-	   // scores.add(plr4);
-	    //Collections.sort(scores);
+
 	    w = plr1;
 	    x = plr2;
 	    y = plr3;
 	    z = plr4;
+
+	    scores = new ArrayList<>();
+	    scores.add(w);
+	    scores.add(x);
+	    scores.add(y);
+	    scores.add(z);
+	    Collections.sort(scores);
 	    
 	    a = t1;
 	    b = t2;
@@ -64,20 +65,33 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
         g.drawImage(endBack, 0, 0, null);
         //cords for the images
         // need an if statement to see which player won, cords are below
-        g.drawImage(winner, 1390, 670, null);
-        // or 620, 1025, 1390, 1410
+
+	if(scores.get(scores.size()-1) == w)
+	{
+        	g.drawImage(winner, 620, 670, null);
+	}
+	else if(scores.get(scores.size()-1) == x){
+		g.drawImage(winner, 1025, 670, null);
+	}
+	else if(scores.get(scores.size()-1) == y) 
+		g.drawImage(winner, 1390, 670, null);
+        } 
+	else{
+		g.drawImage(winner, 1410, 670, null);
+	}
+	// or 620, 1025, 1390, 1410
         
         //player points
         g.drawString(w,510, 650);
-        g.drawString("02",870, 650);
-        g.drawString("02",1280, 650);
-        g.drawString("02",1660, 650);
+        g.drawString(x,870, 650);
+        g.drawString(y,1280, 650);
+        g.drawString(z,1660, 650);
         
         //ticket points
-        g.drawString("02",310, 650);
-        g.drawString("02",670, 650);
-        g.drawString("02",1060, 650);
-        g.drawString("02",1460, 650);
+        g.drawString(a,310, 650);
+        g.drawString(b,670, 650);
+        g.drawString(c,1060, 650);
+        g.drawString(d,1460, 650);
         
        
         //if statement for this too
