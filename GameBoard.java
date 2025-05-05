@@ -1831,11 +1831,11 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	int totalPt4 = pt1 + players.get(3).getStations() * 4 + ticketPt4;
         	
         	int longestRouteNum = 1;
-        	if (graph.getLongestPlrRoute().getPlrColor() == players.get(1).getPlrColor()) {
+        	if (graph.getLongestPlrRoute() == players.get(1)) {
         		longestRouteNum = 2;
-        	} else if (graph.getLongestPlrRoute().getPlrColor() == players.get(2).getPlrColor()) {
+        	} else if (graph.getLongestPlrRoute() == players.get(2)) {
         		longestRouteNum = 3;
-        	} else if (graph.getLongestPlrRoute().getPlrColor() == players.get(3).getPlrColor()) {
+        	} else if (graph.getLongestPlrRoute() == players.get(3)) {
         		longestRouteNum = 4;
         	}
         	
