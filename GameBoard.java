@@ -36,7 +36,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
     private int tClicked;
     private int currentPlr;
     private City[] clickedCity = new City[2];
-    private int panelStuff = 0;// 0 = nothing,1 = Start of game,2 = draw tickets,3 = Inventory,4 = Gambling,5 = Grey route payment,6 = Double route payment,7 = choosing color for grey Gambling
+    private int panelStuff = 1;// 0 = nothing,1 = Start of game,2 = draw tickets,3 = Inventory,4 = Gambling,5 = Grey route payment,6 = Double route payment,7 = choosing color for grey Gambling
     private int ticketPage = 1; // 1 = first page, 2 = seconds page, 3 = third page(max)
     private int turnUsed = 0;
     private ArrayList<Ticket> ticketsShownList;
@@ -135,10 +135,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         roadChosen = false;
         railRoadChosen = new ArrayList<>();
         wildNeeded = 0;
-        players.get(0).addCard("wild",50);
-        players.get(1).addCard("wild",50);
-        players.get(2).addCard("wild",50);
-        players.get(3).addCard("wild",50);
         gamblingDraw= new ArrayList<>();
         gamblingExtraCost = 0;
         gamblingRequiredMet = false;
@@ -1843,119 +1839,218 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	    out.println("Is the railRoad2 null?" + neededRailRoad2 == null);
 	    //so if there is 1 single road only, runs normal code
 	    //else if theres 2 roads, it looks at the one chosen by the player in pop-up
-		if( neededRailRoad2 == null )
-		{
-			//Requirements to build a railroad
-			boolean isMountain1 = neededRailRoad.get(0).getMountains();
-			boolean isGreyRoad1 = railroadColor1.equals("any");
-			int plrTotalCard1 = players.get(currentPlr).getCardColor(railroadColor1) + players.get(currentPlr).getCardColor("wild");
-			
-			if (railroadColor1 == null) {
-				plrTotalCard1 = players.get(currentPlr).getHighestColorNum();
-			}
-			
-			
-				if( isMountain1 && railroadColor1.equals("any") )
-				{
-					if( players.get(currentPlr).getHighestColorNum() > amountNeeded & greyGamblingColor.equals("") )
+	    out.println("Turns Used: " +turnUsed);
+
+			if( neededRailRoad2 == null && turnUsed == 0 )
+			{
+				//Requirements to build a railroad
+				boolean isMountain1 = neededRailRoad.get(0).getMountains();
+				boolean isGreyRoad1 = railroadColor1.equals("any");
+				int plrTotalCard1 = players.get(currentPlr).getCardColor(railroadColor1) + players.get(currentPlr).getCardColor("wild");
+				
+				if (railroadColor1 == null) {
+					plrTotalCard1 = players.get(currentPlr).getHighestColorNum();
+				}
+				
+				
+					if( isMountain1 && railroadColor1.equals("any") )
 					{
-						panelStuff = 7;
-					}
-					else if( players.get(currentPlr).getHighestColorNum() > amountNeeded && panelStuff == 7)
-					{
-						panelStuff = 5;
-					}
-					else if( players.get(currentPlr).getHighestColorNum() > amountNeeded && panelStuff == 5 )
-					{
-						panelStuff = 4;
-							for (int i = 0; i < 3; i++) 
-							{
+						if( players.get(currentPlr).getHighestColorNum() > amountNeeded & greyGamblingColor.equals("") )
+						{
+							panelStuff = 7;
+						}
+						else if( players.get(currentPlr).getHighestColorNum() > amountNeeded && panelStuff == 7)
+						{
+							panelStuff = 5;
+						}
+						else if( players.get(currentPlr).getHighestColorNum() > amountNeeded && panelStuff == 5 )
+						{
+							panelStuff = 4;
+								for (int i = 0; i < 3; i++) 
+								{
+									
+									ColorCard draw = cardDeck.drawCard();
+									gamblingDraw.add(draw);
 								
-								ColorCard draw = cardDeck.drawCard();
-								gamblingDraw.add(draw);
+									if (greyGamblingColor.equals(draw.getColor()) || draw.getColor().equals("wild")) 
+									{
+										gamblingExtraCost++;
+									
+									}	
+								}
+						}
+						else if( players.get(currentPlr).getHighestColorNum() > amountNeeded && panelStuff == 4 )
+						{
+							out.println("It got to the last IF statement");
+							if( gamblingRequiredMet || (gamblingExtraCost == 0 && gamblingConfirm))
+							{
+								gamblingConfirm = false;
+								//Buy the railroad successfully (Will add it to UI and remove from player card later)
+								for (int i = 0; i < neededRailRoad.size(); i++) {
+									neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+								}
+								turnUsed = 2;
+								players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+								players.get(currentPlr).removeTrain(amountNeeded);
+								if (players.get(currentPlr).getCardColor(railroadColor1) < amountNeeded) {
+				 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded - players.get(currentPlr).getCardColor(railroadColor1)));
+				 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, gamblingExtraCost));
+				 				} else {
+				 					int amount = players.get(currentPlr).getCardColor(railroadColor2);
+				 					int leftOver = amountNeeded - amount;
+				 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, amount));
+				 					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
+				 				}
+								panelStuff = 0;
+								greyGamblingColor = "";
+							}
 							
-								if (greyGamblingColor.equals(draw.getColor()) || draw.getColor().equals("wild")) 
+						}
+					}
+					else if (isMountain1) 
+					{
+						if( !gamblingConfirm && !neededRailRoad.get(0).getBought() )
+						{
+							for (int i = 0; i < 3; i++) {
+								
+									ColorCard draw = cardDeck.drawCard();
+									gamblingDraw.add(draw);
+								
+								if (railroadColor1.equals(draw.getColor()) || draw.getColor().equals("wild")) 
 								{
 									gamblingExtraCost++;
-								
-								}	
-							}
-					}
-					else if( players.get(currentPlr).getHighestColorNum() > amountNeeded && panelStuff == 4 )
-					{
-						out.println("It got to the last IF statement");
-						if( gamblingRequiredMet || (gamblingExtraCost == 0 && gamblingConfirm))
-						{
-							gamblingConfirm = false;
-							//Buy the railroad successfully (Will add it to UI and remove from player card later)
-							for (int i = 0; i < neededRailRoad.size(); i++) {
-								neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
-							}
-							turnUsed = 2;
-							players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
-							players.get(currentPlr).removeTrain(amountNeeded);
-							if (players.get(currentPlr).getCardColor(railroadColor1) < amountNeeded) {
-			 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded - players.get(currentPlr).getCardColor(railroadColor1)));
-			 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, gamblingExtraCost));
-			 				} else {
-			 					int amount = players.get(currentPlr).getCardColor(railroadColor2);
-			 					int leftOver = amountNeeded - amount;
-			 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, amount));
-			 					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
-			 				}
-							panelStuff = 0;
-							greyGamblingColor = "";
-						}
-						
-					}
-				}
-				else if (isMountain1) 
-				{
-					if( !gamblingConfirm && !neededRailRoad.get(0).getBought() )
-					{
-						for (int i = 0; i < 3; i++) {
+								}
 							
+						}
+							panelStuff = 4;
+						}
+						else
+						{
+							//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
+							
+								for (int i = 0; i < 3; i++) {
+									if( gamblingDraw.size() ==0 )
+									{
+										ColorCard draw = cardDeck.drawCard();
+										gamblingDraw.add(draw);
+									}
+									if (railroadColor1.equals(gamblingDraw.get(i).getColor()) || gamblingDraw.get(i).getColor().equals("wild")) 
+									{
+										gamblingExtraCost++;
+									}
+								
+							}
+							out.println("This is gamblingExtraCost: " + gamblingExtraCost + " This is gamblingConfirm: " + gamblingConfirm);
+							out.println("This is what gamblingRequiredMet is: " + gamblingRequiredMet);
+							if( gamblingRequiredMet || (gamblingExtraCost == 0 && gamblingConfirm))
+							{
+								gamblingConfirm = false;
+								//Buy the railroad successfully (Will add it to UI and remove from player card later)
+								for (int i = 0; i < neededRailRoad.size(); i++) {
+									neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+								}
+								turnUsed = 2;
+								players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+								players.get(currentPlr).removeTrain(amountNeeded);
+								if (players.get(currentPlr).getCardColor(railroadColor1) < amountNeeded) {
+				 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded - players.get(currentPlr).getCardColor(railroadColor1)));
+				 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, gamblingExtraCost));
+				 				} else {
+				 					int amount = players.get(currentPlr).getCardColor(railroadColor2);
+				 					int leftOver = amountNeeded - amount;
+				 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, amount));
+				 					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
+				 				}
+							}
+							panelStuff = 0;
+						}
+					}
+					else if( isGreyRoad1 && (players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded || cardsRemoved >= amountNeeded|| players.get(currentPlr).getHighestColorNum() + players.get(currentPlr).getCardColor("wild") >= amountNeeded) )
+					{
+						panelStuff = 5;
+						if( greyRequiredMet )
+						{
+							out.println("Bought it using this greyRoad being met");
+								//Buy the railroad successfully (Will add it to UI and remove from player card later)
+								for (int i = 0; i < neededRailRoad.size(); i++) {
+									neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+								}
+								turnUsed = 2;
+								players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+								players.get(currentPlr).removeTrain(amountNeeded);
+								out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
+							
+							
+						}
+					}
+					else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard1 >= amountNeeded && !isMountain1 && !isGreyRoad1 && !railroadBought1) {
+						out.println("Bought it using this greyRoad not	 being met");
+						//Buy the railroad successfully (Will add it to UI and remove from player card later)
+						for (int i = 0; i < neededRailRoad.size(); i++) {
+							neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+						}
+						turnUsed = 2;
+						players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+						players.get(currentPlr).removeTrain(amountNeeded);
+						if (players.get(currentPlr).getCardColor(railroadColor1) < amountNeeded) {
+		 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded-players.get(currentPlr).getCardColor(railroadColor1)));
+		 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor1, amountNeeded));
+		 				} else {
+		 					int amount = players.get(currentPlr).getCardColor(railroadColor1);
+		 					int leftOver = amountNeeded - amount;
+		 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor1, amount));
+		 					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
+		 				}
+						out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
+					} else {
+						out.println("Not enough railroads");
+					}
+			}
+			else if(  neededRailRoad2 != null && turnUsed == 0 )
+			{
+				out.println("Does the code get here 2 times " + gamblingConfirm);
+				out.println(( !railroadBought1 || !railroadBought2 ) && !roadChosen && ( players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded || players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded ) );
+				if( ( !railroadBought1 || !railroadBought2 ) &&  !gamblingConfirm && !roadChosen && ( players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded || players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded ) )
+				{
+					panelStuff = 6;
+				}
+				else
+				{
+					String railroadColor = railRoadChosen.get(0).getColor();
+					boolean isMountain = railRoadChosen.get(0).getMountains();
+					boolean isGreyRoad = railroadColor.equals("any");
+					int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
+					
+					out.println("This is plrTotal: " + plrTotalCard + " vs the amountNeeded: " + amountNeeded);
+					out.println("This is wildNumber: " + players.get(currentPlr).getCardColor("wild") + " vs the wildNeeded: " + wildNeeded);
+					out.println("This is isMountain: " + isMountain + " vs the isGreyRoad: " + isGreyRoad);
+					
+					 if (isMountain) {
+						//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
+						for (int i = 0; i < 3; i++) {
+							if( gamblingDraw.size() ==0 )
+							{
 								ColorCard draw = cardDeck.drawCard();
 								gamblingDraw.add(draw);
-							
-							if (railroadColor1.equals(draw.getColor()) || draw.getColor().equals("wild")) 
+							}
+							if (railroadColor.equals(gamblingDraw.get(i).getColor()) || gamblingDraw.get(i).getColor().equals("wild")) 
 							{
 								gamblingExtraCost++;
 							}
 						
 					}
-						panelStuff = 4;
-					}
-					else
-					{
-						//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
-						
-							for (int i = 0; i < 3; i++) {
-								if( gamblingDraw.size() ==0 )
-								{
-									ColorCard draw = cardDeck.drawCard();
-									gamblingDraw.add(draw);
-								}
-								if (railroadColor1.equals(gamblingDraw.get(i).getColor()) || gamblingDraw.get(i).getColor().equals("wild")) 
-								{
-									gamblingExtraCost++;
-								}
-							
-						}
-						out.println("This is gamblingExtraCost: " + gamblingExtraCost + " This is gamblingConfirm: " + gamblingConfirm);
-						out.println("This is what gamblingRequiredMet is: " + gamblingRequiredMet);
 						if( gamblingRequiredMet || (gamblingExtraCost == 0 && gamblingConfirm))
 						{
 							gamblingConfirm = false;
 							//Buy the railroad successfully (Will add it to UI and remove from player card later)
-							for (int i = 0; i < neededRailRoad.size(); i++) {
-								neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+							for (int i = 0; i < railRoadChosen.size(); i++) {
+								railRoadChosen.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
 							}
 							turnUsed = 2;
 							players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
 							players.get(currentPlr).removeTrain(amountNeeded);
-							if (players.get(currentPlr).getCardColor(railroadColor1) < amountNeeded) {
-			 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded - players.get(currentPlr).getCardColor(railroadColor1)));
+							if (players.get(currentPlr).getCardColor(railroadColor) < amountNeeded) {
+			 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded - players.get(currentPlr).getCardColor(railroadColor)));
 			 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, gamblingExtraCost));
 			 				} else {
 			 					int amount = players.get(currentPlr).getCardColor(railroadColor2);
@@ -1965,85 +2060,26 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 			 				}
 						}
 						panelStuff = 0;
-					}
-				}
-				else if( isGreyRoad1 && (players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded || cardsRemoved >= amountNeeded|| players.get(currentPlr).getHighestColorNum() + players.get(currentPlr).getCardColor("wild") >= amountNeeded) )
-				{
-					panelStuff = 5;
-					if( greyRequiredMet )
-					{
-						out.println("Bought it using this greyRoad being met");
-							//Buy the railroad successfully (Will add it to UI and remove from player card later)
-							for (int i = 0; i < neededRailRoad.size(); i++) {
-								neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
-							}
-							turnUsed = 2;
-							players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
-							players.get(currentPlr).removeTrain(amountNeeded);
-							out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
-						
 						
 					}
-				}
-				else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard1 >= amountNeeded && !isMountain1 && !isGreyRoad1 && !railroadBought1) {
-					out.println("Bought it using this greyRoad not	 being met");
-					//Buy the railroad successfully (Will add it to UI and remove from player card later)
-					for (int i = 0; i < neededRailRoad.size(); i++) {
-						neededRailRoad.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
-					}
-					turnUsed = 2;
-					players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
-					players.get(currentPlr).removeTrain(amountNeeded);
-					if (players.get(currentPlr).getCardColor(railroadColor1) < amountNeeded) {
-	 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded-players.get(currentPlr).getCardColor(railroadColor1)));
-	 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor1, amountNeeded));
-	 				} else {
-	 					int amount = players.get(currentPlr).getCardColor(railroadColor1);
-	 					int leftOver = amountNeeded - amount;
-	 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor1, amount));
-	 					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
-	 				}
-					out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
-				} else {
-					out.println("Not enough railroads");
-				}
-		}
-		else
-		{
-			out.println("Does the code get here 2 times " + gamblingConfirm);
-			out.println(( !railroadBought1 || !railroadBought2 ) && !roadChosen && ( players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded || players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded ) );
-			if( ( !railroadBought1 || !railroadBought2 ) &&  !gamblingConfirm && !roadChosen && ( players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded || players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) + players.get(currentPlr).getCardColor("wild") >= amountNeeded ) )
-			{
-				panelStuff = 6;
-			}
-			else
-			{
-				String railroadColor = railRoadChosen.get(0).getColor();
-				boolean isMountain = railRoadChosen.get(0).getMountains();
-				boolean isGreyRoad = railroadColor.equals("any");
-				int plrTotalCard = players.get(currentPlr).getCardColor(railroadColor) + players.get(currentPlr).getCardColor("wild");
-				
-				out.println("This is plrTotal: " + plrTotalCard + " vs the amountNeeded: " + amountNeeded);
-				out.println("This is wildNumber: " + players.get(currentPlr).getCardColor("wild") + " vs the wildNeeded: " + wildNeeded);
-				out.println("This is isMountain: " + isMountain + " vs the isGreyRoad: " + isGreyRoad);
-				
-				 if (isMountain) {
-					//Draw additional cards needed from deck if the railroad is a mountain (3 cards)
-					for (int i = 0; i < 3; i++) {
-						if( gamblingDraw.size() ==0 )
-						{
-							ColorCard draw = cardDeck.drawCard();
-							gamblingDraw.add(draw);
-						}
-						if (railroadColor.equals(gamblingDraw.get(i).getColor()) || gamblingDraw.get(i).getColor().equals("wild")) 
-						{
-							gamblingExtraCost++;
-						}
-					
-				}
-					if( gamblingRequiredMet || (gamblingExtraCost == 0 && gamblingConfirm))
+					else if( isGreyRoad && (players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded || cardsRemoved >= amountNeeded|| players.get(currentPlr).getHighestColorNum() + players.get(currentPlr).getCardColor("wild") >= amountNeeded) )
 					{
-						gamblingConfirm = false;
+						panelStuff = 5;
+						if( greyRequiredMet )
+						{
+							
+								//Buy the railroad successfully (Will add it to UI and remove from player card later)
+								for (int i = 0; i < railRoadChosen.size(); i++) {
+									railRoadChosen.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
+								}
+								turnUsed = 2;
+								players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
+								players.get(currentPlr).removeTrain(amountNeeded);
+								out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
+							
+						}
+					}
+					else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded && !isMountain && !isGreyRoad && !railRoadChosen.get(0).getBought()) {
 						//Buy the railroad successfully (Will add it to UI and remove from player card later)
 						for (int i = 0; i < railRoadChosen.size(); i++) {
 							railRoadChosen.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
@@ -2051,65 +2087,28 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 						turnUsed = 2;
 						players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
 						players.get(currentPlr).removeTrain(amountNeeded);
-						if (players.get(currentPlr).getCardColor(railroadColor) < amountNeeded) {
-		 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded - players.get(currentPlr).getCardColor(railroadColor)));
-		 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, gamblingExtraCost));
+						if (players.get(currentPlr).getCardColor(railroadColor2) < amountNeeded) {
+		 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded - players.get(currentPlr).getCardColor(railroadColor2)));
+		 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, amountNeeded));
 		 				} else {
 		 					int amount = players.get(currentPlr).getCardColor(railroadColor2);
 		 					int leftOver = amountNeeded - amount;
 		 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, amount));
 		 					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
 		 				}
+						out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
+					} else {
+						out.println("Not enough railroads");
 					}
-					panelStuff = 0;
-					
+					roadChosen = false;
 				}
-				else if( isGreyRoad && (players.get(currentPlr).getCardColor(players.get(currentPlr).getHighestColorNumStr()) >= amountNeeded || cardsRemoved >= amountNeeded|| players.get(currentPlr).getHighestColorNum() + players.get(currentPlr).getCardColor("wild") >= amountNeeded) )
-				{
-					panelStuff = 5;
-					if( greyRequiredMet )
-					{
-						
-							//Buy the railroad successfully (Will add it to UI and remove from player card later)
-							for (int i = 0; i < railRoadChosen.size(); i++) {
-								railRoadChosen.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
-							}
-							turnUsed = 2;
-							players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
-							players.get(currentPlr).removeTrain(amountNeeded);
-							out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
-						
-					}
-				}
-				else if (players.get(currentPlr).getCardColor("wild") >= wildNeeded && plrTotalCard >= amountNeeded && !isMountain && !isGreyRoad && !railRoadChosen.get(0).getBought()) {
-					//Buy the railroad successfully (Will add it to UI and remove from player card later)
-					for (int i = 0; i < railRoadChosen.size(); i++) {
-						railRoadChosen.get(i).setBought(players.get(currentPlr), players.get(currentPlr).getPlrColor());
-					}
-					turnUsed = 2;
-					players.get(currentPlr).setPoint(graph.getPlayerTrainPoint(players.get(currentPlr)));
-					players.get(currentPlr).removeTrain(amountNeeded);
-					if (players.get(currentPlr).getCardColor(railroadColor2) < amountNeeded) {
-	 					discardDeck.add(players.get(currentPlr).removeCards("wild", amountNeeded - players.get(currentPlr).getCardColor(railroadColor2)));
-	 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, amountNeeded));
-	 				} else {
-	 					int amount = players.get(currentPlr).getCardColor(railroadColor2);
-	 					int leftOver = amountNeeded - amount;
-	 					discardDeck.add(players.get(currentPlr).removeCards(railroadColor2, amount));
-	 					discardDeck.add(players.get(currentPlr).removeCards("wild", leftOver));
-	 				}
-					out.println("Railroad bought between: " + clickedCity[0].getName() + " and " + clickedCity[1].getName() + " is bought by the player " + players.get(currentPlr).getPlayerColor());
-				} else {
-					out.println("Not enough railroads");
-				}
-				roadChosen = false;
 			}
-		}
+		    
+			if (players.get(currentPlr).getTrainsLeft() <= 2) {
+				out.println("Last turn");
+				lastTurn = true;
+			}
 	    
-		if (players.get(currentPlr).getTrainsLeft() <= 2) {
-			out.println("Last turn");
-			lastTurn = true;
-		}
 		repaint();
 		}
     
