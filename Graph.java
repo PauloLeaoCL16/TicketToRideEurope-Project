@@ -975,6 +975,7 @@ public class Graph {
     		Set<City> cities = railRoadList.keySet();
     		for (City currentCity: cities) {
     			ArrayList<City> newArr = new ArrayList<City>();
+    			newArr.add(adjacencyList.get(i));
     			longestRailRoadHelper currentRailRoadLength = countRailRoads(newArr, 0, currentCity, railRoadList.get(currentCity).get(0).getPlrBought());
     			if (currentLongestSize == null || currentRailRoadLength.getSize() < currentLongestSize) {
     				currentLongestSize = currentRailRoadLength.getSize();
