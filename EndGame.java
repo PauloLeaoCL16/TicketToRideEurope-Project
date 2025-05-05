@@ -59,6 +59,9 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
             repaint();
         });
         timer.start();
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        setFocusable(true);
     }
 	
 	@Override
@@ -123,6 +126,16 @@ public class EndGame extends JPanel implements Runnable, MouseListener, MouseMot
 	
 	@Override
     public void mouseClicked(MouseEvent e) {
+		int x = e.getX();
+    	int y = e.getY();
+    	System.out.println(x + " " + y);
+		if (e.getX() >= 1620 && e.getX() <= 1710 && e.getY() >= 0 && e.getY() <= 280) {
+        	JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            topFrame.setContentPane(new MainMenu());
+            topFrame.validate();
+
+        }
+
     }
 
     @Override
