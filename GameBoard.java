@@ -1809,26 +1809,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
          	int pt4 = plr4.getPoint()/2;
          	int ticketPt4 = graph.getPlayerTrainPoint(players.get(3));
          	int totalPt4 = pt1 + players.get(3).getStations() * 4 + ticketPt4;
-     		if (players.get(currentPlr).getLastTurn() == true) {
-    		Player plr1 = players.get(0);
-        	int pt1 = plr1.getPoint()/2;
-        	int ticketPt1 = graph.getPlayerTrainPoint(players.get(0));
-        	int totalPt1 = pt1 + players.get(0).getStations() * 4 + ticketPt1;
-        	
-        	Player plr2 = players.get(1);
-        	int pt2 = plr2.getPoint()/2;
-        	int ticketPt2 = graph.getPlayerTrainPoint(players.get(1));
-        	int totalPt2 = pt2 + players.get(1).getStations() * 4 + ticketPt2;
-        	
-        	Player plr3 = players.get(2);
-        	int pt3 = plr3.getPoint()/2;
-        	int ticketPt3 = graph.getPlayerTrainPoint(players.get(2));
-        	int totalPt3 = pt3 + players.get(2).getStations() * 4 + ticketPt3;
-        	
-        	Player plr4 = players.get(3);
-        	int pt4 = plr4.getPoint()/2;
-        	int ticketPt4 = graph.getPlayerTrainPoint(players.get(3));
-        	int totalPt4 = pt1 + players.get(3).getStations() * 4 + ticketPt4;
         	
         	int longestRouteNum = 1;
         	if (graph.getLongestPlrRoute() == players.get(1)) {
@@ -1843,7 +1823,6 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         	topFrame.add(new EndGame(totalPt1, totalPt2, totalPt3, totalPt4, ticketPt1, ticketPt2, ticketPt3, ticketPt4, longestRouteNum));
         	topFrame.revalidate();
         	topFrame.repaint();
-    	}
     	}
     }
     
