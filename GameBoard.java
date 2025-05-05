@@ -1809,6 +1809,7 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
          	int pt4 = plr4.getPoint()/2;
          	int ticketPt4 = graph.getPlayerTrainPoint(players.get(3));
          	int totalPt4 = pt1 + players.get(3).getStations() * 4 + ticketPt4;
+         	
         	
         	int longestRouteNum = 1;
         	if (graph.getLongestPlrRoute() == players.get(1)) {
@@ -1832,7 +1833,10 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
 	public void buyEvent() {
     	ArrayList<RailRoad> neededRailRoad = graph.getCityConnection(clickedCity[0], clickedCity[1]);
     	ArrayList<RailRoad> neededRailRoad2 = graph.getCitySecondConnection(clickedCity[0], clickedCity[1]);
-    	wildNeeded = neededRailRoad.get(0).getWildNum();
+    	wildNeeded = 0;
+    	if (neededRailRoad.get(0) != null) {
+    		wildNeeded = neededRailRoad.get(0).getWildNum();
+    	}
     	
 		if ( neededRailRoad.get(0).getPlrBought() == players.get(currentPlr)) {
 			return;
