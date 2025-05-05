@@ -929,6 +929,7 @@ public class Graph {
     	return null;
     }
     
+    // Support function for longest route
     private longestRailRoadHelper countRailRoads(ArrayList<City> pastCities, int size, City currentCity, Player currentPlr) {
 		if (pastCities.contains(currentCity)) {
 			return new longestRailRoadHelper(size, currentPlr);
@@ -938,12 +939,12 @@ public class Graph {
 		Set<City> citySet = connections.keySet();
 		
 		for (City city: citySet) {
-			if (connections.get(city).get(0).getThePlayerRailroad() == targetPlr) {
+			if (connections.get(city).get(0).getThePlayerRailroad() == currentPlr) {
 				ArrayList<City> temp = pastCities;
 				temp.add(currentCity);
-				longestRailRoadHelper nextSize = countRailRoads(temp, size + 1, city);
+				longestRailRoadHelper nextSize = countRailRoads(temp, size + 1, city, currentPlr);
 				if (currentSizeTemp.getSize() < nextSize.getSize()) {
-					currentSizeTemp.setSize(nextSize);
+					currentSizeTemp.setSize(nextSize.getSize());
 				}
 			}
 		}
@@ -952,12 +953,12 @@ public class Graph {
 		citySet = connections.keySet();
 		
 		for (City city: citySet) {
-			if (connections.get(city).get(0).getThePlayerRailroad() == targetPlr) {
+			if (connections.get(city).get(0).getThePlayerRailroad() == currentPlr) {
 				ArrayList<City> temp = pastCities;
 				temp.add(currentCity);
-				longestRailRoadHelper nextSize = countRailRoads(temp, size + 1, city);
+				longestRailRoadHelper nextSize = countRailRoads(temp, size + 1, city, currentPlr);
 				if (currentSizeTemp.getSize() < nextSize.getSize()) {
-					currentSizeTemp.setSize(nextSize);
+					currentSizeTemp.setSize(nextSize.getSize());
 				}
 			}
 		}
