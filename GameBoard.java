@@ -1820,10 +1820,8 @@ public class GameBoard extends JPanel implements Runnable, MouseListener, MouseM
         		longestRouteNum = 4;
         	}
         	JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(GameBoard.this);
-        	topFrame.getContentPane().removeAll();
-        	topFrame.add(new EndGame(totalPt1, totalPt2, totalPt3, totalPt4, ticketPt1, ticketPt2, ticketPt3, ticketPt4, longestRouteNum));
-        	topFrame.revalidate();
-        	topFrame.repaint();
+         	topFrame.getContentPane().removeAll();
+         	endGameRunner fr = new endGameRunner("Frame", totalPt1, totalPt2, totalPt3, totalPt4, ticketPt1, ticketPt2, ticketPt3, ticketPt4, longestRouteNum);
     	}
     }
     
